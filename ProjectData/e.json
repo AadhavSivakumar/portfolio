@@ -1,0 +1,20 @@
+{
+  "id": "e",
+  "title": "FPGA VGA Game",
+  "category": "Digital Logic Design",
+  "description": "Developed a 'Flappy Bird' style game on a Basys 3 FPGA using Verilog.",
+  "imageUrl": "https://aadhavsivakumar.github.io/Images/projectcovers/fpgaVGA.png",
+  "technologies": ["Verilog", "Basys 3 FPGA"],
+  "status": "finished",
+  "modalContent": [
+    {
+      "type": "text",
+      "value": "Developed a 'Flappy Bird' style game on a Basys 3 FPGA using Verilog. This project involved designing digital logic circuits from the ground up to handle game state, player input, and VGA signal generation."
+    },
+    {
+      "type": "embed",
+      "value": "",
+      "title": "Project Documentation (Coming Soon)"
+    }
+  ]
+}

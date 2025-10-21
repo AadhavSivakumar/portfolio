@@ -1,0 +1,15 @@
+{
+  "id": "g",
+  "title": "CV controlled Desktop Robot arm",
+  "category": "Robotics & AI Vision",
+  "description": "Building a desktop robotic arm controlled by AI vision running on a Raspberry Pi.",
+  "imageUrl": "https://aadhavsivakumar.github.io/Images/projectcovers/deskrobarm.png",
+  "technologies": ["Python", "AI Vision", "Raspberry Pi"],
+  "status": "in-progress",
+  "modalContent": [
+    {
+      "type": "text",
+      "value": "Building a desktop robotic arm controlled by AI vision running on a Raspberry Pi. This project explores real-time object recognition and manipulation, creating an interactive and intelligent automated workspace assistant."
+    }
+  ]
+}

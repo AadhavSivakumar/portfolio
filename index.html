@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interactive Developer Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+      /* Opening Animation Styles */
+      #splash-screen {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        pointer-events: none;
+        overflow: hidden;
+      }
+      .blade {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 180.2vmax; /* Slightly increased to prevent rendering gaps */
+        /* height for 45-degree apex triangle */
+        height: calc(180.2vmax * 1.2071); /* Maintain aspect ratio */
+        /* The transform origin is the tip of our triangle */
+        transform-origin: 50% 0;
+        /* Clip-path for an isosceles triangle that fills the element */
+        clip-path: polygon(50% 0, 100% 100%, 0 100%);
+        /* Center the tip of the triangle and rotate it into position */
+        transform: translate(-50%, 0) rotate(var(--rotation));
+        opacity: 1; /* Explicitly set starting opacity */
+      }
+      
+      .blade-background {
+        position: absolute;
+        inset: 0;
+        background-color: var(--background-color);
+        z-index: 0;
+      }
+
+      @keyframes blade-retract {
+        to {
+          /* Move outwards in a direction defined by CSS variables */
+          transform: translate(var(--translateX, -50%), var(--translateY, -100vmax)) rotate(var(--rotation));
+        }
+      }
+
+      /* Blades now only retract, after a 4s delay for the glow effect */
+      .is-pre-animating .blade {
+        animation: blade-retract 2.5s cubic-bezier(.5,.3,.7,-0.3) 4s forwards;
+      }
+
+      /* New styles for glowing edges that are children of the blades */
+      .glow-edge {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 4px;
+        height: calc(180.2vmax * 1.3065); /* Precise length of the blade edge, matches new blade size */
+        background: var(--accent-color);
+        transform-origin: top center;
+        opacity: 0;
+        pointer-events: none;
+        z-index: 1; /* Sit behind the text */
+      }
+
+      .glow-edge.left {
+        --angle: -22.5deg;
+      }
+      .glow-edge.right {
+        --angle: 22.5deg;
+      }
+
+      @keyframes glow-appear-and-persist {
+        0% {
+          opacity: 0;
+          transform: translateX(-50%) rotate(var(--angle)) scaleY(0);
+          box-shadow: none;
+        }
+        50% { /* Peak glow syncs with blade retraction at 4s */
+          opacity: 1;
+          transform: translateX(-50%) rotate(var(--angle)) scaleY(1);
+          box-shadow: 0 0 15px 3px var(--accent-color);
+        }
+        100% { /* Glow persists as blades retract */
+          opacity: 1;
+          transform: translateX(-50%) rotate(var(--angle)) scaleY(1);
+          box-shadow: 0 0 15px 3px var(--accent-color);
+        }
+      }
+
+      .is-pre-animating .glow-edge {
+        animation: glow-appear-and-persist 5s ease-out 1.5s forwards;
+      }
+      
+      .blade-text {
+        position: absolute;
+        top: 32vh; /* Position from center (tip of triangle) */
+        left: 50%;
+        transform-origin: center center;
+        color: var(--primary-color);
+        font-size: 10vmax;
+        font-weight: 800;
+        text-transform: uppercase;
+        white-space: nowrap;
+        opacity: 0; /* Will be animated */
+        text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        z-index: 2; /* On top of glow edge */
+        pointer-events: none;
+      }
+
+      .blade-icon {
+        position: absolute;
+        top: 32vh;
+        left: 50%;
+        transform-origin: center center;
+        width: 10vmax;
+        height: 10vmax;
+        opacity: 0;
+        z-index: 2;
+        pointer-events: none;
+      }
+
+      html.dark .blade-icon {
+        filter: invert(1); /* Make icons pure white in dark mode for better visibility */
+      }
+
+      @keyframes blade-text-fade {
+        0% {
+          opacity: 0;
+          transform: translateX(-50%) translateY(20px) rotate(calc(-1 * var(--rotation)));
+        }
+        2%, 61.5% { /* Fade in fast, hold until blades start retracting at 4s */
+          opacity: 1;
+          transform: translateX(-50%) translateY(0) rotate(calc(-1 * var(--rotation)));
+        }
+        64%, 100% { /* Fade out much faster as blades retract */
+          opacity: 0;
+          transform: translateX(-50%) translateY(0) rotate(calc(-1 * var(--rotation)));
+        }
+      }
+
+      .is-pre-animating .blade-text,
+      .is-pre-animating .blade-icon {
+        animation: blade-text-fade 6.5s ease-in-out forwards;
+      }
+
+
+      :root {
+        --primary-color: #1a1a1a;
+        --secondary-color: #555555;
+        --icon-resting-color: #555555;
+        --background-color: #F7F5F2;
+        --surface-color: #FFFFFF;
+        --accent-color: #D9C06C; /* Brighter Gold */
+        --border-color: #ddd;
+        --accent-color-rgb: 217, 192, 108; /* #D9C06C */
+        --accent-border-color: #A08B3A; /* Darker gold for border */
+      }
+      html.dark {
+        color-scheme: dark;
+        --primary-color: #e0e0e0;
+        --secondary-color: #a0a0a0;
+        --icon-resting-color: #a0a0a0;
+        --background-color: #121212;
+        --surface-color: #1e1e1e;
+        --accent-color: #D9C06C; /* Brighter Gold */
+        --border-color: #444;
+        --accent-color-rgb: 217, 192, 108; /* #D9C06C */
+        --accent-border-color: #A08B3A; /* Same color works for dark theme */
+      }
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--background-color);
+        color: var(--primary-color);
+        transition: background-color 0.5s ease, color 0.5s ease;
+      }
+      /* Ensure SVGs also transition their colors smoothly */
+      svg {
+        transition: fill 0.5s ease, stroke 0.5s ease;
+      }
+      /* Custom scrollbar for a more polished look */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--surface-color);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--secondary-color);
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--accent-color);
+      }
+      
+      .card-hover-effect:hover {
+        position: relative; /* Ensure z-index is applied */
+        z-index: 35; /* Sit above the backdrop (z-30) */
+        transform: translateY(-8px);
+        box-shadow: 0 0 20px 4px rgba(var(--accent-color-rgb), 0.5), 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      }
+
+      /* Metallic & Shiny Tag/Button Effect */
+      .bg-accent.text-white.dark\:text-black {
+        background: linear-gradient(180deg, #F0E8D0 0%, #D9C06C 50%, #B9A149 100%);
+        border: 1px solid #A08B3A;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255, 255, 255, 0.4), inset 0 -1px 1px rgba(0,0,0,0.1);
+        color: #4a3311;
+        text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
+      }
+      /* New styles for nav highlighter */
+      .nav-highlighter {
+        background: linear-gradient(180deg, #F0E8D0 0%, #D9C06C 50%, #B9A149 100%);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+      }
+      .nav-highlighter-text {
+        color: #4a3311 !important;
+        text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
+      }
+      /* New styles for highlighter edge effects */
+      .nav-highlighter::before,
+      .nav-highlighter::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 1.5px;
+        background-color: var(--accent-border-color);
+        transition: opacity 300ms ease-in-out;
+      }
+      .nav-highlighter::before { 
+        left: -0.5px; 
+        opacity: var(--before-opacity, 0);
+      }
+      .nav-highlighter::after { 
+        right: -0.5px; 
+        opacity: var(--after-opacity, 0);
+      }
+    </style>
+    <script>
+      // Set theme on initial load to prevent FOUC
+      if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark')
+      } else {
+        document.documentElement.classList.remove('dark')
+      }
+
+      // Tailwind config
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              primary: 'var(--primary-color)',
+              secondary: 'var(--secondary-color)',
+              'icon-resting': 'var(--icon-resting-color)',
+              background: 'var(--background-color)',
+              surface: 'var(--surface-color)',
+              accent: 'var(--accent-color)',
+              border: 'var(--border-color)',
+            }
+          }
+        }
+      }
+    </script>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.1.1/",
+    "react": "https://esm.sh/react@^19.1.1",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.1/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body class="antialiased">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>

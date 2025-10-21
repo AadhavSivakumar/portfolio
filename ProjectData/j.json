@@ -1,0 +1,15 @@
+{
+  "id": "j",
+  "title": "3D space mapping with depth camera",
+  "category": "3D Mapping",
+  "description": "Developing a system to capture and stitch together depth data from a camera to create a 3D map of an environment.",
+  "imageUrl": "https://aadhavsivakumar.github.io/Images/projectcovers/3dcamera.mp4",
+  "technologies": ["Python", "Open3D", "Depth Camera"],
+  "status": "in-progress",
+  "modalContent": [
+    {
+      "type": "text",
+      "value": "Developing a system to capture and stitch together depth data from a camera to create a 3D map of an environment. This project explores point cloud processing and 3D reconstruction techniques."
+    }
+  ]
+}

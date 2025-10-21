@@ -1,0 +1,30 @@
+{
+  "id": 1,
+  "title": "Project Millet",
+  "category": "Autonomous Drone",
+  "description": "Developing a ROS-based autonomous drone utilizing a Pixhawk 6x for precise agricultural applications. This ongoing project focuses on implementing robust PID control for stable flight and targeted payload delivery.",
+  "imageUrl": "https://aadhavsivakumar.github.io/Images/projectcovers/Millet.webp",
+  "technologies": ["C++", "ROS", "Pixhawk 6x", "PID Control"],
+  "status": "in-progress",
+  "modalContent": [
+    {
+      "type": "text",
+      "value": "Developing a ROS-based autonomous drone utilizing a Pixhawk 6x for precise agricultural applications. This ongoing project focuses on implementing robust PID control for stable flight and targeted payload delivery, aiming to enhance farming efficiency."
+    }
+  ],
+  "media": [
+    {
+      "type": "image",
+      "url": "https://aadhavsivakumar.github.io/Images/gallery/millet/1.webp"
+    },
+    {
+      "type": "image",
+      "url": "https://aadhavsivakumar.github.io/Images/gallery/millet/2.webp"
+    },
+    {
+      "type": "video",
+      "url": "https://aadhavsivakumar.github.io/Images/gallery/millet/3.mp4",
+      "thumbnailUrl": "https://aadhavsivakumar.github.io/Images/projectcovers/Millet.webp"
+    }
+  ]
+}
