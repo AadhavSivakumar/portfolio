@@ -34,7 +34,7 @@ const App: React.FC = () => {
             try {
                 const projectIds = [1, 2, 3, 4, 5, 6];
                 const projectPromises = projectIds.map(id =>
-                    fetch(`/ProjectData/${id}.json`).then(res => {
+                    fetch(`./ProjectData/${id}.json`).then(res => {
                         if (!res.ok) {
                             throw new Error(`HTTP error! status: ${res.status} for project ${id}`);
                         }
@@ -63,7 +63,7 @@ const App: React.FC = () => {
             try {
                 const projectIds = ['i', 'j', 'g', 'h', 'a', 'b', 'c', 'd', 'e', 'f'];
                 const projectPromises = projectIds.map(id =>
-                    fetch(`/ProjectData/${id}.json`).then(res => {
+                    fetch(`./ProjectData/${id}.json`).then(res => {
                         if (!res.ok) {
                             throw new Error(`HTTP error! status: ${res.status} for project ${id}`);
                         }

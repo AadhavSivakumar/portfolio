@@ -1,4 +1,4 @@
-import { Project, SkillGroup } from './types';
+import { SkillGroup } from './types';
 
 const baseSkillImagePath = 'https://aadhavsivakumar.github.io/Images/skills/';
 const deviconsBaseUrl = 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/';
