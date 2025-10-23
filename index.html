@@ -48,9 +48,9 @@
         }
       }
 
-      /* Blades now only retract, after a 4s delay for the glow effect */
+      /* Blades now only retract, after a 2s delay for the glow effect */
       .is-pre-animating .blade {
-        animation: blade-retract 2.5s cubic-bezier(.5,.3,.7,-0.3) 4s forwards;
+        animation: blade-retract 1.25s cubic-bezier(.5,.3,.7,-0.3) 2s forwards;
       }
 
       /* New styles for glowing edges that are children of the blades */
@@ -80,29 +80,29 @@
           transform: translateX(-50%) rotate(var(--angle)) scaleY(0);
           box-shadow: none;
         }
-        50% { /* Peak glow syncs with blade retraction at 4s */
+        50% { /* Peak glow syncs with blade retraction at 2s */
           opacity: 1;
           transform: translateX(-50%) rotate(var(--angle)) scaleY(1);
-          box-shadow: 0 0 15px 3px var(--accent-color);
+          box-shadow: 0 0 8px 1px var(--accent-color);
         }
         100% { /* Glow persists as blades retract */
           opacity: 1;
           transform: translateX(-50%) rotate(var(--angle)) scaleY(1);
-          box-shadow: 0 0 15px 3px var(--accent-color);
+          box-shadow: 0 0 8px 1px var(--accent-color);
         }
       }
 
       .is-pre-animating .glow-edge {
-        animation: glow-appear-and-persist 5s ease-out 1.5s forwards;
+        animation: glow-appear-and-persist 2.5s ease-out 0.75s forwards;
       }
       
       .blade-text {
         position: absolute;
-        top: 32vh; /* Position from center (tip of triangle) */
+        top: 28vh; /* Position from center (tip of triangle) */
         left: 50%;
         transform-origin: center center;
         color: var(--primary-color);
-        font-size: 10vmax;
+        font-size: 8vmax;
         font-weight: 800;
         text-transform: uppercase;
         white-space: nowrap;
@@ -114,38 +114,62 @@
 
       .blade-icon {
         position: absolute;
-        top: 32vh;
+        top: 28vh;
         left: 50%;
         transform-origin: center center;
-        width: 10vmax;
-        height: 10vmax;
+        width: 8vmax;
+        height: 8vmax;
         opacity: 0;
         z-index: 2;
         pointer-events: none;
       }
 
       html.dark .blade-icon {
-        filter: invert(1); /* Make icons pure white in dark mode for better visibility */
+        --icon-filter: invert(1); /* Use variable for composable filters */
       }
 
-      @keyframes blade-text-fade {
+      @keyframes blade-text-colorize-fade {
         0% {
           opacity: 0;
           transform: translateX(-50%) translateY(20px) rotate(calc(-1 * var(--rotation)));
+          color: var(--primary-color);
         }
-        2%, 61.5% { /* Fade in fast, hold until blades start retracting at 4s */
+        2%, 61.5% { /* Fade in, hold, and turn gold */
           opacity: 1;
           transform: translateX(-50%) translateY(0) rotate(calc(-1 * var(--rotation)));
+          color: var(--accent-color);
         }
-        64%, 100% { /* Fade out much faster as blades retract */
+        64%, 100% { /* Fade out */
           opacity: 0;
           transform: translateX(-50%) translateY(0) rotate(calc(-1 * var(--rotation)));
+          color: var(--primary-color);
+        }
+      }
+      
+      @keyframes blade-icon-colorize-fade {
+        0% {
+          opacity: 0;
+          transform: translateX(-50%) translateY(20px) rotate(calc(-1 * var(--rotation)));
+          filter: var(--icon-filter, none);
+        }
+        2%, 61.5% { /* Fade in, hold, and turn gold */
+          opacity: 1;
+          transform: translateX(-50%) translateY(0) rotate(calc(-1 * var(--rotation)));
+          /* This filter chain turns black/white icons into the accent color */
+          filter: var(--icon-filter, none) brightness(0) saturate(100%) invert(80%) sepia(49%) saturate(408%) hue-rotate(2deg) brightness(91%) contrast(87%);
+        }
+        64%, 100% { /* Fade out */
+          opacity: 0;
+          transform: translateX(-50%) translateY(0) rotate(calc(-1 * var(--rotation)));
+          filter: var(--icon-filter, none);
         }
       }
 
-      .is-pre-animating .blade-text,
+      .is-pre-animating .blade-text {
+        animation: blade-text-colorize-fade 3.25s ease-in-out forwards;
+      }
       .is-pre-animating .blade-icon {
-        animation: blade-text-fade 6.5s ease-in-out forwards;
+        animation: blade-icon-colorize-fade 3.25s ease-in-out forwards;
       }
 
 

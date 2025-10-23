@@ -18,13 +18,13 @@ const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ children }) => {
     // Start the glow + retract sequence almost immediately
     const animateTimer = setTimeout(() => {
       setIsAnimating(true);
-    }, 50);
+    }, 25);
 
     // Set a timer to remove the splash screen after the animation completes
-    // New total animation time is 7s (1s delay + 6s glow)
+    // Total animation time is 3.5s
     const finishTimer = setTimeout(() => {
       setIsFinished(true);
-    }, 7000);
+    }, 3500);
 
     return () => {
       clearTimeout(animateTimer);
@@ -37,14 +37,14 @@ const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ children }) => {
   }));
 
   const bladeContentMap: { [key: number]: BladeContent } = {
-    0: { type: 'icon', value: 'https://api.iconify.design/mdi/cog-outline.svg', delay: '0.6s' },
-    1: { type: 'icon', value: 'https://api.iconify.design/mdi/access-point.svg', delay: '0.7s' },
-    2: { type: 'icon', value: 'https://api.iconify.design/mdi/satellite-uplink.svg', delay: '0.8s' },
-    3: { type: 'text', value: 'A', delay: '0.1s' },
-    4: { type: 'text', value: 'S', delay: '0.2s' },
-    5: { type: 'icon', value: 'https://api.iconify.design/mdi/robot-industrial-outline.svg', delay: '0.3s' },
-    6: { type: 'icon', value: 'https://api.iconify.design/mdi/chip.svg', delay: '0.4s' },
-    7: { type: 'icon', value: 'https://api.iconify.design/mdi/chart-bell-curve-cumulative.svg', delay: '0.5s' },
+    0: { type: 'icon', value: 'https://api.iconify.design/mdi/cog-outline.svg', delay: '0.3s' },
+    1: { type: 'icon', value: 'https://api.iconify.design/mdi/access-point.svg', delay: '0.35s' },
+    2: { type: 'icon', value: 'https://api.iconify.design/mdi/satellite-uplink.svg', delay: '0.4s' },
+    3: { type: 'text', value: 'A', delay: '0.05s' },
+    4: { type: 'text', value: 'S', delay: '0.1s' },
+    5: { type: 'icon', value: 'https://api.iconify.design/mdi/robot-industrial-outline.svg', delay: '0.15s' },
+    6: { type: 'icon', value: 'https://api.iconify.design/mdi/chip.svg', delay: '0.2s' },
+    7: { type: 'icon', value: 'https://api.iconify.design/mdi/chart-bell-curve-cumulative.svg', delay: '0.25s' },
   };
 
   const getBladeTransforms = (bladeIndex: number) => {
