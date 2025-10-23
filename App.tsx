@@ -12,12 +12,13 @@ import ContactModal from './components/PdfModal';
 import SineWave from './components/SineWave';
 import AnimateOnScroll from './components/AnimateOnScroll';
 import OpeningAnimation from './components/OpeningAnimation';
+import { MAJOR_PROJECTS_DATA, ADDITIONAL_PROJECTS_DATA } from './components/projectData';
+
 
 const App: React.FC = () => {
-    const [majorProjects, setMajorProjects] = useState<Project[]>([]);
-    const [additionalProjects, setAdditionalProjects] = useState<Project[]>([]);
-    const [loadingMajorProjects, setLoadingMajorProjects] = useState<boolean>(true);
-    const [loadingAdditionalProjects, setLoadingAdditionalProjects] = useState<boolean>(true);
+    const majorProjects: Project[] = MAJOR_PROJECTS_DATA;
+    const additionalProjects: Project[] = ADDITIONAL_PROJECTS_DATA;
+
     const [selectedProject, setSelectedProject] = useState<{ project: Project; bounds: DOMRect; isCompact: boolean; } | null>(null);
     const [isModalClosing, setIsModalClosing] = useState(false);
     const [selectedDocument, setSelectedDocument] = useState<{ url: string; title: string; bounds: DOMRect } | null>(null);
@@ -30,78 +31,13 @@ const App: React.FC = () => {
     const cvButtonRef = useRef<HTMLButtonElement>(null);
 
     useEffect(() => {
-        const fetchMajorProjects = async () => {
-            try {
-                const projectIds = [1, 2, 3, 4, 5, 6];
-                const projectPromises = projectIds.map(id =>
-                    fetch(`./ProjectData/${id}.json`).then(res => {
-                        if (!res.ok) {
-                            throw new Error(`HTTP error! status: ${res.status} for project ${id}`);
-                        }
-                        return res.json();
-                    })
-                );
-                const results = await Promise.allSettled(projectPromises);
-                const successfulProjects = results
-                    .filter(result => {
-                        if (result.status === 'rejected') {
-                            console.error("Failed to load a major project:", result.reason);
-                            return false;
-                        }
-                        return true;
-                    })
-                    .map(result => (result as PromiseFulfilledResult<Project>).value);
-                setMajorProjects(successfulProjects);
-            } catch (error) {
-                console.error("Failed to load major projects container:", error);
-            } finally {
-                setLoadingMajorProjects(false);
-            }
-        };
-
-        const fetchAdditionalProjects = async () => {
-            try {
-                const projectIds = ['i', 'j', 'g', 'h', 'a', 'b', 'c', 'd', 'e', 'f'];
-                const projectPromises = projectIds.map(id =>
-                    fetch(`./ProjectData/${id}.json`).then(res => {
-                        if (!res.ok) {
-                            throw new Error(`HTTP error! status: ${res.status} for project ${id}`);
-                        }
-                        return res.json();
-                    })
-                );
-                const results = await Promise.allSettled(projectPromises);
-                const successfulProjects = results
-                    .filter(result => {
-                        if (result.status === 'rejected') {
-                            console.error("Failed to load an additional project:", result.reason);
-                            return false;
-                        }
-                        return true;
-                    })
-                    .map(result => (result as PromiseFulfilledResult<Project>).value);
-                setAdditionalProjects(successfulProjects);
-            } catch (error) {
-                console.error("Failed to load additional projects container:", error);
-            } finally {
-                setLoadingAdditionalProjects(false);
-            }
-        };
-
-        fetchMajorProjects();
-        fetchAdditionalProjects();
+        // When the app loads, the layout is now static.
+        // Dispatch an event to notify components (like the Header) that they can calculate their final geometry.
+        const timer = setTimeout(() => {
+            window.dispatchEvent(new CustomEvent('layout-changed'));
+        }, 100); // A small delay to ensure DOM has updated
+        return () => clearTimeout(timer);
     }, []);
-
-    useEffect(() => {
-        // When projects are loaded, the layout of the page will change.
-        // Dispatch an event to notify components (like the Header) that they may need to update.
-        if (!loadingMajorProjects && !loadingAdditionalProjects) {
-            const timer = setTimeout(() => {
-                window.dispatchEvent(new CustomEvent('layout-changed'));
-            }, 100); // A small delay to ensure DOM has updated
-            return () => clearTimeout(timer);
-        }
-    }, [loadingMajorProjects, loadingAdditionalProjects]);
 
 
     const handleSelectProject = (project: Project, element: HTMLElement, isCompact: boolean) => {
@@ -261,42 +197,34 @@ const App: React.FC = () => {
 
                         <Section title="Major Projects" id="projects" subtitle="Select any card to learn more.">
                             <ErrorBoundary fallback={<div className="text-center p-8 bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-300 rounded-lg border border-red-300 dark:border-red-700">Could not display major projects.</div>}>
-                                {loadingMajorProjects ? (
-                                    <div className="text-center text-secondary">Loading projects...</div>
-                                ) : (
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                                        {majorProjects.map((project, index) => (
-                                            <AnimateOnScroll key={project.id} delay={index * 150}>
-                                                <ProjectCard
-                                                    project={project}
-                                                    onSelect={(p, e) => handleSelectProject(p, e, false)}
-                                                    isHidden={selectedProject?.project.id === project.id}
-                                                />
-                                            </AnimateOnScroll>
-                                        ))}
-                                    </div>
-                                )}
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                    {majorProjects.map((project, index) => (
+                                        <AnimateOnScroll key={project.id} delay={index * 150}>
+                                            <ProjectCard
+                                                project={project}
+                                                onSelect={(p, e) => handleSelectProject(p, e, false)}
+                                                isHidden={selectedProject?.project.id === project.id}
+                                            />
+                                        </AnimateOnScroll>
+                                    ))}
+                                </div>
                             </ErrorBoundary>
                         </Section>
 
                         <Section title="Additional Projects" id="more-projects" subtitle="Select any card to learn more.">
                             <ErrorBoundary fallback={<div className="text-center p-8 bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-300 rounded-lg border border-red-300 dark:border-red-700">Could not display additional projects.</div>}>
-                                {loadingAdditionalProjects ? (
-                                    <div className="text-center text-secondary">Loading projects...</div>
-                                ) : (
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-                                        {additionalProjects.map((project, index) => (
-                                            <AnimateOnScroll key={project.id} delay={index * 75}>
-                                                <ProjectCard
-                                                    project={project}
-                                                    onSelect={(p, e) => handleSelectProject(p, e, true)}
-                                                    isCompact={true}
-                                                    isHidden={selectedProject?.project.id === project.id}
-                                                />
-                                            </AnimateOnScroll>
-                                        ))}
-                                    </div>
-                                )}
+                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                                    {additionalProjects.map((project, index) => (
+                                        <AnimateOnScroll key={project.id} delay={index * 75}>
+                                            <ProjectCard
+                                                project={project}
+                                                onSelect={(p, e) => handleSelectProject(p, e, true)}
+                                                isCompact={true}
+                                                isHidden={selectedProject?.project.id === project.id}
+                                            />
+                                        </AnimateOnScroll>
+                                    ))}
+                                </div>
                             </ErrorBoundary>
                         </Section>
                         <div id="skills">
