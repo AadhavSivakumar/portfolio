@@ -4,12 +4,6 @@ interface OpeningAnimationProps {
   children: React.ReactNode;
 }
 
-type BladeContent = {
-  type: 'text' | 'icon';
-  value: string;
-  delay: string;
-};
-
 const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ children }) => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
@@ -36,17 +30,6 @@ const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ children }) => {
     rotation: i * 45 + 22.5,
   }));
 
-  const bladeContentMap: { [key: number]: BladeContent } = {
-    0: { type: 'icon', value: 'https://api.iconify.design/mdi/cog-outline.svg', delay: '0.3s' },
-    1: { type: 'icon', value: 'https://api.iconify.design/mdi/access-point.svg', delay: '0.35s' },
-    2: { type: 'icon', value: 'https://api.iconify.design/mdi/satellite-uplink.svg', delay: '0.4s' },
-    3: { type: 'text', value: 'A', delay: '0.05s' },
-    4: { type: 'text', value: 'S', delay: '0.1s' },
-    5: { type: 'icon', value: 'https://api.iconify.design/mdi/robot-industrial-outline.svg', delay: '0.15s' },
-    6: { type: 'icon', value: 'https://api.iconify.design/mdi/chip.svg', delay: '0.2s' },
-    7: { type: 'icon', value: 'https://api.iconify.design/mdi/chart-bell-curve-cumulative.svg', delay: '0.25s' },
-  };
-
   const getBladeTransforms = (bladeIndex: number) => {
     switch (bladeIndex) {
       case 0: return { tx: 'calc(-50% + 100vmax)', ty: '0' }; // right
@@ -67,7 +50,6 @@ const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ children }) => {
         <div id="splash-screen" className={isAnimating ? 'is-pre-animating' : ''}>
           {blades.map((blade, i) => {
             const { tx, ty } = getBladeTransforms(i);
-            const content = bladeContentMap[i];
             
             return (
               <div
@@ -82,12 +64,6 @@ const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ children }) => {
                 <div className="blade-background"></div>
                 <div className="glow-edge left"></div>
                 <div className="glow-edge right"></div>
-                {content && content.type === 'text' && (
-                  <div className="blade-text" style={{ animationDelay: content.delay }}>{content.value}</div>
-                )}
-                {content && content.type === 'icon' && (
-                    <img src={content.value} alt="Engineering Icon" className="blade-icon" style={{ animationDelay: content.delay }} />
-                )}
               </div>
             );
           })}

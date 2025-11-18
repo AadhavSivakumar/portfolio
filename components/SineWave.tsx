@@ -3,8 +3,29 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 const SineWave: React.FC = () => {
     const [mousePos, setMousePos] = useState<{ x: number | null, y: number | null }>({ x: null, y: null });
     const [phase, setPhase] = useState(0);
+    const [frequency, setFrequency] = useState(0.04);
+    const [bulgeAmplitude, setBulgeAmplitude] = useState(120);
     const svgRef = useRef<SVGSVGElement>(null);
     const animationFrameRef = useRef<number | undefined>(undefined);
+
+    // Effect to handle window resize and set frequency/bulge
+    useEffect(() => {
+        const handleResize = () => {
+            const aspectRatio = window.innerWidth / window.innerHeight;
+            if (aspectRatio < 1) {
+                setFrequency(0.02); // Halved frequency for portrait
+                setBulgeAmplitude(40); // Halved bulge for portrait
+            } else {
+                setFrequency(0.04); // Default frequency for landscape
+                setBulgeAmplitude(120); // Default bulge for landscape
+            }
+        };
+
+        window.addEventListener('resize', handleResize);
+        handleResize(); // Initial check on mount
+
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     // Animation loop for the wave's horizontal movement
     useEffect(() => {
@@ -43,12 +64,11 @@ const SineWave: React.FC = () => {
         const extendedWidth = viewWidth + 200; // Extend to hide rendering edges
         
         // Wave parameters
-        const amplitude = 10;
-        const frequency = 0.04; // Lower frequency for wider waves
-        const phaseOffset = index * -15 * (Math.PI / 180); // -10 degree offset per wave
+        const amplitude = 8;
+        const phaseOffset = index * -20 * (Math.PI / 180); // -10 degree offset per wave
 
         // Interaction parameters
-        const bulgeHeight = 120; // Max amplitude increase
+        const bulgeHeight = bulgeAmplitude;
         const bulgeRadius = 40; // The radius of the circular effect (widened for a broader interaction)
 
         for (let x = -100; x <= extendedWidth; x += 5) {
@@ -71,10 +91,10 @@ const SineWave: React.FC = () => {
         }
 
         return "M" + points.join(" L");
-    }, [phase, mousePos.x, mousePos.y]);
+    }, [phase, mousePos.x, mousePos.y, frequency, bulgeAmplitude]);
 
 
-    const NUM_WAVES = 35; // Reduced from 50
+    const NUM_WAVES = 40; // Reduced from 50
     const GOLD_COLOR = '#C5A35C'; // Site's accent gold color
 
     const waves = Array.from({ length: NUM_WAVES }).map((_, i) => {

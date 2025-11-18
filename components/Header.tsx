@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import ThemeSwitcher from './ThemeSwitcher';
-import { GithubIcon, LinkedinIcon, MailIcon } from './Icons';
+import { GithubIcon, InstagramIcon, LinkedinIcon, MailIcon } from './Icons';
 
 const navLinks = [
     { href: '#home', label: 'Home' },
@@ -11,12 +11,7 @@ const navLinks = [
     { href: '#skills', label: 'Skills' },
 ];
 
-interface HeaderProps {
-    onContactClick: (element: HTMLElement) => void;
-    isContactModalOpen: boolean;
-}
-
-const Header: React.FC<HeaderProps> = ({ onContactClick, isContactModalOpen }) => {
+const Header: React.FC = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [highlightStyle, setHighlightStyle] = useState<React.CSSProperties>({ opacity: 0 });
     const [activeSectionIndex, setActiveSectionIndex] = useState(0);
@@ -25,7 +20,6 @@ const Header: React.FC<HeaderProps> = ({ onContactClick, isContactModalOpen }) =
 
     const navRef = useRef<HTMLElement>(null);
     const linkRefs = useRef<(HTMLAnchorElement | null)[]>([]);
-    const contactButtonRef = useRef<HTMLButtonElement>(null);
     const layoutMetrics = useRef<{
         sections: { top: number; height: number }[];
         links: { left: number; width: number; height: number }[];
@@ -317,31 +311,24 @@ const Header: React.FC<HeaderProps> = ({ onContactClick, isContactModalOpen }) =
 
                         <div className="flex-1 flex justify-end">
                             <div className="hidden md:flex items-center space-x-4">
-                                <button 
-                                    ref={contactButtonRef}
-                                    onClick={() => contactButtonRef.current && onContactClick(contactButtonRef.current)}
-                                    className={`relative group inline-flex items-center justify-center overflow-hidden text-primary font-semibold px-4 py-2 rounded-lg text-sm transition-all duration-300 shadow-sm bg-surface/30 dark:bg-surface/20 backdrop-blur border border-black/5 dark:border-white/10 hover:border-black/20 dark:hover:border-white/30 hover:shadow-md hover:-translate-y-0.5 ${isContactModalOpen ? 'opacity-0 scale-95 invisible' : 'visible'}`}
-                                >
-                                    <span className="absolute inset-0 bg-gradient-to-r from-transparent via-accent/50 to-accent transform translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-in-out"></span>
-                                    <span className="relative z-10">
-                                        Contact Me
-                                    </span>
-                                </button>
-                                <div className="flex items-center space-x-4 border-l border-border pl-4">
-                                    <a href="mailto:aadhavsivakumar@gmail.com" aria-label="Email" className="text-icon-resting hover:text-accent transition-all duration-300 ease-in-out transform hover:scale-110"><MailIcon /></a>
-                                    <a href="https://github.com/AadhavSivakumar" target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="text-icon-resting hover:text-accent transition-all duration-300 ease-in-out transform hover:scale-110"><GithubIcon /></a>
-                                    <a href="https://www.linkedin.com/in/aadhav-sivakumar/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-icon-resting hover:text-accent transition-all duration-300 ease-in-out transform hover:scale-110"><LinkedinIcon /></a>
-                                </div>
+                                <a href="mailto:sivakumaadhav@gmail.com" aria-label="Email" className="text-[#EA4335] hover:text-accent transition-all duration-300 ease-in-out transform hover:scale-110"><MailIcon /></a>
+                                <a href="https://github.com/AadhavSivakumar" target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="text-primary hover:text-accent transition-all duration-300 ease-in-out transform hover:scale-110"><GithubIcon /></a>
+                                <a href="https://www.linkedin.com/in/aadhav-sivakumar/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-[#0A66C2] hover:text-accent transition-all duration-300 ease-in-out transform hover:scale-110"><LinkedinIcon /></a>
+                                <a href="https://www.instagram.com/aadhav_s/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-[#E4405F] hover:text-accent transition-all duration-300 ease-in-out transform hover:scale-110"><InstagramIcon /></a>
                             </div>
-                             <div className="md:hidden">
+                             <div className="md:hidden flex items-center space-x-4">
+                                <a href="mailto:sivakumaadhav@gmail.com" aria-label="Email" className="text-[#EA4335] hover:text-accent transition-colors"><MailIcon className="h-5 w-5"/></a>
+                                <a href="https://github.com/AadhavSivakumar" target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="text-primary hover:text-accent transition-colors"><GithubIcon className="h-5 w-5"/></a>
+                                <a href="https://www.linkedin.com/in/aadhav-sivakumar/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-[#0A66C2] hover:text-accent transition-colors"><LinkedinIcon className="h-5 w-5"/></a>
+                                <a href="https://www.instagram.com/aadhav_s/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-[#E4405F] hover:text-accent transition-colors"><InstagramIcon className="h-5 w-5"/></a>
                                 <button
                                     onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                                    className="relative z-50 w-8 h-8 flex flex-col justify-between items-center"
+                                    className="relative z-50 w-8 h-8 flex flex-col justify-center items-center"
                                     aria-label="Toggle Menu"
                                 >
-                                    <span className={`block h-0.5 w-6 bg-primary rounded-full transform transition duration-300 ease-in-out ${isMobileMenuOpen ? 'rotate-45 translate-y-[9px]' : ''}`}></span>
-                                    <span className={`block h-0.5 w-6 bg-primary rounded-full transition duration-300 ease-in-out ${isMobileMenuOpen ? 'opacity-0' : ''}`}></span>
-                                    <span className={`block h-0.5 w-6 bg-primary rounded-full transform transition duration-300 ease-in-out ${isMobileMenuOpen ? '-rotate-45 -translate-y-[9px]' : ''}`}></span>
+                                    <span className={`block h-0.5 w-[18px] bg-primary rounded-full transform transition duration-300 ease-in-out ${isMobileMenuOpen ? 'rotate-45 translate-y-[4.5px]' : ''}`}></span>
+                                    <span className={`block h-0.5 w-[18px] bg-primary rounded-full transition duration-300 ease-in-out my-1.5 ${isMobileMenuOpen ? 'opacity-0' : ''}`}></span>
+                                    <span className={`block h-0.5 w-[18px] bg-primary rounded-full transform transition duration-300 ease-in-out ${isMobileMenuOpen ? '-rotate-45 -translate-y-[4.5px]' : ''}`}></span>
                                 </button>
                             </div>
                         </div>
@@ -362,11 +349,6 @@ const Header: React.FC<HeaderProps> = ({ onContactClick, isContactModalOpen }) =
                             {link.label}
                         </a>
                     ))}
-                    <div className="flex items-center space-x-8 pt-10 border-t border-border mt-4">
-                        <a href="mailto:aadhavsivakumar@gmail.com" aria-label="Email" className="text-icon-resting hover:text-accent transition-all duration-300 ease-in-out transform hover:scale-110"><MailIcon /></a>
-                        <a href="https://github.com/AadhavSivakumar" target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="text-icon-resting hover:text-accent transition-all duration-300 ease-in-out transform hover:scale-110"><GithubIcon /></a>
-                        <a href="https://www.linkedin.com/in/aadhav-sivakumar/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-icon-resting hover:text-accent transition-all duration-300 ease-in-out transform hover:scale-110"><LinkedinIcon /></a>
-                    </div>
                 </nav>
             </div>
         </>

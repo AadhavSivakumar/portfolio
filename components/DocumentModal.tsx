@@ -24,6 +24,7 @@ const ButtonContent: React.FC<{ title: string }> = ({ title }) => {
 
 const DocumentModal: React.FC<DocumentModalProps> = ({ url, title, initialBounds, onClose, onStartFalling }) => {
   const [animationState, setAnimationState] = useState<AnimationState>('entering');
+  const [isIframeVisible, setIsIframeVisible] = useState(false);
 
   const handleClose = useCallback(() => {
     setAnimationState('collapsing');
@@ -52,6 +53,16 @@ const DocumentModal: React.FC<DocumentModalProps> = ({ url, title, initialBounds
       window.removeEventListener('keydown', handleEsc);
     };
   }, [handleClose]);
+
+  useEffect(() => {
+    if (animationState === 'expanded') {
+      // Set a timeout to fade in the iframe after the modal has expanded
+      const timer = setTimeout(() => {
+        setIsIframeVisible(true);
+      }, 250); // Corresponds to modal's content fade-in delay
+      return () => clearTimeout(timer);
+    }
+  }, [animationState]);
 
   const onTransitionEnd = (e: React.TransitionEvent<HTMLDivElement>) => {
     if (e.target !== e.currentTarget) return;
@@ -163,11 +174,11 @@ const DocumentModal: React.FC<DocumentModalProps> = ({ url, title, initialBounds
                 <h2 id="modal-title" className="text-xl font-bold text-primary">{title}</h2>
               </header>
               <div className="flex-grow p-2">
-                <iframe
-                  src={url}
-                  title={title}
-                  className="w-full h-full border-0 rounded-b-lg"
-                />
+                  <iframe
+                      src={url}
+                      title={title}
+                      className={`w-full h-full border-0 rounded-b-lg transition-opacity duration-500 ${isIframeVisible ? 'opacity-100' : 'opacity-0'}`}
+                  />
               </div>
             </div>
           </div>
