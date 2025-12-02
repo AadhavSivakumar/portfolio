@@ -50,7 +50,7 @@
 
       /* Blades now only retract, after a 2s delay for the glow effect */
       .is-pre-animating .blade {
-        animation: blade-retract 1.25s cubic-bezier(.5,.3,.7,-0.3) 2s forwards;
+        animation: blade-retract 1.25s cubic-bezier(.8,.2,.8,.2) 2s forwards;
       }
 
       /* New styles for glowing edges that are children of the blades */
@@ -76,7 +76,7 @@
 
       @keyframes glow-appear-and-persist {
         0% {
-          opacity: 0;
+          opacity: 1;
           transform: translateX(-50%) rotate(var(--angle)) scaleY(0);
           box-shadow: none;
         }

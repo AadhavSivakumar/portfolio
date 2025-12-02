@@ -13,18 +13,20 @@ const navLinks = [
 
 const Header: React.FC = () => {
     const [isScrolled, setIsScrolled] = useState(false);
-    const [highlightStyle, setHighlightStyle] = useState<React.CSSProperties>({ opacity: 0 });
     const [activeSectionIndex, setActiveSectionIndex] = useState(0);
     const [linkMargins, setLinkMargins] = useState<number[]>([]);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     const navRef = useRef<HTMLElement>(null);
+    const highlighterRef = useRef<HTMLSpanElement>(null);
     const linkRefs = useRef<(HTMLAnchorElement | null)[]>([]);
     const layoutMetrics = useRef<{
         sections: { top: number; height: number }[];
         links: { left: number; width: number; height: number }[];
     }>({ sections: [], links: [] });
+    
     const animationFrameId = useRef<number | null>(null);
+    const lastActiveIndex = useRef(-1);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -35,21 +37,19 @@ const Header: React.FC = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
     
-    // Lock body scroll when mobile menu is open
     useEffect(() => {
         if (isMobileMenuOpen) {
             document.body.style.overflow = 'hidden';
         } else {
             document.body.style.overflow = '';
         }
-        return () => { // Cleanup function
+        return () => {
             document.body.style.overflow = '';
         };
     }, [isMobileMenuOpen]);
 
-
     const updateHighlight = () => {
-        if (!navRef.current) {
+        if (!navRef.current || !highlighterRef.current) {
             animationFrameId.current = null;
             return;
         }
@@ -62,120 +62,93 @@ const Header: React.FC = () => {
 
         const scrollY = window.scrollY;
         const gradientWidth = 25;
+        let activeIndex = 0;
 
         // Special case: When at the very top, lock to "Home"
         if (scrollY < 20) {
             const homeLink = links[0];
-            if (homeLink?.width > 0 && navRef.current) {
-                // FIX: Object literal may only specify known properties, and '--before-opacity' does not exist in type 'SetStateAction<CSSProperties>'.
-                // By assigning the style object to a variable of type React.CSSProperties,
-                // we can bypass TypeScript's excess property checking for custom CSS properties.
-                // FIX: Cast style object to React.CSSProperties to allow for custom CSS properties.
-                const style = {
-                    left: `${homeLink.left}px`,
-                    width: `${homeLink.width}px`,
-                    height: `${homeLink.height}px`,
-                    opacity: 1,
-                    top: `${(navRef.current.offsetHeight - homeLink.height) / 2}px`,
-                    maskImage: `linear-gradient(to right, black, black calc(100% - ${gradientWidth}px), transparent)`,
-                    '--before-opacity': 1,
-                    '--after-opacity': 0,
-                } as React.CSSProperties;
-                setHighlightStyle(style);
-                setActiveSectionIndex(0);
+            if (homeLink?.width > 0) {
+                highlighterRef.current.style.left = `${homeLink.left}px`;
+                highlighterRef.current.style.width = `${homeLink.width}px`;
+                highlighterRef.current.style.height = `${homeLink.height}px`;
+                highlighterRef.current.style.opacity = '1';
+                highlighterRef.current.style.top = `${(navRef.current.offsetHeight - homeLink.height) / 2}px`;
+                highlighterRef.current.style.maskImage = `linear-gradient(to right, black, black calc(100% - ${gradientWidth}px), transparent)`;
+                highlighterRef.current.style.setProperty('--before-opacity', '1');
+                highlighterRef.current.style.setProperty('--after-opacity', '0');
+                activeIndex = 0;
             }
-            animationFrameId.current = null;
-            return;
-        }
-
-        // Determine the active point on the screen for section detection. Using the
-        // exact scrollY ensures that when a section is scrolled to the top, the progress is 0.
-        const triggerPointY = scrollY;
-
-        // Find which section the trigger point is in.
-        let currentIndex = 0;
-        // The section tops are defined relative to scrollY, so we add a small buffer to the trigger point
-        // to ensure the correct section is selected when it's perfectly aligned at the top.
-        const effectiveTriggerPoint = triggerPointY + 1;
-        for (let i = 0; i < sections.length - 1; i++) {
-            if (effectiveTriggerPoint >= sections[i].top && effectiveTriggerPoint < sections[i + 1].top) {
-                currentIndex = i;
-                break;
-            }
-        }
-        if (effectiveTriggerPoint >= sections[sections.length - 1].top) {
-            currentIndex = sections.length - 1;
-        }
-        
-        const currentSection = sections[currentIndex];
-        let targetPosition;
-
-        if (currentIndex >= sections.length - 1) {
-            // If it's the last section or beyond, lock to the last link.
-            targetPosition = navLinks.length - 1;
         } else {
-            const nextSection = sections[currentIndex + 1];
-            // Calculate progress as a fraction of the distance between the start of the current section and the start of the next.
-            const sectionTravelDistance = nextSection.top - currentSection.top;
-            const progressInSection = sectionTravelDistance > 0
-                ? (triggerPointY - currentSection.top) / sectionTravelDistance
-                : 0;
+            const triggerPointY = scrollY;
+            let currentIndex = 0;
+            const effectiveTriggerPoint = triggerPointY + 1;
+            for (let i = 0; i < sections.length - 1; i++) {
+                if (effectiveTriggerPoint >= sections[i].top && effectiveTriggerPoint < sections[i + 1].top) {
+                    currentIndex = i;
+                    break;
+                }
+            }
+            if (effectiveTriggerPoint >= sections[sections.length - 1].top) {
+                currentIndex = sections.length - 1;
+            }
             
-            targetPosition = currentIndex + Math.max(0, Math.min(1, progressInSection));
+            const currentSection = sections[currentIndex];
+            let targetPosition;
+
+            if (currentIndex >= sections.length - 1) {
+                targetPosition = navLinks.length - 1;
+            } else {
+                const nextSection = sections[currentIndex + 1];
+                const sectionTravelDistance = nextSection.top - currentSection.top;
+                const progressInSection = sectionTravelDistance > 0
+                    ? (triggerPointY - currentSection.top) / sectionTravelDistance
+                    : 0;
+                targetPosition = currentIndex + Math.max(0, Math.min(1, progressInSection));
+            }
+            
+            const currentLinkIndex = Math.floor(targetPosition);
+            const nextLinkIndex = Math.min(currentLinkIndex + 1, navLinks.length - 1);
+            const segmentProgress = targetPosition - currentLinkIndex;
+
+            const currentLink = links[currentLinkIndex];
+            const nextLink = links[nextLinkIndex];
+
+            if (currentLink && nextLink) {
+                const newLeft = currentLink.left + (nextLink.left - currentLink.left) * segmentProgress;
+                const newWidth = currentLink.width + (nextLink.width - currentLink.width) * segmentProgress;
+                const newHeight = currentLink.height;
+
+                activeIndex = segmentProgress > 0.5 ? nextLinkIndex : currentLinkIndex;
+
+                const totalLinkSegments = navLinks.length - 1;
+                const leftOpacity = Math.max(0, 1 - targetPosition);
+                const rightOpacity = Math.max(0, targetPosition - (totalLinkSegments - 1));
+
+                highlighterRef.current.style.left = `${newLeft}px`;
+                highlighterRef.current.style.width = `${newWidth}px`;
+                highlighterRef.current.style.height = `${newHeight}px`;
+                highlighterRef.current.style.opacity = '1';
+                highlighterRef.current.style.top = `${(navRef.current.offsetHeight - newHeight) / 2}px`;
+                highlighterRef.current.style.maskImage = `linear-gradient(to right, rgba(0,0,0, ${leftOpacity}), black ${gradientWidth}px, black calc(100% - ${gradientWidth}px), rgba(0,0,0, ${rightOpacity}))`;
+                highlighterRef.current.style.setProperty('--before-opacity', String(leftOpacity));
+                highlighterRef.current.style.setProperty('--after-opacity', String(rightOpacity));
+            }
+        }
+
+        if (activeIndex !== lastActiveIndex.current) {
+            setActiveSectionIndex(activeIndex);
+            lastActiveIndex.current = activeIndex;
         }
         
-        // Use the calculated targetPosition to interpolate the highlight's style.
-        const currentLinkIndex = Math.floor(targetPosition);
-        const nextLinkIndex = Math.min(currentLinkIndex + 1, navLinks.length - 1);
-        const segmentProgress = targetPosition - currentLinkIndex;
-
-        const currentLink = links[currentLinkIndex];
-        const nextLink = links[nextLinkIndex];
-
-        if (!currentLink || !nextLink) {
-            animationFrameId.current = null;
-            return;
-        }
-        
-        const newLeft = currentLink.left + (nextLink.left - currentLink.left) * segmentProgress;
-        const newWidth = currentLink.width + (nextLink.width - currentLink.width) * segmentProgress;
-        const newHeight = currentLink.height;
-
-        const activeIndex = segmentProgress > 0.5 ? nextLinkIndex : currentLinkIndex;
-        setActiveSectionIndex(activeIndex);
-
-        const totalLinkSegments = navLinks.length - 1;
-        const leftOpacity = Math.max(0, 1 - targetPosition);
-        const rightOpacity = Math.max(0, targetPosition - (totalLinkSegments - 1));
-
-        // FIX: Object literal may only specify known properties, and '--before-opacity' does not exist in type 'SetStateAction<CSSProperties>'.
-        // By assigning the style object to a variable of type React.CSSProperties,
-        // we can bypass TypeScript's excess property checking for custom CSS properties.
-        // FIX: Cast style object to React.CSSProperties to allow for custom CSS properties.
-        const style = {
-            left: `${newLeft}px`,
-            width: `${newWidth}px`,
-            height: `${newHeight}px`,
-            opacity: 1,
-            top: `${(navRef.current.offsetHeight - newHeight) / 2}px`,
-            maskImage: `linear-gradient(to right, rgba(0,0,0, ${leftOpacity}), black ${gradientWidth}px, black calc(100% - ${gradientWidth}px), rgba(0,0,0, ${rightOpacity}))`,
-            '--before-opacity': leftOpacity,
-            '--after-opacity': rightOpacity,
-        } as React.CSSProperties;
-        setHighlightStyle(style);
-
         animationFrameId.current = null;
     };
 
-    // Effect 1: Measures section heights and calculates proportional link margins.
     useEffect(() => {
         const calculateGeometries = () => {
-            const headerHeight = 64; // Corresponds to h-16 in Tailwind
+            const headerHeight = 64; 
             const sections = navLinks.map(link => {
                 const elem = document.getElementById(link.href.substring(1));
                 if (!elem) return { top: 0, height: 0 };
-                // Section 'top' is its DOM position relative to the document, minus the sticky header's height.
-                // This value corresponds to the `scrollY` value when the section is at the top of the viewport.
                 return { top: elem.offsetTop - headerHeight, height: elem.offsetHeight };
             });
 
@@ -183,17 +156,17 @@ const Header: React.FC = () => {
 
             const heights = sections.map(s => s.height).filter(h => h > 0);
             if (heights.length < 2) {
-                setLinkMargins(navLinks.map(() => 8)); // Default margin if not enough data
+                setLinkMargins(navLinks.map(() => 8)); 
                 return;
             }
 
             const minHeight = Math.min(...heights);
             const maxHeight = Math.max(...heights);
-            const minMargin = 8; // 0.5rem
-            const maxMargin = 32; // 2rem
+            const minMargin = 8;
+            const maxMargin = 32; 
 
             const margins = sections.map((section, index) => {
-                if (index === 0) return 0; // No margin for the first element
+                if (index === 0) return 0; 
                 
                 const prevSectionHeight = sections[index - 1].height;
                 if (prevSectionHeight <= 0 || maxHeight === minHeight) {
@@ -211,7 +184,7 @@ const Header: React.FC = () => {
         window.addEventListener('resize', calculateGeometries);
         window.addEventListener('load', handleLoad);
         window.addEventListener('layout-changed', calculateGeometries);
-        handleLoad(); // Initial call
+        handleLoad(); 
 
         return () => {
             window.removeEventListener('resize', calculateGeometries);
@@ -220,7 +193,6 @@ const Header: React.FC = () => {
         };
     }, []);
 
-    // Effect 2: After margins are applied and the component re-renders, measure the final link positions.
     useLayoutEffect(() => {
         if (linkMargins.length === 0) return;
 
@@ -232,7 +204,6 @@ const Header: React.FC = () => {
 
             if (links.some(l => l.width > 0)) {
                 layoutMetrics.current.links = links;
-                // Trigger highlight update with the final, correct measurements.
                 if (animationFrameId.current) cancelAnimationFrame(animationFrameId.current);
                 animationFrameId.current = requestAnimationFrame(updateHighlight);
             }
@@ -240,7 +211,6 @@ const Header: React.FC = () => {
         
         measureLinks();
     }, [linkMargins]);
-
 
     useEffect(() => {
         const handleScroll = () => {
@@ -265,7 +235,7 @@ const Header: React.FC = () => {
             behavior: 'smooth'
         });
         
-        setIsMobileMenuOpen(false); // Close mobile menu on click
+        setIsMobileMenuOpen(false);
     };
 
     return (
@@ -282,8 +252,9 @@ const Header: React.FC = () => {
 
                         <nav ref={navRef} className="hidden md:flex items-center justify-center relative bg-surface/30 dark:bg-surface/20 backdrop-blur border border-black/5 dark:border-white/10 rounded-lg p-1">
                             <span
+                                ref={highlighterRef}
                                 className="absolute nav-highlighter rounded-lg"
-                                style={highlightStyle}
+                                style={{ opacity: 0 }}
                             />
                             {navLinks.map((link, index) => {
                                 const isActive = activeSectionIndex === index;
@@ -292,8 +263,6 @@ const Header: React.FC = () => {
                                     : {};
                                 return (
                                     <a
-                                        // FIX: Type '(el: HTMLAnchorElement) => HTMLAnchorElement' is not assignable to type 'Ref<HTMLAnchorElement>'.
-                                        // The ref callback should not return a value. Using a block statement `{}` ensures an implicit `undefined` return.
                                         ref={el => { linkRefs.current[index] = el; }}
                                         key={link.href}
                                         href={link.href}
