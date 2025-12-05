@@ -62,14 +62,14 @@ export const MAJOR_PROJECTS_DATA: Project[] = [
     "id": 3,
     "title": "Glass-2-Bot",
     "category": "Telerobotics",
-    "description": "Architected a telerobotic system integrating Google Glass with a robot arm, enabling intuitive remote object manipulation. Leveraged Python and AI vision to translate user gaze and gestures into precise robotic actions.",
+    "description": "Architected a telerobotic system integrating Google Glass with a robot arm, enabling intuitive remote object manipulation. Leveraged Python and computer vision to translate user gaze and gestures into precise robotic actions.",
     "imageUrl": "https://aadhavsivakumar.github.io/Images/projectcovers/glass2bot.gif",
-    "technologies": ["Google Glass", "AI Vision", "Python", "Telerobotics"],
+    "technologies": ["Google Glass", "Computer Vision", "Python", "Telerobotics"],
     "status": "finished",
     "modalContent": [
       {
         "type": "text",
-        "value": "Architected a telerobotic system integrating Google Glass with a robot arm, enabling intuitive remote object manipulation. Leveraged Python and AI vision to translate user gaze and gestures into precise robotic actions, demonstrating a novel human-robot interface."
+        "value": "Architected a telerobotic system integrating Google Glass with a robot arm, enabling intuitive remote object manipulation. Leveraged Python and computer vision to translate user gaze and gestures into precise robotic actions, demonstrating a novel human-robot interface."
       },
       {
         "type": "embed",
@@ -82,15 +82,15 @@ export const MAJOR_PROJECTS_DATA: Project[] = [
   {
     "id": 4,
     "title": "SMART compost sorting",
-    "category": "Robotics & AI Vision",
-    "description": "Designed and implemented a robotic compost sorting system using a Franka Emika arm and depth-sensing AI vision. Developed within a ROS framework to automate the identification and separation of contaminants.",
+    "category": "Robotics & Computer Vision",
+    "description": "Designed and implemented a robotic compost sorting system using a Franka Emika arm and depth-sensing computer vision. Developed within a ROS framework to automate the identification and separation of contaminants.",
     "imageUrl": "https://aadhavsivakumar.github.io/Images/projectcovers/smartsort.gif",
-    "technologies": ["Franka Emika Robot", "AI Vision", "ROS"],
+    "technologies": ["Franka Emika Robot", "Computer Vision", "ROS"],
     "status": "finished",
     "modalContent": [
       {
         "type": "text",
-        "value": "Designed and implemented a robotic compost sorting system using a Franka Emika arm and depth-sensing AI vision. Developed within a ROS framework, this project successfully automated the identification and separation of contaminants from organic waste streams."
+        "value": "Designed and implemented a robotic compost sorting system using a Franka Emika arm and depth-sensing computer vision. Developed within a ROS framework, this project successfully automated the identification and separation of contaminants from organic waste streams."
       },
       {
         "type": "embed",
@@ -153,67 +153,40 @@ export const MAJOR_PROJECTS_DATA: Project[] = [
 ];
 
 export const ADDITIONAL_PROJECTS_DATA: Project[] = [
-  // i.json
-  {
-    "id": "i",
-    "title": "Point cloud visualization with 2D lidar",
-    "category": "Sensor Integration",
-    "description": "Interfaced an hls_lfcd lidar with Python to capture and visualize 2D point cloud data in real-time.",
-    "imageUrl": "https://aadhavsivakumar.github.io/Images/projectcovers/2dlidar.mp4",
-    "technologies": ["Python", "Matplotlib", "Lidar"],
-    "status": "in-progress",
-    "modalContent": [
-      {
-        "type": "text",
-        "value": "Interfaced an hls_lfcd lidar with Python to capture and visualize 2D point cloud data in real-time using Matplotlib, demonstrating foundational skills in sensor integration and data representation."
-      }
-    ]
-  },
-  // j.json
-  {
-    "id": "j",
-    "title": "3D space mapping with depth camera",
-    "category": "3D Mapping",
-    "description": "Developing a system to capture and stitch together depth data from a camera to create a 3D map of an environment.",
-    "imageUrl": "https://aadhavsivakumar.github.io/Images/projectcovers/3dcamera.mp4",
-    "technologies": ["Python", "Open3D", "Depth Camera"],
-    "status": "in-progress",
-    "modalContent": [
-      {
-        "type": "text",
-        "value": "Developing a system to capture and stitch together depth data from a camera to create a 3D map of an environment. This project explores point cloud processing and 3D reconstruction techniques."
-      }
-    ]
-  },
   // g.json
   {
     "id": "g",
     "title": "CV controlled Desktop Robot arm",
-    "category": "Robotics & AI Vision",
-    "description": "Building a desktop robotic arm controlled by AI vision running on a Raspberry Pi.",
+    "category": "Robotics & Computer Vision",
+    "description": "Building a desktop robotic arm controlled by computer vision running on a Raspberry Pi.",
     "imageUrl": "https://aadhavsivakumar.github.io/Images/projectcovers/deskrobarm.png",
-    "technologies": ["Python", "AI Vision", "Raspberry Pi"],
+    "technologies": ["Python", "Computer Vision", "Raspberry Pi"],
     "status": "in-progress",
     "modalContent": [
       {
         "type": "text",
-        "value": "Building a desktop robotic arm controlled by AI vision running on a Raspberry Pi. This project explores real-time object recognition and manipulation, creating an interactive and intelligent automated workspace assistant."
+        "value": "Building a desktop robotic arm controlled by computer vision running on a Raspberry Pi. This project explores real-time object recognition and manipulation, creating an interactive and intelligent automated workspace assistant."
       }
     ]
   },
   // h.json
   {
     "id": "h",
-    "title": "3d Fruit Ninja Simulation",
+    "title": "Ur10e MuJoCo Simulation",
     "category": "Simulation",
     "description": "Created a 3D simulation of the game 'Fruit Ninja' using Python.",
     "imageUrl": "https://aadhavsivakumar.github.io/Images/projectcovers/fruitninja.mp4",
-    "technologies": ["Python", "Webots"],
+    "technologies": ["Python", "Mujoco"],
     "status": "in-progress",
     "modalContent": [
       {
         "type": "text",
         "value": "Created a 3D simulation of the game 'Fruit Ninja' using Python, applying principles of physics-based modeling and 3D graphics to develop an interactive and engaging virtual experience."
+      },
+      {
+        "type": "button",
+        "text": "View on GitHub",
+        "link": "https://github.com/AadhavSivakumar/MujocoSim"
       }
     ]
   },

@@ -2,6 +2,10 @@ import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import ThemeSwitcher from './ThemeSwitcher';
 import { GithubIcon, InstagramIcon, LinkedinIcon, MailIcon } from './Icons';
 
+interface HeaderProps {
+    className?: string;
+}
+
 const navLinks = [
     { href: '#home', label: 'Home' },
     { href: '#about', label: 'About' },
@@ -11,7 +15,7 @@ const navLinks = [
     { href: '#skills', label: 'Skills' },
 ];
 
-const Header: React.FC = () => {
+const Header: React.FC<HeaderProps> = ({ className }) => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [activeSectionIndex, setActiveSectionIndex] = useState(0);
     const [linkMargins, setLinkMargins] = useState<number[]>([]);
@@ -240,7 +244,7 @@ const Header: React.FC = () => {
 
     return (
         <>
-            <header className={`sticky top-0 z-40 w-full backdrop-blur transition-all duration-500 ${isScrolled ? 'bg-background/80 border-b border-border' : 'bg-transparent'}`}>
+            <header className={`sticky top-0 z-40 w-full backdrop-blur transition-all duration-500 ${isScrolled ? 'bg-background/80 border-b border-border' : 'bg-transparent'} ${className || ''}`}>
                 <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-16">
                         <div className="flex-1 flex justify-start">

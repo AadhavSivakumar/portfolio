@@ -9,16 +9,16 @@ const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ children }) => {
   const [isFinished, setIsFinished] = useState(false);
   
   useEffect(() => {
-    // Start the glow + retract sequence almost immediately
+    // Start the glow + retract sequence immediately
     const animateTimer = setTimeout(() => {
       setIsAnimating(true);
-    }, 25);
+    }, 0);
 
     // Set a timer to remove the splash screen after the animation completes
-    // Total animation time is 3.5s
+    // Total animation time is 0.5s, we wait 1s to ensure it's fully cleared with a huge buffer.
     const finishTimer = setTimeout(() => {
       setIsFinished(true);
-    }, 3500);
+    }, 1000);
 
     return () => {
       clearTimeout(animateTimer);
@@ -31,16 +31,18 @@ const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ children }) => {
   }));
 
   const getBladeTransforms = (bladeIndex: number) => {
+    // Increased values to 150vmax (from 100) and 106vmax (from 71) 
+    // to guarantee blades move completely offscreen even on large monitors.
     switch (bladeIndex) {
-      case 0: return { tx: 'calc(-50% + 100vmax)', ty: '0' }; // right
-      case 1: return { tx: 'calc(-50% + 71vmax)', ty: '71vmax' }; // down-right
-      case 2: return { tx: '-50%', ty: '100vmax' }; // down
-      case 3: return { tx: 'calc(-50% - 71vmax)', ty: '71vmax' }; // down-left
-      case 4: return { tx: 'calc(-50% - 100vmax)', ty: '0' }; // left
-      case 5: return { tx: 'calc(-50% - 71vmax)', ty: '-71vmax' }; // up-left
-      case 6: return { tx: '-50%', ty: '-100vmax' }; // up
-      case 7: return { tx: 'calc(-50% + 71vmax)', ty: '-71vmax' }; // up-right
-      default: return { tx: '-50%', ty: '-100vmax' }; // default to up
+      case 0: return { tx: 'calc(-50% + 150vmax)', ty: '0' }; // right
+      case 1: return { tx: 'calc(-50% + 106vmax)', ty: '106vmax' }; // down-right
+      case 2: return { tx: '-50%', ty: '150vmax' }; // down
+      case 3: return { tx: 'calc(-50% - 106vmax)', ty: '106vmax' }; // down-left
+      case 4: return { tx: 'calc(-50% - 150vmax)', ty: '0' }; // left
+      case 5: return { tx: 'calc(-50% - 106vmax)', ty: '-106vmax' }; // up-left
+      case 6: return { tx: '-50%', ty: '-150vmax' }; // up
+      case 7: return { tx: 'calc(-50% + 106vmax)', ty: '-106vmax' }; // up-right
+      default: return { tx: '-50%', ty: '-150vmax' }; // default to up
     }
   };
 

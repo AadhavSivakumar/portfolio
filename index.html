@@ -10,92 +10,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-      /* Opening Animation Styles */
-      #splash-screen {
-        position: fixed;
-        inset: 0;
-        z-index: 9999;
-        pointer-events: none;
-        overflow: hidden;
-      }
-      .blade {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        width: 180.2vmax; /* Slightly increased to prevent rendering gaps */
-        /* height for 45-degree apex triangle */
-        height: calc(180.2vmax * 1.2071); /* Maintain aspect ratio */
-        /* The transform origin is the tip of our triangle */
-        transform-origin: 50% 0;
-        /* Clip-path for an isosceles triangle that fills the element */
-        clip-path: polygon(50% 0, 100% 100%, 0 100%);
-        /* Center the tip of the triangle and rotate it into position */
-        transform: translate(-50%, 0) rotate(var(--rotation));
-        opacity: 1; /* Explicitly set starting opacity */
-      }
-      
-      .blade-background {
-        position: absolute;
-        inset: 0;
-        background-color: var(--background-color);
-        z-index: 0;
-      }
-
-      @keyframes blade-retract {
-        to {
-          /* Move outwards in a direction defined by CSS variables */
-          transform: translate(var(--translateX, -50%), var(--translateY, -100vmax)) rotate(var(--rotation));
-        }
-      }
-
-      /* Blades now only retract, after a 2s delay for the glow effect */
-      .is-pre-animating .blade {
-        animation: blade-retract 1.25s cubic-bezier(.8,.2,.8,.2) 2s forwards;
-      }
-
-      /* New styles for glowing edges that are children of the blades */
-      .glow-edge {
-        position: absolute;
-        top: 0;
-        left: 50%;
-        width: 4px;
-        height: calc(180.2vmax * 1.3065); /* Precise length of the blade edge, matches new blade size */
-        background: var(--accent-color);
-        transform-origin: top center;
-        opacity: 0;
-        pointer-events: none;
-        z-index: 1; /* Sit behind the text */
-      }
-
-      .glow-edge.left {
-        --angle: -22.5deg;
-      }
-      .glow-edge.right {
-        --angle: 22.5deg;
-      }
-
-      @keyframes glow-appear-and-persist {
-        0% {
-          opacity: 1;
-          transform: translateX(-50%) rotate(var(--angle)) scaleY(0);
-          box-shadow: none;
-        }
-        30% { /* Peak glow happens faster, making origin more visible */
-          opacity: 1;
-          transform: translateX(-50%) rotate(var(--angle)) scaleY(1);
-          box-shadow: 0 0 5px 0 var(--accent-color); /* Reduced glow intensity */
-        }
-        100% { /* Glow persists as blades retract */
-          opacity: 1;
-          transform: translateX(-50%) rotate(var(--angle)) scaleY(1);
-          box-shadow: 0 0 5px 0 var(--accent-color); /* Reduced glow intensity */
-        }
-      }
-
-      .is-pre-animating .glow-edge {
-        animation: glow-appear-and-persist 2.5s ease-out 0.75s forwards;
-      }
-
       :root {
         --primary-color: #1a1a1a;
         --secondary-color: #555555;
@@ -195,7 +109,7 @@
       } else {
         document.documentElement.classList.remove('dark')
       }
-
+      
       // Tailwind config
       tailwind.config = {
         darkMode: 'class',
