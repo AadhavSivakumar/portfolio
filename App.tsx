@@ -123,7 +123,7 @@ const App: React.FC = () => {
             <div className={`relative z-10 flex flex-col items-center px-4 mt-20 sm:px-6 lg:px-8 pointer-events-none transition-all duration-1000 ease-out ${isContentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
               <div className="relative w-56 h-56 mb-8 rounded-full overflow-hidden shadow-2xl">
                 <img 
-                    src="https://aadhavsivakumar.github.io/Images/frontpagepfp.JPG" 
+                    src="https://aadhavsivakumar.github.io/Media/frontpagepfp.JPG" 
                     alt="Aadhav Sivakumar" 
                     className="w-full h-full object-cover transform scale-105"
                 />
@@ -132,7 +132,7 @@ const App: React.FC = () => {
                   Aadhav Sivakumar
               </h1>
               <p className="mt-6 text-xl text-secondary max-w-2xl">
-                Robotics Engineer Specializing in Embedded AI and Autonomous Systems
+                Robotics Engineer working in Machine Learning, Control Systems, and Embedded AI
               </p>
             </div>
         </section>
@@ -141,10 +141,10 @@ const App: React.FC = () => {
           <Section title="About Me" id="about">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
               <AnimateOnScroll className="md:col-span-1 flex justify-center">
-                  <img src="https://aadhavsivakumar.github.io/Images/Gradpic.png" alt="About me" className="rounded-lg shadow-2xl w-full max-w-sm"/>
+                  <img src="https://aadhavsivakumar.github.io/Media/Gradpic.png" alt="About me" className="rounded-lg shadow-2xl w-full max-w-sm"/>
               </AnimateOnScroll>
               <div className="md:col-span-2 text-lg text-secondary space-y-4">
-                  <AnimateOnScroll delay={150}><p>Hello! My name is Aadhav Sivakumar, and this website is meant to showcase display previous projects I've worked on in the past, and projects that I'm currently working on. You're also able to view my resume, an extended CV, or look through the different skills, software, and hardware I have worked with previously. </p></AnimateOnScroll>
+                  <AnimateOnScroll delay={150}><p>Hello! My name is Aadhav Sivakumar, and this website is meant to showcase projects I've worked on in the past, and projects that I'm currently working on. You're also able to view my resume, an extended CV, or look through the different skills, software, and hardware I have worked with previously. </p></AnimateOnScroll>
                   <AnimateOnScroll delay={250}><p>At the present, I am a Robot Technician at Starship Technologies, working at the Fordham University hub in the Bronx. I am currently located in Brooklyn, where I attend graduate school at NYU Tandon, working toward my Master's in Mechatronics and Robotics. I am also a TA at NYU, working with Professor Peng and helping with the Foundations of Robotics and Mathematics for Robotics courses. I was born and raised in the Bay Area in California, and I went to undergrad at the University of California, Santa Cruz campus, where I studied Robotics Engineering with a minor in Electrical Engineering.</p></AnimateOnScroll>
                   <AnimateOnScroll delay={350}><p>I believe that the most effective engineering happens at the intersection of rigorous theory and reliable application. My experiences, ranging from deep academic research to maintaining active robot fleets in the field, have taught me that building intelligent systems requires not just understanding the algorithms, but also the environemental and societal impact of new technologies. I am driven by the challenge of bridging this gap, ensuring that complex robots are robust, efficient, and capable of solving real-world problems.</p></AnimateOnScroll>
               </div>
@@ -160,7 +160,7 @@ const App: React.FC = () => {
                     <div className="flex justify-center items-center gap-4 flex-wrap">
                         <button
                             ref={resumeButtonRef}
-                            onClick={() => resumeButtonRef.current && handleSelectDocument('https://drive.google.com/file/d/1K0jTmgD3FQFL09l4p_Tt8L3hsI6PC7VS/preview', 'Resume', resumeButtonRef.current)}
+                            onClick={() => resumeButtonRef.current && handleSelectDocument('https://drive.google.com/file/d/1JgvGUhWX4Na0Vs0gropdxC01tM2kRiXc/preview', 'Resume', resumeButtonRef.current)}
                             className={`relative group inline-flex items-center justify-center gap-2 overflow-hidden text-primary font-semibold px-8 py-3 rounded-lg transition-all duration-300 shadow-lg bg-surface/30 dark:bg-surface/20 backdrop-blur border border-black/15 dark:border-white/25 hover:shadow-xl hover:-translate-y-1 ${selectedDocument?.title === 'Resume' ? 'opacity-0 scale-95 invisible' : 'visible'}`}
                         >
                             <span className="absolute inset-0 bg-gradient-to-r from-transparent via-accent/50 to-accent transform translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-in-out"></span>

@@ -1,6 +1,6 @@
 import { SkillGroup } from './types';
 
-const baseSkillImagePath = 'https://aadhavsivakumar.github.io/Images/skills/';
+const baseSkillImagePath = 'https://aadhavsivakumar.github.io/Media/skills/';
 const deviconsBaseUrl = 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/';
 
 export const SKILL_GROUPS: SkillGroup[] = [

@@ -10,7 +10,8 @@ const SineWave: React.FC = () => {
     const configRef = useRef({ frequency: 0.04, bulgeAmplitude: 120 });
     const startTimeRef = useRef<number>(0);
 
-    const NUM_WAVES = 30;
+    // Optimized: Increased number of waves to 25
+    const NUM_WAVES = 25;
     const GOLD_COLOR = '#C5A35C';
 
     useEffect(() => {
@@ -31,7 +32,7 @@ const SineWave: React.FC = () => {
         startTimeRef.current = Date.now();
 
         const animate = () => {
-            phaseRef.current -= 0.15;
+            phaseRef.current -= 0.12; 
             const now = Date.now();
             const elapsed = now - startTimeRef.current;
 
@@ -48,29 +49,24 @@ const SineWave: React.FC = () => {
                 if (!group || !path) continue;
 
                 // --- Entrance Animation Logic ---
-                const delay = i * 50; // 0.05s pause between each wave
-                const duration = 1200; // Smooth drop duration
+                const delay = i * 50; 
+                const duration = 1200; 
                 
-                // Calculate animation progress (0 to 1)
                 let progress = 0;
                 if (elapsed > delay) {
                     progress = Math.min((elapsed - delay) / duration, 1);
                 }
 
-                // Cubic easing out for smooth deceleration
                 const ease = (t: number) => 1 - Math.pow(1 - t, 3);
                 const easedProgress = ease(progress);
 
-                // Calculate vertical position (slide from top)
                 const finalY = verticalPadding + (i / (NUM_WAVES - 1)) * drawingHeight;
-                const startY = -50; // Start just above the visible area
+                const startY = -50; 
                 const currentY = startY + (finalY - startY) * easedProgress;
 
-                // Calculate opacity (fade in)
                 const targetOpacity = 0.8 - (i / (NUM_WAVES - 1)) * 0.7;
                 const currentOpacity = targetOpacity * easedProgress;
 
-                // Apply group transform and path styles
                 group.setAttribute('transform', `translate(0, ${currentY})`);
                 path.style.opacity = currentOpacity.toString();
                 path.style.stroke = GOLD_COLOR;
@@ -82,13 +78,12 @@ const SineWave: React.FC = () => {
                 const bulgeHeight = bulgeAmplitude;
                 const bulgeRadius = 40;
 
-                // Step size 5 for optimization
-                for (let x = -100; x <= 1200; x += 5) {
+                // Adjusted: Step size set to 10
+                for (let x = -50; x <= 1050; x += 10) {
                     const base_y = amplitude * Math.sin(((Math.abs(x - viewWidth / 2) + phaseRef.current) * frequency) + phaseOffset);
                     let bulge = 0;
                     if (mx !== null && my !== null) {
                         const dx = x - mx;
-                        // Use currentY for interaction so mouse affects the wave wherever it currently is
                         const dy = currentY - my;
                         const distanceSq = dx * dx + dy * dy;
                         if (distanceSq < 25000) {
@@ -136,7 +131,6 @@ const SineWave: React.FC = () => {
                     <g 
                         key={i} 
                         ref={el => { groupsRef.current[i] = el; }}
-                        // Initialize off-screen to prevent flash before animation frame
                         transform="translate(0, -50)"
                     >
                         <path
@@ -145,7 +139,7 @@ const SineWave: React.FC = () => {
                                 stroke: GOLD_COLOR,
                                 strokeWidth: 2,
                                 fill: 'none',
-                                opacity: 0, // Initialize invisible
+                                opacity: 0,
                                 transition: 'stroke 2s ease'
                             }}
                         />
