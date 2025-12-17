@@ -7,7 +7,7 @@ export const MAJOR_PROJECTS_DATA: Project[] = [
     "title": "Project Millet",
     "category": "Autonomous Drone",
     "description": "Developing a ROS-based autonomous drone utilizing a Pixhawk 6x for precise agricultural applications. This ongoing project focuses on implementing robust PID control for stable flight and targeted payload delivery.",
-    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/1_millet/1_cover.webp",
+    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/1_cover.mp4",
     "technologies": ["Python", "ROS", "Pixhawk 6x"],
     "status": "in-progress",
     "modalContent": [
@@ -28,7 +28,7 @@ export const MAJOR_PROJECTS_DATA: Project[] = [
       {
         "type": "video",
         "url": "https://aadhavsivakumar.github.io/Media/gallery/millet/3.mp4",
-        "thumbnailUrl": "https://aadhavsivakumar.github.io/Media/projects/1_millet/1_cover.webp"
+        "thumbnailUrl": "https://aadhavsivakumar.github.io/Media/projects/1_cover.mp4"
       }
     ]
   },
@@ -159,7 +159,7 @@ export const ADDITIONAL_PROJECTS_DATA: Project[] = [
     "title": "CV controlled Desktop Robot arm",
     "category": "Robotics & Computer Vision",
     "description": "Building a desktop robotic arm controlled by computer vision running on a Raspberry Pi.",
-    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/deskrobarm.png",
+    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/g_cover.mp4",
     "technologies": ["Python", "Computer Vision", "Raspberry Pi"],
     "status": "in-progress",
     "modalContent": [

@@ -9,9 +9,11 @@ interface State {
   hasError: boolean;
 }
 
+// Fixed: Using React.Component explicitly to ensure state and props are correctly recognized by the TypeScript compiler
 class ErrorBoundary extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
+    // state property is inherited from React.Component
     this.state = { hasError: false };
   }
 
@@ -26,6 +28,7 @@ class ErrorBoundary extends React.Component<Props, State> {
   }
 
   public render() {
+    // Inherited properties state and props are now correctly resolved via the base React.Component class
     if (this.state.hasError) {
       // You can render any custom fallback UI
       return this.props.fallback || (

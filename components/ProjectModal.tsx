@@ -136,8 +136,10 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, initialBounds, isC
       boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
     };
 
-    const targetWidth = Math.min(900, window.innerWidth * 0.95);
-    const imageAndContentHeight = (targetWidth / 1.7) + 450; // Increased to accommodate gallery
+    const targetWidth = Math.min(1024, window.innerWidth * 0.95);
+    const isMobile = window.innerWidth < 768;
+    const expandedImageHeight = isMobile ? 480 : 640; // 30rem or 40rem
+    const imageAndContentHeight = expandedImageHeight + 500; 
     const targetHeight = Math.min(imageAndContentHeight, window.innerHeight * 0.9);
     
     const expandedStyle = {
@@ -184,12 +186,13 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, initialBounds, isC
   const imageTransitionStyle: React.CSSProperties = {
     transition: `height 360ms cubic-bezier(0.65, 0, 0.35, 1)`,
     height: isExpanded
-      ? (window.innerWidth < 768 ? '16rem' : '20rem')
+      ? (window.innerWidth < 768 ? '30rem' : '40rem') // Increased height for expanded state
       : (isCompact ? '12rem' : '16rem')
   };
 
   const allMediaItems = useMemo(() => {
-    const items: MediaItem[] = [{ type: 'image', url: project.imageUrl, thumbnailUrl: project.imageUrl }];
+    const coverType = (project.imageUrl.endsWith('.mp4') || project.imageUrl.endsWith('.webm')) ? 'video' : 'image';
+    const items: MediaItem[] = [{ type: coverType as 'image' | 'video', url: project.imageUrl, thumbnailUrl: project.imageUrl }];
     if (project.media) {
       items.push(...project.media);
     }
@@ -270,6 +273,8 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, initialBounds, isC
                           const enterDelay = 550 + index * 75;
                           const exitDelay = (allMediaItems.length - index) * 40;
                           const thumbnailUrl = item.thumbnailUrl || item.url;
+                          const isThumbnailVideo = thumbnailUrl.endsWith('.mp4') || thumbnailUrl.endsWith('.webm');
+
                           return (
                             <button
                               key={index}
@@ -283,7 +288,12 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, initialBounds, isC
                               style={{ transitionDelay: isExpanded ? `${enterDelay}ms` : `${exitDelay}ms` }}
                               aria-label={`View media ${index + 1}`}
                             >
-                              <img src={thumbnailUrl} alt={`Gallery thumbnail ${index + 1}`} className="w-full h-full object-cover" />
+                              {isThumbnailVideo ? (
+                                <video src={thumbnailUrl} className="w-full h-full object-cover" muted />
+                              ) : (
+                                <img src={thumbnailUrl} alt={`Gallery thumbnail ${index + 1}`} className="w-full h-full object-cover" />
+                              )}
+                              
                               {item.type === 'video' && (
                                 <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                                   <PlayIcon className="w-8 h-8 text-white/80" />
