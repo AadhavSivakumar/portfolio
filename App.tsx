@@ -6,7 +6,6 @@ import ProjectCard from './components/ProjectCard';
 import ProjectModal from './components/ProjectModal';
 import SkillsSection from './components/SkillsSection';
 import { FileIcon, FilesIcon } from './components/Icons';
-import ErrorBoundary from './components/ErrorBoundary';
 import DocumentModal from './components/DocumentModal';
 import SineWave from './components/SineWave';
 import AnimateOnScroll from './components/AnimateOnScroll';
@@ -18,9 +17,7 @@ const App: React.FC = () => {
   const additionalProjects: Project[] = ADDITIONAL_PROJECTS_DATA;
   
   const [selectedProject, setSelectedProject] = useState<{ project: Project; bounds: DOMRect; isCompact: boolean; } | null>(null);
-  const [isModalClosing, setIsModalClosing] = useState(false);
   const [selectedDocument, setSelectedDocument] = useState<{ url: string; title: string; bounds: DOMRect } | null>(null);
-  const [isDocumentModalClosing, setIsDocumentModalClosing] = useState(false);
   const [isPortrait, setIsPortrait] = useState(false);
   const [isContentVisible, setIsContentVisible] = useState(false);
 
@@ -54,7 +51,6 @@ const App: React.FC = () => {
 
 
   const handleSelectProject = (project: Project, element: HTMLElement, isCompact: boolean) => {
-    setIsModalClosing(false);
     const bounds = element.getBoundingClientRect();
     setSelectedProject({ project, bounds, isCompact });
   };
@@ -63,12 +59,7 @@ const App: React.FC = () => {
     setSelectedProject(null);
   };
   
-  const handleStartFalling = () => {
-    setIsModalClosing(true);
-  };
-
   const handleSelectDocument = (url: string, title: string, element: HTMLElement) => {
-    setIsDocumentModalClosing(false);
     const bounds = element.getBoundingClientRect();
     setSelectedDocument({ url, title, bounds });
   };
@@ -77,25 +68,8 @@ const App: React.FC = () => {
       setSelectedDocument(null);
   };
   
-  const handleStartDocumentFalling = () => {
-      setIsDocumentModalClosing(true);
-  };
-
-  const isBackdropVisible = (selectedProject !== null && !isModalClosing) || (selectedDocument !== null && !isDocumentModalClosing);
-
   return (
     <div className="min-h-screen">
-      <div 
-        id="hover-backdrop"
-        className={`
-          fixed inset-0 z-30 transition-all duration-300
-          ${isBackdropVisible
-            ? 'opacity-100 bg-surface/75 backdrop-blur'
-            : 'opacity-0 pointer-events-none'
-          }
-        `}
-        aria-hidden="true"
-      ></div>
       
       {selectedProject && (
         <ProjectModal
@@ -103,7 +77,6 @@ const App: React.FC = () => {
           initialBounds={selectedProject.bounds}
           isCompact={selectedProject.isCompact}
           onClose={handleCloseModal}
-          onStartFalling={handleStartFalling}
         />
       )}
       {selectedDocument && (
@@ -112,7 +85,6 @@ const App: React.FC = () => {
           title={selectedDocument.title}
           initialBounds={selectedDocument.bounds}
           onClose={handleCloseDocumentModal}
-          onStartFalling={handleStartDocumentFalling}
         />
       )}
       
@@ -132,7 +104,7 @@ const App: React.FC = () => {
                   Aadhav Sivakumar
               </h1>
               <p className="mt-6 text-xl text-secondary max-w-2xl">
-                Robotics Engineer working in Machine Learning, Control Systems, and Embedded AI
+                Robotics Engineer working in Machine Learning, Control Systems, Computer Vision, and Embedded AI
               </p>
             </div>
         </section>
@@ -143,7 +115,7 @@ const App: React.FC = () => {
               <AnimateOnScroll className="md:col-span-1 flex justify-center">
                   <img src="https://aadhavsivakumar.github.io/Media/Gradpic.png" alt="About me" className="rounded-lg shadow-2xl w-full max-w-sm"/>
               </AnimateOnScroll>
-              <div className="md:col-span-2 text-lg text-secondary space-y-4">
+              <div className="md:col-span-2 text-base text-secondary space-y-4">
                   <AnimateOnScroll delay={150}><p>Hello! My name is Aadhav Sivakumar, and this website is meant to showcase projects I've worked on in the past, and projects that I'm currently working on. You're also able to view my resume, an extended CV, or look through the different skills, software, and hardware I have worked with previously. </p></AnimateOnScroll>
                   <AnimateOnScroll delay={250}><p>At the present, I am a Robot Technician at Starship Technologies, working at the Fordham University hub in the Bronx. I am currently located in Brooklyn, where I attend graduate school at NYU Tandon, working toward my Master's in Mechatronics and Robotics. I am also a TA at NYU, working with Professor Peng and helping with the Foundations of Robotics and Mathematics for Robotics courses. I was born and raised in the Bay Area in California, and I went to undergrad at the University of California, Santa Cruz campus, where I studied Robotics Engineering with a minor in Electrical Engineering.</p></AnimateOnScroll>
                   <AnimateOnScroll delay={350}><p>I believe that the most effective engineering happens at the intersection of rigorous theory and reliable application. My experiences, ranging from deep academic research to maintaining active robot fleets in the field, have taught me that building intelligent systems requires not just understanding the algorithms, but also the environemental and societal impact of new technologies. I am driven by the challenge of bridging this gap, ensuring that complex robots are robust, efficient, and capable of solving real-world problems.</p></AnimateOnScroll>
@@ -186,7 +158,6 @@ const App: React.FC = () => {
           </Section>
 
           <Section title="Major Projects" id="projects" subtitle="Select any card to learn more.">
-            <ErrorBoundary fallback={<div className="text-center p-8 bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-300 rounded-lg border border-red-300 dark:border-red-700">Could not display major projects.</div>}>
               <div className={`grid ${isPortrait ? 'grid-cols-2' : 'grid-cols-1 md:grid-cols-3'} gap-8`}>
                 {majorProjects.map((project, index) => (
                   <AnimateOnScroll key={project.id} delay={index * 150}>
@@ -198,11 +169,9 @@ const App: React.FC = () => {
                   </AnimateOnScroll>
                 ))}
               </div>
-            </ErrorBoundary>
           </Section>
 
           <Section title="Additional Projects" id="more-projects" subtitle="Select any card to learn more.">
-            <ErrorBoundary fallback={<div className="text-center p-8 bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-300 rounded-lg border border-red-300 dark:border-red-700">Could not display additional projects.</div>}>
               <div className={`grid ${isPortrait ? 'grid-cols-3' : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'} gap-6`}>
                 {additionalProjects.map((project, index) => (
                   <AnimateOnScroll key={project.id} delay={index * 75}>
@@ -215,7 +184,6 @@ const App: React.FC = () => {
                   </AnimateOnScroll>
                 ))}
               </div>
-            </ErrorBoundary>
           </Section>
           <div id="skills">
             <AnimateOnScroll>

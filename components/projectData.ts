@@ -7,8 +7,8 @@ export const MAJOR_PROJECTS_DATA: Project[] = [
     "title": "Project Millet",
     "category": "Autonomous Drone",
     "description": "Developing a ROS-based autonomous drone utilizing a Pixhawk 6x for precise agricultural applications. This ongoing project focuses on implementing robust PID control for stable flight and targeted payload delivery.",
-    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/1_cover.mp4",
-    "technologies": ["Python", "ROS", "Pixhawk 6x"],
+    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/a_millet/1.mp4",
+    "technologies": ["SLAM", "ROS", "Pixhawk 6x"],
     "status": "in-progress",
     "modalContent": [
       {
@@ -28,7 +28,7 @@ export const MAJOR_PROJECTS_DATA: Project[] = [
       {
         "type": "video",
         "url": "https://aadhavsivakumar.github.io/Media/gallery/millet/3.mp4",
-        "thumbnailUrl": "https://aadhavsivakumar.github.io/Media/projects/1_cover.mp4"
+        "thumbnailUrl": "https://aadhavsivakumar.github.io/Media/projects/a_millet/1.mp4"
       }
     ]
   },
@@ -38,8 +38,8 @@ export const MAJOR_PROJECTS_DATA: Project[] = [
     "title": "SoleGait Foot Sensor",
     "category": "IoT & Biomedical",
     "description": "Engineering an IoT-enabled foot sensor using an Arduino for real-time, high-fidelity gait analysis. This work-in-progress integrates custom communication protocols to provide actionable biometric data.",
-    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/solegaitvidmute.mp4",
-    "technologies": ["C++", "Python", "Arduino", "Comm Protocols"],
+    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/b_solegait/1.mp4",
+    "technologies": ["C++", "RTOS", "Comm Protocols"],
     "status": "finished",
     "modalContent": [
       {
@@ -63,8 +63,8 @@ export const MAJOR_PROJECTS_DATA: Project[] = [
     "title": "Glass-2-Bot",
     "category": "Telerobotics",
     "description": "Architected a telerobotic system integrating Google Glass with a robot arm, enabling intuitive remote object manipulation. Leveraged Python and computer vision to translate user gaze and gestures into precise robotic actions.",
-    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/glass2bot.gif",
-    "technologies": ["Google Glass", "Computer Vision", "Python", "Telerobotics"],
+    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/c_glass2bot/1.mp4",
+    "technologies": ["Google Glass", "Telerobotics"],
     "status": "finished",
     "modalContent": [
       {
@@ -84,7 +84,7 @@ export const MAJOR_PROJECTS_DATA: Project[] = [
     "title": "SMART compost sorting",
     "category": "Robotics & Computer Vision",
     "description": "Designed and implemented a robotic compost sorting system using a Franka Emika arm and depth-sensing computer vision. Developed within a ROS framework to automate the identification and separation of contaminants.",
-    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/smartsort.gif",
+    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/d_SMARTcompost/1.mp4",
     "technologies": ["Franka Emika Robot", "Computer Vision", "ROS"],
     "status": "finished",
     "modalContent": [
@@ -105,7 +105,7 @@ export const MAJOR_PROJECTS_DATA: Project[] = [
     "title": "Tactile Manipulation sensor",
     "category": "Robotics & Hardware",
     "description": "Designed and fabricated a novel tactile sensor on a flexible PCB using Altium Designer for advanced robotic manipulation. This sensor provides nuanced data on grip force and shear direction.",
-    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/tacmanipHQ.gif",
+    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/e_tactilemanipulation/1.mp4",
     "technologies": ["C", "Altium Designer"],
     "status": "finished",
     "modalContent": [
@@ -131,7 +131,7 @@ export const MAJOR_PROJECTS_DATA: Project[] = [
     "title": "Stockbot: Grocery Robotics",
     "category": "Robotics & Simulation",
     "description": "Developed a comprehensive simulation in Mujoco for an autonomous grocery restocking robot. Engineered kinematic models and path-planning algorithms in Python to optimize efficiency in a retail environment.",
-    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/stockbot.gif",
+    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/f_stockbot/1.mp4",
     "technologies": ["Python", "Mujoco", "Kinematics"],
     "status": "finished",
     "modalContent": [
@@ -159,8 +159,8 @@ export const ADDITIONAL_PROJECTS_DATA: Project[] = [
     "title": "CV controlled Desktop Robot arm",
     "category": "Robotics & Computer Vision",
     "description": "Building a desktop robotic arm controlled by computer vision running on a Raspberry Pi.",
-    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/g_cover.mp4",
-    "technologies": ["Python", "Computer Vision", "Raspberry Pi"],
+    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/g_CVarm/1.mp4",
+    "technologies": ["MediaPipe", "VLA model"],
     "status": "in-progress",
     "modalContent": [
       {
@@ -180,7 +180,7 @@ export const ADDITIONAL_PROJECTS_DATA: Project[] = [
     "title": "Ur10e MuJoCo Simulation",
     "category": "Simulation",
     "description": "Created a 3D simulation of the game 'Fruit Ninja' using Python.",
-    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/fruitninja.mp4",
+    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/h_ur10emujocosim/1.mp4",
     "technologies": ["Python", "Mujoco"],
     "status": "finished",
     "modalContent": [
@@ -201,7 +201,7 @@ export const ADDITIONAL_PROJECTS_DATA: Project[] = [
     "title": "Sand Table",
     "category": "Mechatronics",
     "description": "Engineered a 2R planar manipulator controlled by a Parallax Propeller MCU to draw intricate patterns in sand.",
-    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/2rplanarstraight.gif",
+    "imageUrl": "https://AadhavSivakumar.github.io/Media/projects/i_sandtable/1.mp4",
     "technologies": ["Parallax Propeller", "C++", "Kinematics"],
     "status": "finished",
     "modalContent": [
@@ -222,7 +222,7 @@ export const ADDITIONAL_PROJECTS_DATA: Project[] = [
     "title": "PONG",
     "category": "Embedded Systems",
     "description": "Constructed a standalone version of the classic game PONG using an Arduino and an LED matrix.",
-    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/PONG.mp4",
+    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/j_pong/1.mp4",
     "technologies": ["Arduino", "LED matrix"],
     "status": "finished",
     "modalContent": [
@@ -243,7 +243,7 @@ export const ADDITIONAL_PROJECTS_DATA: Project[] = [
     "title": "MATE ROV",
     "category": "Robotics",
     "description": "Contributed to a competitive MATE ROV team by designing and building electronic subsystems for an underwater drone.",
-    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/MATEROV.jpeg",
+    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/k_MATE/1.jpeg",
     "technologies": ["C++", "EAGLE", "Ultrasonic"],
     "status": "finished",
     "modalContent": [
@@ -256,64 +256,34 @@ export const ADDITIONAL_PROJECTS_DATA: Project[] = [
   // d.json
   {
     "id": "d",
-    "title": "Automated Dog Feeder",
-    "category": "IoT",
-    "description": "Designed and built an internet-enabled pet feeder powered by a Raspberry Pi and Firebase.",
-    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/dogfeeder.webp",
-    "technologies": ["C", "Raspberry Pi"],
+    "title": "Reinforcement Learning & Optimal Control",
+    "category": "Robotics & Control",
+    "description": "",
+    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/l_reinforcementlearning/1.mp4",
+    "technologies": ["MPC", "PPO", "SAC", "DQN", "NVIDIA Isaac Sim"],
     "status": "finished",
-    "modalContent": [
-      {
-        "type": "text",
-        "value": "Designed and built an internet-enabled pet feeder powered by a Raspberry Pi and Firebase. This system allows for remote and scheduled feeding with precise portion control, ensuring a pet's dietary needs are met."
-      },
-      {
-        "type": "button",
-        "text": "View on Instructables",
-        "link": "https://www.instructables.com/Internet-Enabled-Raspberry-Pi-Pet-Feeder/"
-      }
-    ]
+    "modalContent": []
   },
   // e.json
   {
     "id": "e",
-    "title": "FPGA VGA Game",
-    "category": "Digital Logic Design",
-    "description": "Developed a 'Flappy Bird' style game on a Basys 3 FPGA using Verilog.",
-    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/fpgaVGA.png",
-    "technologies": ["Verilog", "Basys 3 FPGA"],
+    "title": "Robot Perception",
+    "category": "Computer Vision",
+    "description": "",
+    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/m_robotperception/1.mp4",
+    "technologies": ["Diffusion Models", "Object Segmentation"],
     "status": "finished",
-    "modalContent": [
-      {
-        "type": "text",
-        "value": "Developed a 'Flappy Bird' style game on a Basys 3 FPGA using Verilog. This project involved designing digital logic circuits from the ground up to handle game state, player input, and VGA signal generation."
-      },
-      {
-        "type": "embed",
-        "value": "",
-        "title": "Project Documentation (Coming Soon)"
-      }
-    ]
+    "modalContent": []
   },
   // f.json
   {
     "id": "f",
-    "title": "Mechatronics Competition",
-    "category": "Robotics & Control",
-    "description": "Built and programmed an autonomous robot on an STM32 platform for a mechatronics competition.",
-    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/mechcomp.mp4",
-    "technologies": ["STM32", "C++", "PID Control"],
+    "title": "Machine Learning & AI Instructor",
+    "category": "AI Education",
+    "description": "",
+    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/n_machinelearninginstructor/1.mp4",
+    "technologies": ["LLMs", "Edge AI"],
     "status": "finished",
-    "modalContent": [
-      {
-        "type": "text",
-        "value": "Built and programmed an autonomous robot on an STM32 platform for a mechatronics competition. Implemented C++ and fine-tuned PID control algorithms to achieve precise targeting and win a ping pong ball shooting tournament."
-      },
-      {
-        "type": "embed",
-        "value": "https://aadhavsivakumar.github.io/projectpdf/ECE_118_Final_Project_Report.pdf",
-        "title": "Project Documentation (Coming Soon)"
-      }
-    ]
+    "modalContent": []
   }
 ];
