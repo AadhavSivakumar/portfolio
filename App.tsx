@@ -18,20 +18,36 @@ const App: React.FC = () => {
   
   const [selectedProject, setSelectedProject] = useState<{ project: Project; bounds: DOMRect; isCompact: boolean; } | null>(null);
   const [selectedDocument, setSelectedDocument] = useState<{ url: string; title: string; bounds: DOMRect } | null>(null);
-  const [isPortrait, setIsPortrait] = useState(false);
   const [isContentVisible, setIsContentVisible] = useState(false);
 
   const resumeButtonRef = useRef<HTMLButtonElement>(null);
   const cvButtonRef = useRef<HTMLButtonElement>(null);
-  
-  useEffect(() => {
-    const handleResize = () => {
-        setIsPortrait(window.innerWidth / window.innerHeight < 1);
-    };
-    window.addEventListener('resize', handleResize);
-    handleResize(); // Set initial value
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+
+  // Define the About Me section as a Project object to reuse the Card/Modal architecture
+  const aboutProject: Project = {
+    id: 'about-me',
+    title: 'Aadhav Sivakumar',
+    category: 'Biography',
+    // Only first two sentences visible on card
+    description: "Hello! My name is Aadhav Sivakumar, and this website is meant to showcase projects I've worked on in the past and projects that I'm currently working on.",
+    imageUrl: "https://aadhavsivakumar.github.io/Media/Gradpic.png",
+    technologies: ["Robotics Engineer", "NYU Tandon", "Starship Technologies", "UCSC Alumni"],
+    status: 'in-progress',
+    modalContent: [
+      {
+        type: 'text',
+        value: "Hello! My name is Aadhav Sivakumar, and this website is meant to showcase projects I've worked on in the past, and projects that I'm currently working on. You're also able to view my resume, an extended CV, or look through the different skills, software, and hardware I have worked with previously."
+      },
+      {
+        type: 'text',
+        value: "At the present, I am a Robot Technician at Starship Technologies, working at the Fordham University hub in the Bronx. I am currently located in Brooklyn, where I attend graduate school at NYU Tandon, working toward my Master's in Mechatronics and Robotics. I am also a TA at NYU, working with Professor Peng and helping with the Foundations of Robotics and Mathematics for Robotics courses. I was born and raised in the Bay Area in California, and I went to undergrad at the University of California, Santa Cruz campus, where I studied Robotics Engineering with a minor in Electrical Engineering."
+      },
+      {
+        type: 'text',
+        value: "I believe that the most effective engineering happens at the intersection of rigorous theory and reliable application. My experiences, ranging from deep academic research to maintaining active robot fleets in the field, have taught me that building intelligent systems requires not just understanding the algorithms, but also the environemental and societal impact of new technologies. I am driven by the challenge of bridging this gap, ensuring that complex robots are robust, efficient, and capable of solving real-world problems."
+      }
+    ]
+  };
   
   useEffect(() => {
     // Layout geometry event
@@ -111,14 +127,15 @@ const App: React.FC = () => {
         
         <div className={`container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 transition-opacity duration-1000 delay-300 ${isContentVisible ? 'opacity-100' : 'opacity-0'}`}>
           <Section title="About Me" id="about">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
-              <AnimateOnScroll className="md:col-span-1 flex justify-center">
-                  <img src="https://aadhavsivakumar.github.io/Media/Gradpic.png" alt="About me" className="rounded-lg shadow-2xl w-full max-w-sm"/>
-              </AnimateOnScroll>
-              <div className="md:col-span-2 text-base text-secondary space-y-4">
-                  <AnimateOnScroll delay={150}><p>Hello! My name is Aadhav Sivakumar, and this website is meant to showcase projects I've worked on in the past, and projects that I'm currently working on. You're also able to view my resume, an extended CV, or look through the different skills, software, and hardware I have worked with previously. </p></AnimateOnScroll>
-                  <AnimateOnScroll delay={250}><p>At the present, I am a Robot Technician at Starship Technologies, working at the Fordham University hub in the Bronx. I am currently located in Brooklyn, where I attend graduate school at NYU Tandon, working toward my Master's in Mechatronics and Robotics. I am also a TA at NYU, working with Professor Peng and helping with the Foundations of Robotics and Mathematics for Robotics courses. I was born and raised in the Bay Area in California, and I went to undergrad at the University of California, Santa Cruz campus, where I studied Robotics Engineering with a minor in Electrical Engineering.</p></AnimateOnScroll>
-                  <AnimateOnScroll delay={350}><p>I believe that the most effective engineering happens at the intersection of rigorous theory and reliable application. My experiences, ranging from deep academic research to maintaining active robot fleets in the field, have taught me that building intelligent systems requires not just understanding the algorithms, but also the environemental and societal impact of new technologies. I am driven by the challenge of bridging this gap, ensuring that complex robots are robust, efficient, and capable of solving real-world problems.</p></AnimateOnScroll>
+            <div className="flex justify-center w-full">
+              <div className="w-full max-w-md">
+                <AnimateOnScroll>
+                  <ProjectCard
+                    project={aboutProject}
+                    onSelect={(p, e) => handleSelectProject(p, e, false)}
+                    isHidden={selectedProject?.project.id === aboutProject.id}
+                  />
+                </AnimateOnScroll>
               </div>
             </div>
           </Section>
@@ -158,7 +175,7 @@ const App: React.FC = () => {
           </Section>
 
           <Section title="Major Projects" id="projects" subtitle="Select any card to learn more.">
-              <div className={`grid ${isPortrait ? 'grid-cols-2' : 'grid-cols-1 md:grid-cols-3'} gap-8`}>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {majorProjects.map((project, index) => (
                   <AnimateOnScroll key={project.id} delay={index * 150}>
                     <ProjectCard
@@ -172,7 +189,7 @@ const App: React.FC = () => {
           </Section>
 
           <Section title="Additional Projects" id="more-projects" subtitle="Select any card to learn more.">
-              <div className={`grid ${isPortrait ? 'grid-cols-3' : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'} gap-6`}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {additionalProjects.map((project, index) => (
                   <AnimateOnScroll key={project.id} delay={index * 75}>
                     <ProjectCard

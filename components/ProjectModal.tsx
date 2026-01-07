@@ -20,150 +20,195 @@ const MediaDisplay: React.FC<{ src: string; alt: string; className: string }> = 
 
 const ProjectModal: React.FC<ProjectModalProps> = ({ project, initialBounds, isCompact, onClose }) => {
   // Phases: 
-  // 0: Idle (Initial position)
-  // 1: Lifting (Hover up)
-  // 2: Expanded (Full modal)
-  // 3: Shrinking (Back to Hover up)
-  // 4: Dropping (Back to Initial position)
-  const [phase, setPhase] = useState<0 | 1 | 2 | 3 | 4>(0);
+  // 0: Idle
+  // 1: Lifting
+  // 2: Separating (to Center)
+  // 3: Expanding (Full Modal)
+  // 4: Collapsing (to Center)
+  // 5: Joining (to Lifted Pos)
+  // 6: Dropping
+  const [phase, setPhase] = useState<0 | 1 | 2 | 3 | 4 | 5 | 6>(0);
   const [selectedMediaUrl, setSelectedMediaUrl] = useState(project.imageUrl);
   const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight });
 
-  // Update media when project changes
   useEffect(() => {
     setSelectedMediaUrl(project.imageUrl);
   }, [project]);
 
-  // Track window size
   useEffect(() => {
     const handleResize = () => setWindowSize({ width: window.innerWidth, height: window.innerHeight });
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Open Sequence: Lift -> Expand
+  // Open Sequence - Timings slowed down to mirror closing sequence
   useEffect(() => {
-    // Start sequence
     const rAF = requestAnimationFrame(() => {
-        setPhase(1); // Start lifting
-        // Wait for lift to finish then expand
+        setPhase(1); // Start Lift
         setTimeout(() => {
-            setPhase(2);
-        }, 350); 
+            setPhase(2); // Start glide to center
+            setTimeout(() => {
+                setPhase(3); // Final expand
+            }, 500); // Wait for glide to complete
+        }, 400); // Wait for lift to complete (slower, matches drop)
     });
     return () => cancelAnimationFrame(rAF);
   }, []);
 
-  // Handle ESC
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && phase === 2) handleClose();
+      if (event.key === 'Escape' && phase === 3) handleClose();
     };
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
   }, [phase]);
 
-  // Close Sequence: Shrink -> Drop -> Unmount
   const handleClose = useCallback(() => {
-    setPhase(3); // Start shrinking
+    setPhase(4);
     setTimeout(() => {
-        setPhase(4); // Start dropping
+        setPhase(5);
         setTimeout(() => {
-            onClose(); // Unmount
-        }, 300); // Wait for drop
-    }, 400); // Wait for shrink
+            setPhase(6);
+            // Allow time for the drop animation AND the backdrop fade out
+            setTimeout(() => {
+                onClose();
+            }, 500);
+        }, 500);
+    }, 500);
   }, [onClose]);
 
   const handleBackdropClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget && phase === 2) handleClose();
+    if (e.target === e.currentTarget && phase === 3) handleClose();
   };
 
   // --- Layout Calculations ---
-  const maxWidth = 1024;
-  const margin = windowSize.width < 768 ? 20 : 40;
+  const isMobile = windowSize.width < 768;
+  const maxWidth = 1400; 
+  const margin = isMobile ? 16 : 32; 
+  
   const targetWidth = Math.min(windowSize.width - (margin * 2), maxWidth);
   const maxModalHeight = windowSize.height - (margin * 2);
-  const targetHeight = Math.min(maxModalHeight, isCompact ? 600 : 800); 
+  const targetHeight = Math.min(maxModalHeight, isMobile ? 800 : 850); 
   const targetLeft = (windowSize.width - targetWidth) / 2;
   const targetTop = (windowSize.height - targetHeight) / 2;
 
-  // --- Dynamic Styles based on Phase ---
+  const centerX = windowSize.width / 2;
+  const centerY = windowSize.height / 2;
+  
+  const sepScale = isMobile ? 1.0 : 2.0; 
+  const separatedWidth = Math.min(windowSize.width - (margin * 2), initialBounds.width * sepScale);
+  const separatedHeight = initialBounds.height; 
+  
+  const separatedLeft = centerX - separatedWidth / 2;
+  const separatedTop = centerY - separatedHeight / 2;
+
   const containerStyle: React.CSSProperties = useMemo(() => {
     const baseStyle: React.CSSProperties = {
         position: 'fixed',
         zIndex: 50,
-        backgroundColor: 'var(--surface-color)',
-        overflow: 'hidden',
+        display: 'block', 
+        overflow: 'hidden', 
+        willChange: 'transform, top, left, width, height, opacity, background-color, border-radius',
     };
 
-    // Initial / Dropped State
     const idleState = {
         top: initialBounds.top,
         left: initialBounds.left,
         width: initialBounds.width,
         height: initialBounds.height,
-        borderRadius: '0.5rem', // rounded-lg
         transform: 'translateY(0)',
+        backgroundColor: 'var(--surface-color)',
+        borderRadius: '0.5rem',
         boxShadow: '0 0 0 0 rgba(0,0,0,0)',
     };
 
-    // Lifted State - More Vertical
     const liftedState = {
-        top: initialBounds.top,
-        left: initialBounds.left,
-        width: initialBounds.width,
-        height: initialBounds.height,
-        borderRadius: '0.5rem',
-        transform: 'translateY(-60px) scale(1.02)', // Strong vertical lift, subtle scale
-        boxShadow: '0 25px 30px -5px rgba(0, 0, 0, 0.2), 0 15px 15px -5px rgba(0, 0, 0, 0.1)', 
+        ...idleState,
+        transform: 'translateY(-40px) scale(1.02)', // Slightly less extreme lift
+        boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)', 
     };
 
-    // Expanded State
+    const separatedState = {
+        top: separatedTop,
+        left: separatedLeft,
+        width: separatedWidth,
+        height: separatedHeight,
+        transform: 'translateY(0) scale(1)', 
+        // Background becomes transparent so the gap between panes shows the backdrop/content behind
+        backgroundColor: 'rgba(0, 0, 0, 0)', 
+        borderRadius: '0.75rem',
+        boxShadow: 'none',
+    };
+
     const expandedState = {
         top: targetTop,
         left: targetLeft,
         width: targetWidth,
         height: targetHeight,
-        borderRadius: '0.75rem',
         transform: 'translateY(0) scale(1)', 
-        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+        backgroundColor: 'rgba(0, 0, 0, 0)',
+        borderRadius: '0.75rem',
+        boxShadow: 'none',
     };
 
-    switch (phase) {
-        case 0: // Idle
-            return { ...baseStyle, ...idleState, transition: 'none' };
-        case 1: // Lifting
-            return { 
-                ...baseStyle, ...liftedState, 
-                // Bouncy/Snappy curve for lift
-                transition: 'transform 350ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 350ms ease'
-            };
-        case 2: // Expanding
-            return { 
-                ...baseStyle, ...expandedState, 
-                transition: 'all 500ms cubic-bezier(0.4, 0, 0.2, 1)' 
-            };
-        case 3: // Shrinking (Target Lifted State)
-            return { 
-                ...baseStyle, ...liftedState, 
-                transition: 'all 400ms cubic-bezier(0.4, 0, 0.2, 1)' 
-            };
-        case 4: // Dropping (Target Idle State)
-            return { 
-                ...baseStyle, ...idleState, 
-                // EXACT SAME curve as Lifting for seamless/snappy feel
-                transition: 'transform 300ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 300ms ease' 
-            };
-        default:
-            return baseStyle;
-    }
-  }, [phase, initialBounds, targetTop, targetLeft, targetWidth, targetHeight]);
+    // Refined easing: Cubic-bezier(0.33, 1, 0.68, 1) is "Quint Out"
+    const swiftMove = 'cubic-bezier(0.25, 1, 0.5, 1)'; 
+    const cinematicExpand = 'cubic-bezier(0.65, 0, 0.35, 1)'; 
+    
+    // Explicitly transition background-color for gradual change. Duration matched to lift/drop phase (500ms)
+    const baseTransition = `transform 500ms ${swiftMove}, box-shadow 500ms ease, background-color 500ms ease, border-radius 500ms ease`;
+    const moveTransition = `all 500ms ${swiftMove}`;
+    const expandTransition = `all 600ms ${cinematicExpand}`;
 
-  // Image Height Transition
-  const initialImageHeight = isCompact ? '12rem' : '16rem';
-  const targetImageHeight = windowSize.width < 768 ? '30vh' : '45vh';
-  // Use target height only in expanded phase
-  const currentImageHeight = (phase === 2) ? targetImageHeight : initialImageHeight;
+    switch (phase) {
+        case 0: return { ...baseStyle, ...idleState, transition: 'none' };
+        case 1: return { ...baseStyle, ...liftedState, transition: baseTransition }; 
+        case 2: return { ...baseStyle, ...separatedState, transition: moveTransition }; 
+        case 3: return { ...baseStyle, ...expandedState, transition: expandTransition }; 
+        case 4: return { ...baseStyle, ...separatedState, transition: expandTransition }; 
+        case 5: return { ...baseStyle, ...liftedState, transition: moveTransition }; 
+        case 6: return { ...baseStyle, ...idleState, transition: baseTransition }; 
+        default: return baseStyle;
+    }
+  }, [phase, initialBounds, targetTop, targetLeft, targetWidth, targetHeight, separatedTop, separatedLeft, separatedWidth, separatedHeight]);
+
+  const isSeparated = !isMobile && (phase === 2 || phase === 3 || phase === 4);
+  const isExpanded = phase === 3;
+  const isStacked = !isSeparated; 
+
+  const cardImageHeightRem = isCompact ? '12rem' : '16rem';
+  const gap = isMobile ? '1rem' : isExpanded ? '2rem' : '1.5rem';
+  const cinematicExpand = 'cubic-bezier(0.65, 0, 0.35, 1)';
+  const swiftMove = 'cubic-bezier(0.25, 1, 0.5, 1)';
+  
+  // Panes should inherit the movement curve
+  const paneTransition = isExpanded ? `all 600ms ${cinematicExpand}` : `all 500ms ${swiftMove}`;
+
+  const leftPaneStyle: React.CSSProperties = {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: isStacked ? '100%' : '42%', 
+      height: isStacked ? cardImageHeightRem : '100%',
+      borderRadius: isSeparated ? '1rem' : '0',
+      boxShadow: isSeparated ? (isExpanded ? '0 25px 50px -12px rgba(0, 0, 0, 0.5)' : '0 10px 20px -5px rgba(0, 0, 0, 0.2)') : 'none',
+      transition: paneTransition,
+      overflow: 'hidden',
+      backgroundColor: 'black',
+  };
+
+  const rightPaneStyle: React.CSSProperties = {
+      position: 'absolute',
+      top: isStacked ? cardImageHeightRem : 0,
+      left: isStacked ? 0 : `calc(42% + ${gap})`,
+      width: isStacked ? '100%' : `calc(58% - ${gap})`,
+      height: isStacked ? `calc(100% - ${cardImageHeightRem})` : '100%',
+      borderRadius: isSeparated ? '1rem' : '0',
+      boxShadow: isSeparated ? (isExpanded ? '0 25px 50px -12px rgba(0, 0, 0, 0.25)' : '0 10px 20px -5px rgba(0, 0, 0, 0.1)') : 'none',
+      overflow: 'hidden', 
+      backgroundColor: 'var(--surface-color)',
+      transition: paneTransition,
+  };
 
   const allMediaItems = useMemo(() => {
       const coverType = (project.imageUrl.endsWith('.mp4') || project.imageUrl.endsWith('.webm')) ? 'video' : 'image';
@@ -174,186 +219,122 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, initialBounds, isC
       return items;
   }, [project]);
 
-  // Content Visibility
-  // Show card content only during Idle (0) or Lifting (1). 
-  // Hide during Expand (2), Shrink (3), and Drop (4) to ensure it's blank on return.
-  const showCardContent = phase === 0 || phase === 1;
-  const showModalContent = phase === 2;
+  // Content visibility: Fade in only when expanded
+  const isContentReady = phase === 3;
+  const contentTransition = 'transition-all duration-500 ease-out';
+  const contentOpacity = isContentReady ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4';
+  const getDelay = (base: number) => isExpanded ? `${base + 150}ms` : '0ms';
+
+  // Backdrop should fade out starting at phase 6 (Dropping)
+  const showBackdrop = phase >= 1 && phase < 6;
 
   return (
     <>
       <div 
-        className={`fixed inset-0 z-40 bg-black/60 backdrop-blur-sm transition-opacity duration-500 ease-in-out ${phase === 2 ? 'opacity-100' : 'opacity-0'}`}
+        className={`fixed inset-0 z-40 bg-black/60 backdrop-blur-sm transition-opacity duration-700 ease-in-out ${showBackdrop ? 'opacity-100' : 'opacity-0'}`}
         onClick={handleBackdropClick}
         aria-hidden="true"
-        style={{ pointerEvents: phase === 2 ? 'auto' : 'none' }} 
+        style={{ pointerEvents: phase === 3 ? 'auto' : 'none' }} 
       />
 
       <div 
         style={containerStyle} 
-        className="flex flex-col ring-1 ring-border shadow-xl"
         role="dialog"
         aria-modal="true"
       >
-        {/* Media Section */}
-        <div 
-            className="relative w-full shrink-0 overflow-hidden bg-black transition-all duration-500 ease-in-out" 
-            style={{ height: currentImageHeight }}
-        >
-            <MediaDisplay 
-                src={selectedMediaUrl} 
-                alt={project.title} 
-                className="w-full h-full object-cover" 
-            />
-            
-            {/* Gradient Overlay for Card View */}
-            <div className={`absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 transition-opacity duration-300 ${!showCardContent ? 'opacity-0' : 'opacity-100'}`}></div>
+        <div style={leftPaneStyle} className="flex flex-col">
+            <div className={`relative w-full ${isSeparated ? 'flex-grow min-h-0' : 'h-full'}`}>
+                <MediaDisplay 
+                    src={selectedMediaUrl} 
+                    alt={project.title} 
+                    className="w-full h-full object-cover" 
+                />
+                
+                {/* Gradient overlay fades out gradually as we enter expanded state */}
+                <div className={`absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 transition-opacity duration-700 ${isExpanded ? 'opacity-0' : 'opacity-100'}`}></div>
 
-            {/* Close Button */}
-            <button
-                onClick={handleClose}
-                className={`absolute top-4 right-4 w-10 h-10 rounded-full bg-black/50 flex items-center justify-center text-white hover:bg-black/75 transition-all duration-300 ${showModalContent ? 'opacity-100 scale-100' : 'opacity-0 scale-75'}`}
-                aria-label="Close"
-            >
-                <CloseIcon />
-            </button>
-        </div>
-
-        {/* Content Container */}
-        <div className="flex-grow relative overflow-hidden bg-surface">
-            
-            {/* Card View Content (Visible when NOT expanded) */}
-            <div 
-                className={`absolute inset-0 w-full transition-opacity duration-300 ease-in-out ${showCardContent ? 'opacity-100 delay-100' : 'opacity-0 pointer-events-none'}`}
-            >
-                 <div className={`flex flex-col h-full ${isCompact ? 'p-4' : 'p-6'}`}>
-                    {isCompact ? (
-                        <>
-                            <div className="flex justify-between items-start mb-1">
-                                <h3 className="font-bold text-md text-primary truncate pr-2">{project.title}</h3>
-                                {project.status && <StatusIndicator status={project.status} className="mt-1" />}
-                            </div>
-                            <p className="text-sm text-secondary mb-3">{project.category}</p>
-                            <div className="flex flex-wrap gap-1.5">
-                                {project.technologies.slice(0, 2).map((tech) => (
-                                <span key={tech} className="bg-accent text-white dark:text-black text-[11px] font-semibold px-2 py-0.5 rounded-full">{tech}</span>
-                                ))}
-                            </div>
-                        </>
-                    ) : (
-                        <>
-                            <div className="flex justify-between items-center mb-1">
-                                <p className="text-sm font-medium text-accent">{project.category}</p>
-                                {project.status && <StatusIndicator status={project.status} showText />}
-                            </div>
-                            <h3 className="text-xl font-bold text-primary mb-2">{project.title}</h3>
-                            <div className="flex flex-wrap gap-2 mt-4">
-                                {project.technologies.slice(0, 4).map((tech) => (
-                                <span key={tech} className="bg-accent text-white dark:text-black text-xs font-semibold px-3 py-1 rounded-full shadow-sm">{tech}</span>
-                                ))}
-                            </div>
-                        </>
-                    )}
-                </div>
+                <button
+                    onClick={handleClose}
+                    className={`absolute top-4 left-4 z-20 w-10 h-10 rounded-full bg-black/50 flex items-center justify-center text-white hover:bg-black/75 transition-all duration-400 ${isExpanded ? 'opacity-100 scale-100 delay-500' : 'opacity-0 scale-75 pointer-events-none'}`}
+                    aria-label="Close"
+                >
+                    <CloseIcon />
+                </button>
             </div>
 
-             {/* Detailed Modal Content (Visible when EXPANDED) */}
-             <div 
-                className="absolute inset-0 w-full h-full overflow-y-auto p-6 md:p-8"
-                style={{ opacity: showModalContent ? 1 : 0, transition: 'opacity 200ms ease-in-out' }}
-             >
-                <div className="max-w-4xl mx-auto space-y-6">
-                    {/* Header: Title, Category, Status */}
-                    <div 
-                        className={`transform-gpu transition-all duration-500 ease-out ${showModalContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} 
-                        style={{ transitionDelay: '200ms' }}
-                    >
-                        <div className="flex items-center justify-between mb-2">
-                            <p className="text-sm font-medium text-accent">{project.category}</p>
-                            {project.status && <StatusIndicator status={project.status} showText />}
+            <div 
+                className={`bg-surface border-t border-border p-4 transition-all duration-600 ease-in-out shrink-0 ${isExpanded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-full h-0 p-0'}`}
+            >
+                {allMediaItems.length > 1 && (
+                    <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+                        {allMediaItems.map((item, index) => {
+                            const isSelected = selectedMediaUrl === item.url;
+                            const thumbnailUrl = item.thumbnailUrl || item.url;
+                            const isVideoThumb = thumbnailUrl.endsWith('.mp4');
+                            return (
+                                <button
+                                    key={index}
+                                    onClick={() => setSelectedMediaUrl(item.url)}
+                                    className={`
+                                        relative w-20 h-14 shrink-0 rounded-md overflow-hidden 
+                                        border-2 transition-all duration-300
+                                        ${isSelected ? 'border-accent scale-105 ring-2 ring-accent/30' : 'border-transparent opacity-70 hover:opacity-100'}
+                                    `}
+                                >
+                                    {isVideoThumb ? (
+                                        <video src={thumbnailUrl} className="w-full h-full object-cover" muted />
+                                    ) : (
+                                        <img src={thumbnailUrl} alt={`Thumb ${index}`} className="w-full h-full object-cover" />
+                                    )}
+                                    {item.type === 'video' && (
+                                        <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                                            <PlayIcon className="w-5 h-5 text-white" />
+                                        </div>
+                                    )}
+                                </button>
+                            );
+                        })}
+                    </div>
+                )}
+            </div>
+        </div>
+
+        <div style={rightPaneStyle} className="flex flex-col">
+            <div className={`flex flex-col h-full ${isCompact && !isSeparated ? 'p-4' : 'p-6 md:p-8'} ${isExpanded ? 'overflow-y-auto' : 'overflow-hidden'}`}>
+                
+                <div className="shrink-0 mb-6">
+                     <div className={`flex flex-col sm:flex-row justify-between items-start mb-4 ${contentTransition} ${contentOpacity}`} style={{ transitionDelay: getDelay(0) }}>
+                        <div className="flex flex-col flex-grow">
+                             <p className={`font-bold text-accent transition-all duration-500 ${isExpanded ? 'text-lg md:text-2xl mb-2' : 'text-sm mb-1 opacity-0'}`}>{project.category}</p>
+                             <h2 className={`font-extrabold text-primary transition-all duration-600 leading-tight ${isExpanded ? 'text-5xl md:text-7xl' : 'text-lg md:text-xl'}`}>{project.title}</h2>
                         </div>
-                        <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">{project.title}</h2>
+                        {project.status && <StatusIndicator status={project.status} showText={isExpanded} className={`${isExpanded ? 'mt-4 sm:mt-2' : 'mt-1'} transition-opacity duration-500 ${isExpanded ? 'opacity-100' : 'opacity-0'}`} />}
                     </div>
 
-                    {/* Description */}
-                    <div 
-                        className={`prose dark:prose-invert max-w-none text-secondary transform-gpu transition-all duration-500 ease-out ${showModalContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-                        style={{ transitionDelay: '350ms' }}
-                    >
+                    <div className={`flex flex-wrap gap-3 ${contentTransition} ${contentOpacity}`} style={{ transitionDelay: getDelay(100) }}>
+                         {project.technologies.map((tech) => (
+                            <span key={tech} className={`bg-accent text-white dark:text-black font-bold rounded-full shadow-sm transition-all duration-500 ${isExpanded ? 'text-sm md:text-base px-4 py-1.5' : 'text-xs px-2 py-1'}`}>{tech}</span>
+                        ))}
+                    </div>
+                </div>
+
+                <div className={`flex-grow ${contentTransition} ${contentOpacity}`} style={{ transitionDelay: getDelay(200) }}>
+                    <div className="prose dark:prose-invert max-w-none text-secondary mb-10">
                         {project.modalContent ? (
                             project.modalContent.map((item, index) => {
-                                if (item.type === 'text') return <p key={index} className="mb-4 text-base leading-relaxed">{item.value}</p>;
+                                if (item.type === 'text') return <p key={index} className="mb-6 text-lg md:text-xl leading-relaxed">{item.value}</p>;
                                 return null;
                             })
                         ) : (
-                            <p className="text-base leading-relaxed">{project.description}</p>
+                            <p className="text-lg md:text-xl leading-relaxed">{project.description}</p>
                         )}
                     </div>
-                    
-                    {/* Gallery */}
-                    {allMediaItems.length > 1 && (
-                        <div 
-                            className={`transform-gpu transition-all duration-500 ease-out ${showModalContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-                            style={{ transitionDelay: '500ms' }}
-                        >
-                            <h3 className="text-lg font-semibold text-primary mb-3">Gallery</h3>
-                            <div className="flex flex-wrap gap-3">
-                                {allMediaItems.map((item, index) => {
-                                    const isSelected = selectedMediaUrl === item.url;
-                                    const thumbnailUrl = item.thumbnailUrl || item.url;
-                                    const isVideoThumb = thumbnailUrl.endsWith('.mp4');
-                                    
-                                    return (
-                                        <button
-                                            key={index}
-                                            onClick={() => setSelectedMediaUrl(item.url)}
-                                            className={`
-                                                relative w-24 h-16 rounded-md overflow-hidden 
-                                                border-2 transition-all duration-200
-                                                ${isSelected ? 'border-accent scale-105' : 'border-transparent opacity-70 hover:opacity-100'}
-                                            `}
-                                        >
-                                            {isVideoThumb ? (
-                                                <video src={thumbnailUrl} className="w-full h-full object-cover" muted />
-                                            ) : (
-                                                <img src={thumbnailUrl} alt={`Thumbnail ${index}`} className="w-full h-full object-cover" />
-                                            )}
-                                            {item.type === 'video' && (
-                                                <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-                                                    <PlayIcon className="w-6 h-6 text-white" />
-                                                </div>
-                                            )}
-                                        </button>
-                                    );
-                                })}
-                            </div>
-                        </div>
-                    )}
 
-                    {/* Technologies */}
-                    <div 
-                        className={`transform-gpu transition-all duration-500 ease-out ${showModalContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-                        style={{ transitionDelay: '650ms' }}
-                    >
-                        <h3 className="text-lg font-semibold text-primary mb-3">Technologies</h3>
-                        <div className="flex flex-wrap gap-2">
-                             {project.technologies.map(tech => (
-                                <span key={tech} className="bg-accent text-white dark:text-black text-xs font-semibold px-3 py-1 rounded-full shadow-sm">
-                                    {tech}
-                                </span>
-                             ))}
-                        </div>
-                    </div>
-
-                    {/* Links */}
-                    <div 
-                        className={`flex flex-wrap gap-4 pt-4 border-t border-border transform-gpu transition-all duration-500 ease-out ${showModalContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-                        style={{ transitionDelay: '800ms' }}
-                    >
+                    <div className="flex flex-wrap gap-4 pt-6 border-t border-border">
                         {project.modalContent?.map((item, index) => {
                             if (item.type === 'button') {
                                 return (
-                                    <a key={index} href={item.link} target="_blank" rel="noopener noreferrer" className="flex items-center space-x-2 text-white dark:text-black font-semibold bg-accent px-5 py-2.5 rounded-lg hover:opacity-90 transition-transform active:scale-95 shadow-md">
+                                    <a key={index} href={item.link} target="_blank" rel="noopener noreferrer" className="flex items-center space-x-2 text-white dark:text-black font-bold bg-accent px-6 py-3 rounded-xl hover:opacity-90 transition-transform active:scale-95 shadow-lg text-lg">
                                         <ExternalLinkIcon />
                                         <span>{item.text}</span>
                                     </a>
@@ -361,7 +342,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, initialBounds, isC
                             }
                             if (item.type === 'embed') {
                                 return (
-                                     <a key={index} href={item.value} target="_blank" rel="noopener noreferrer" className="flex items-center space-x-2 text-primary font-semibold bg-surface border border-border px-5 py-2.5 rounded-lg hover:bg-border/20 transition-transform active:scale-95">
+                                     <a key={index} href={item.value} target="_blank" rel="noopener noreferrer" className="flex items-center space-x-2 text-white dark:text-black font-bold bg-accent px-6 py-3 rounded-xl hover:opacity-90 transition-transform active:scale-95 shadow-lg text-lg">
                                         <ExternalLinkIcon />
                                         <span>{item.title}</span>
                                     </a>
@@ -369,15 +350,9 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, initialBounds, isC
                             }
                             return null;
                         })}
-                         {!project.modalContent && project.liveUrl && (
-                             <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="flex items-center space-x-2 text-white dark:text-black font-semibold bg-accent px-5 py-2.5 rounded-lg hover:opacity-90 transition-transform active:scale-95 shadow-md">
-                                <ExternalLinkIcon />
-                                <span>Live Demo</span>
-                             </a>
-                        )}
                     </div>
                 </div>
-             </div>
+            </div>
         </div>
       </div>
     </>
