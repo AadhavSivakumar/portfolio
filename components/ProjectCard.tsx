@@ -72,6 +72,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onSelect, isCompact 
   const prevHidden = useRef(isHidden);
   const [isRestoring, setIsRestoring] = useState(false);
   const [triggerSplash, setTriggerSplash] = useState(false);
+  const [isFlashing, setIsFlashing] = useState(false);
 
   // Detect transition from hidden -> visible
   if (prevHidden.current && !isHidden && !isRestoring) {
@@ -88,63 +89,71 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onSelect, isCompact 
       }
   }, [isRestoring]);
 
-  // Handle content stagger animation
+  // Handle content stagger animation on restore
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>;
     if (isHidden) {
-       // Graceful fade out when opening - slightly slower to match modal lift
        setIsContentVisible(false);
     } else {
-       // When modal closes, wait for the drop animation to finish
        timer = setTimeout(() => {
          setIsContentVisible(true);
-       }, 500); 
+       }, 100); 
     }
     return () => clearTimeout(timer);
   }, [isHidden]);
 
 
   const handleClick = () => {
+    setIsFlashing(true);
+    // Slight delay or immediate - let the click event bubble up
     if (cardRef.current) {
       onSelect(project, cardRef.current, isCompact);
     }
+    setTimeout(() => setIsFlashing(false), 300);
   };
 
-  const wrapperVisibilityClass = isHidden ? 'opacity-0 scale-95 pointer-events-none invisible' : 'opacity-100 scale-100 visible';
-  
-  // Wrapper transition
+  const wrapperVisibilityClass = isHidden ? 'pointer-events-none' : '';
   const transitionClass = isRestoring ? 'transition-none duration-0' : 'transition-all duration-400 ease-in-out';
+  const flashClass = isFlashing ? 'card-flash scale-95' : '';
   
-  // Content transition - make opening fade slightly longer and softer
-  const contentTransitionClass = `transition-all ${isHidden ? 'duration-500' : 'duration-300'} ease-out`;
+  // Stagger effect for text elements when reappearing
+  const contentTransitionClass = `transition-all ${isHidden ? 'duration-0' : 'duration-500'} ease-out`;
   const contentDelay = (delay: number) => isRestoring ? `${delay}ms` : (isContentVisible ? `${delay}ms` : '0ms');
+
+  const containerOpacityClass = isHidden 
+    ? 'opacity-0 transition-opacity duration-300 ease-out' 
+    : 'opacity-100 transition-opacity duration-500 ease-out';
+
+  const imageOpacityClass = isHidden 
+    ? 'opacity-0 transition-opacity duration-0' 
+    : 'opacity-100 transition-opacity duration-500';
 
   if (isCompact) {
     return (
       <div 
         ref={cardRef}
         onClick={handleClick}
-        className={`group relative cursor-pointer rounded-lg transform-gpu card-hover-effect ${transitionClass} ${wrapperVisibilityClass}`}
+        className={`group relative cursor-pointer rounded-lg transform-gpu card-hover-effect h-36 md:h-auto md:aspect-square ${transitionClass} ${wrapperVisibilityClass} ${flashClass}`}
       >
         {triggerSplash && <SplashEffect onComplete={() => setTriggerSplash(false)} />}
         
-        <div className="relative overflow-hidden rounded-lg bg-surface shadow-lg ring-1 ring-border h-full flex flex-row md:flex-col">
-            <div className="relative shrink-0 w-28 h-28 md:w-full md:h-48 overflow-hidden">
+        <div className={`relative overflow-hidden rounded-lg bg-surface shadow-lg ring-1 ring-border h-full flex flex-row md:flex-col ${containerOpacityClass}`}>
+            <div className="relative shrink-0 w-[35%] h-full md:w-full md:h-1/2 overflow-hidden">
                 <MediaDisplay 
                 src={project.imageUrl} 
                 alt={project.title} 
-                className={`w-full h-full object-cover ${isRestoring ? '' : 'transition-transform duration-300'}`}
+                className={`w-full h-full object-cover ${isRestoring ? '' : 'transition-transform duration-300 group-hover:scale-105'} ${imageOpacityClass}`}
                 />
             </div>
-            <div className={`p-3 md:p-4 overflow-hidden flex flex-col justify-center flex-grow`}>
+            <div className={`p-3 md:p-4 overflow-hidden flex flex-col flex-grow`}>
               <div className={`flex justify-between items-start mb-1 ${contentTransitionClass} ${!isContentVisible ? 'opacity-0 -translate-y-2' : 'opacity-100 translate-y-0'}`} style={{ transitionDelay: contentDelay(0) }}>
-                <h3 className="font-bold text-sm md:text-md text-primary truncate pr-2">{project.title}</h3>
+                <h3 className="font-extrabold text-sm md:text-md text-primary truncate pr-2 leading-tight">{project.title}</h3>
                 {project.status && (
                   <StatusIndicator status={project.status} className="mt-1" />
                 )}
               </div>
-              <p className={`text-xs md:text-sm text-secondary mb-2 md:mb-3 ${contentTransitionClass} ${!isContentVisible ? 'opacity-0 -translate-y-2' : 'opacity-100 translate-y-0'}`} style={{ transitionDelay: contentDelay(50) }}>{project.category}</p>
-              <div className="flex flex-wrap gap-1 md:gap-1.5">
+              <p className={`text-xs md:text-sm text-secondary mb-2 ${contentTransitionClass} ${!isContentVisible ? 'opacity-0 -translate-y-2' : 'opacity-100 translate-y-0'}`} style={{ transitionDelay: contentDelay(50) }}>{project.category}</p>
+              <div className="mt-auto flex flex-wrap gap-1 md:gap-1.5">
                 {project.technologies.slice(0, 3).map((tech, i) => (
                   <span key={tech} className={`bg-accent text-white dark:text-black text-[10px] font-semibold px-2 py-0.5 rounded-full shadow-sm ${contentTransitionClass} ${!isContentVisible ? 'opacity-0 scale-90' : 'opacity-100 scale-100'}`} style={{ transitionDelay: contentDelay(100 + i * 30) }}>{tech}</span>
                 ))}
@@ -162,22 +171,22 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onSelect, isCompact 
     <div
       ref={cardRef}
       onClick={handleClick}
-      className={`group relative cursor-pointer rounded-lg transform-gpu card-hover-effect ${transitionClass} ${wrapperVisibilityClass}`}
+      className={`group relative cursor-pointer rounded-lg transform-gpu card-hover-effect h-36 md:h-auto md:aspect-square ${transitionClass} ${wrapperVisibilityClass} ${flashClass}`}
     >
       {triggerSplash && <SplashEffect onComplete={() => setTriggerSplash(false)} />}
       
-      <div className="relative overflow-hidden rounded-lg bg-surface shadow-lg ring-1 ring-border h-full flex flex-row md:flex-col">
-          <div className="relative overflow-hidden shrink-0 w-28 h-28 md:w-full md:h-64">
+      <div className={`relative overflow-hidden rounded-lg bg-surface shadow-lg ring-1 ring-border h-full flex flex-row md:flex-col ${containerOpacityClass}`}>
+          <div className="relative overflow-hidden shrink-0 w-[35%] h-full md:w-full md:h-[55%]">
             <MediaDisplay
               src={project.imageUrl}
               alt={project.title}
-              className={`w-full h-full object-cover ${isRestoring ? '' : 'transition-transform duration-500 ease-in-out'}`}
+              className={`w-full h-full object-cover ${isRestoring ? '' : 'transition-transform duration-500 ease-in-out group-hover:scale-105'} ${imageOpacityClass}`}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 md:block hidden"></div>
+            <div className={`absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 md:block hidden ${imageOpacityClass}`}></div>
           </div>
-          <div className={`p-3 md:p-6 overflow-hidden flex flex-col justify-center flex-grow`}>
+          <div className={`p-4 md:p-6 overflow-hidden flex flex-col flex-grow`}>
             <div className={`flex justify-between items-center mb-1 ${contentTransitionClass} ${!isContentVisible ? 'opacity-0 -translate-y-2' : 'opacity-100 translate-y-0'}`} style={{ transitionDelay: contentDelay(0) }}>
-              <p className="text-xs md:text-sm font-medium text-accent">{project.category}</p>
+              <p className="text-xs md:text-sm font-bold text-accent">{project.category}</p>
               {project.status && (
                 <>
                   <StatusIndicator status={project.status} showText={false} className="md:hidden" />
@@ -185,8 +194,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onSelect, isCompact 
                 </>
               )}
             </div>
-            <h3 className={`text-lg md:text-xl font-bold text-primary mb-2 line-clamp-2 md:line-clamp-none ${contentTransitionClass} ${!isContentVisible ? 'opacity-0 -translate-y-2' : 'opacity-100 translate-y-0'}`} style={{ transitionDelay: contentDelay(50) }}>{project.title}</h3>
-            <div className="flex flex-wrap gap-1.5 md:gap-2 mt-1 md:mt-4">
+            <h3 className={`text-lg md:text-xl font-extrabold text-primary mb-2 line-clamp-2 leading-tight ${contentTransitionClass} ${!isContentVisible ? 'opacity-0 -translate-y-2' : 'opacity-100 translate-y-0'}`} style={{ transitionDelay: contentDelay(50) }}>{project.title}</h3>
+            
+            <div className="mt-auto flex flex-wrap gap-1.5 md:gap-2">
                 {project.technologies.slice(0, 4).map((tech, i) => (
                   <span key={tech} className={`bg-accent text-white dark:text-black text-[10px] md:text-xs font-semibold px-2 md:px-3 py-0.5 md:py-1 rounded-full shadow-sm ${contentTransitionClass} ${!isContentVisible ? 'opacity-0 scale-90' : 'opacity-100 scale-100'}`} style={{ transitionDelay: contentDelay(100 + i * 30) }}>{tech}</span>
                 ))}

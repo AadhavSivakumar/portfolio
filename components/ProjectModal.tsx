@@ -21,15 +21,16 @@ const MediaDisplay: React.FC<{ src: string; alt: string; className: string }> = 
 const ProjectModal: React.FC<ProjectModalProps> = ({ project, initialBounds, isCompact, onClose }) => {
   // Phases: 
   // 0: Idle
-  // 1: Lifting
-  // 2: Separating (to Center)
-  // 3: Expanding (Full Modal)
-  // 4: Collapsing (to Center)
-  // 5: Joining (to Lifted Pos)
+  // 1: Lifting (Header Visible, Body Hidden)
+  // 2: Separating (Header Fades Out, Body Hidden)
+  // 3: Expanding (All Hidden -> Staggers In)
+  // 4: Collapsing (All Fades Out)
+  // 5: Joining 
   // 6: Dropping
   const [phase, setPhase] = useState<0 | 1 | 2 | 3 | 4 | 5 | 6>(0);
   const [selectedMediaUrl, setSelectedMediaUrl] = useState(project.imageUrl);
   const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight });
+  const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
     setSelectedMediaUrl(project.imageUrl);
@@ -41,7 +42,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, initialBounds, isC
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Open Sequence - Timings slowed down to mirror closing sequence
+  // Open Sequence
   useEffect(() => {
     const rAF = requestAnimationFrame(() => {
         setPhase(1); // Start Lift
@@ -49,11 +50,22 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, initialBounds, isC
             setPhase(2); // Start glide to center
             setTimeout(() => {
                 setPhase(3); // Final expand
-            }, 500); // Wait for glide to complete
-        }, 400); // Wait for lift to complete (slower, matches drop)
+            }, 400); 
+        }, 300); // Lift duration
     });
     return () => cancelAnimationFrame(rAF);
   }, []);
+
+  // Content Visibility Trigger
+  useEffect(() => {
+    if (phase === 3) {
+        // Wait for the expansion transition (approx 600ms) to mostly finish before showing text
+        const timer = setTimeout(() => setShowContent(true), 500); 
+        return () => clearTimeout(timer);
+    } else {
+        setShowContent(false);
+    }
+  }, [phase]);
 
   useEffect(() => {
     const handleEsc = (event: KeyboardEvent) => {
@@ -69,12 +81,11 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, initialBounds, isC
         setPhase(5);
         setTimeout(() => {
             setPhase(6);
-            // Allow time for the drop animation AND the backdrop fade out
             setTimeout(() => {
                 onClose();
-            }, 500);
-        }, 500);
-    }, 500);
+            }, 400);
+        }, 400);
+    }, 450);
   }, [onClose]);
 
   const handleBackdropClick = (e: React.MouseEvent) => {
@@ -117,14 +128,14 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, initialBounds, isC
         width: initialBounds.width,
         height: initialBounds.height,
         transform: 'translateY(0)',
-        backgroundColor: 'var(--surface-color)',
+        backgroundColor: 'rgba(0,0,0,0)', 
         borderRadius: '0.5rem',
         boxShadow: '0 0 0 0 rgba(0,0,0,0)',
     };
 
     const liftedState = {
         ...idleState,
-        transform: 'translateY(-40px) scale(1.02)', // Slightly less extreme lift
+        transform: 'translateY(-20px) scale(1.02)', 
         boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)', 
     };
 
@@ -134,7 +145,6 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, initialBounds, isC
         width: separatedWidth,
         height: separatedHeight,
         transform: 'translateY(0) scale(1)', 
-        // Background becomes transparent so the gap between panes shows the backdrop/content behind
         backgroundColor: 'rgba(0, 0, 0, 0)', 
         borderRadius: '0.75rem',
         boxShadow: 'none',
@@ -151,14 +161,11 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, initialBounds, isC
         boxShadow: 'none',
     };
 
-    // Refined easing: Cubic-bezier(0.33, 1, 0.68, 1) is "Quint Out"
-    const swiftMove = 'cubic-bezier(0.25, 1, 0.5, 1)'; 
-    const cinematicExpand = 'cubic-bezier(0.65, 0, 0.35, 1)'; 
+    const smoothEase = 'cubic-bezier(0.4, 0, 0.2, 1)'; 
     
-    // Explicitly transition background-color for gradual change. Duration matched to lift/drop phase (500ms)
-    const baseTransition = `transform 500ms ${swiftMove}, box-shadow 500ms ease, background-color 500ms ease, border-radius 500ms ease`;
-    const moveTransition = `all 500ms ${swiftMove}`;
-    const expandTransition = `all 600ms ${cinematicExpand}`;
+    const baseTransition = `transform 400ms ${smoothEase}, box-shadow 400ms ease, background-color 400ms ease, border-radius 400ms ease`;
+    const moveTransition = `all 500ms ${smoothEase}`;
+    const expandTransition = `all 600ms ${smoothEase}`;
 
     switch (phase) {
         case 0: return { ...baseStyle, ...idleState, transition: 'none' };
@@ -172,42 +179,75 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, initialBounds, isC
     }
   }, [phase, initialBounds, targetTop, targetLeft, targetWidth, targetHeight, separatedTop, separatedLeft, separatedWidth, separatedHeight]);
 
-  const isSeparated = !isMobile && (phase === 2 || phase === 3 || phase === 4);
+  const isSeparated = phase === 2 || phase === 3 || phase === 4;
   const isExpanded = phase === 3;
-  const isStacked = !isSeparated; 
-
-  const cardImageHeightRem = isCompact ? '12rem' : '16rem';
-  const gap = isMobile ? '1rem' : isExpanded ? '2rem' : '1.5rem';
-  const cinematicExpand = 'cubic-bezier(0.65, 0, 0.35, 1)';
-  const swiftMove = 'cubic-bezier(0.25, 1, 0.5, 1)';
   
-  // Panes should inherit the movement curve
-  const paneTransition = isExpanded ? `all 600ms ${cinematicExpand}` : `all 500ms ${swiftMove}`;
+  // Phase 0 & 1 match the Card State exactly (Opening start)
+  // Phase 5 & 6 match the Card State exactly (Closing end)
+  const isCardState = phase === 0 || phase === 1 || phase === 5 || phase === 6;
+
+  const layoutMode = isMobile 
+    ? (isSeparated ? 'column' : 'row') // Note: This check is superseded by logic below for calculating pane styles
+    : (isSeparated ? 'row' : 'column');
+
+  const modalImageHeightMobile = '16rem'; 
+  const gap = isMobile ? '1rem' : (phase === 3 ? '2rem' : '1.5rem');
+
+  const smoothEase = 'cubic-bezier(0.4, 0, 0.2, 1)';
+  const paneTransition = `all 600ms ${smoothEase}`;
+
+  let leftPaneBase: React.CSSProperties = {};
+  let rightPaneBase: React.CSSProperties = {};
+
+  if (isCardState) {
+      if (isMobile) {
+          // CARD STATE (Mobile): Horizontal Row Layout
+          // Image 35%, Text 65% (matching ProjectCard)
+          leftPaneBase = { top: 0, left: 0, width: '35%', height: '100%' };
+          rightPaneBase = { top: 0, left: '35%', width: '65%', height: '100%' };
+      } else {
+          // CARD STATE (Desktop): Vertical Column Layout
+          // Compact Card: Image 50%, Text 50%
+          // Regular Card: Image 55%, Text 45%
+          const imageHeight = isCompact ? '50%' : '55%';
+          const textHeight = isCompact ? '50%' : '45%';
+          
+          leftPaneBase = { top: 0, left: 0, width: '100%', height: imageHeight };
+          rightPaneBase = { top: imageHeight, left: 0, width: '100%', height: textHeight };
+      }
+  } else {
+      // MODAL STATE: Expanded or Transitioning
+      if (isMobile) {
+          // Mobile Modal (Column)
+          leftPaneBase = { top: 0, left: 0, width: '100%', height: modalImageHeightMobile };
+          rightPaneBase = { top: `calc(${modalImageHeightMobile} + ${gap})`, left: 0, width: '100%', height: `calc(100% - ${modalImageHeightMobile} - ${gap})` };
+      } else {
+          // Desktop Modal (Row)
+          leftPaneBase = { top: 0, left: 0, width: '45%', height: '100%' };
+          rightPaneBase = { top: 0, left: `calc(45% + ${gap})`, width: `calc(55% - ${gap})`, height: '100%' };
+      }
+  }
 
   const leftPaneStyle: React.CSSProperties = {
       position: 'absolute',
-      top: 0,
-      left: 0,
-      width: isStacked ? '100%' : '42%', 
-      height: isStacked ? cardImageHeightRem : '100%',
-      borderRadius: isSeparated ? '1rem' : '0',
+      ...leftPaneBase,
+      borderRadius: isSeparated ? '0.75rem' : '0',
       boxShadow: isSeparated ? (isExpanded ? '0 25px 50px -12px rgba(0, 0, 0, 0.5)' : '0 10px 20px -5px rgba(0, 0, 0, 0.2)') : 'none',
       transition: paneTransition,
       overflow: 'hidden',
       backgroundColor: 'black',
+      zIndex: 2,
   };
 
   const rightPaneStyle: React.CSSProperties = {
       position: 'absolute',
-      top: isStacked ? cardImageHeightRem : 0,
-      left: isStacked ? 0 : `calc(42% + ${gap})`,
-      width: isStacked ? '100%' : `calc(58% - ${gap})`,
-      height: isStacked ? `calc(100% - ${cardImageHeightRem})` : '100%',
-      borderRadius: isSeparated ? '1rem' : '0',
+      ...rightPaneBase,
+      borderRadius: isSeparated ? '0.75rem' : '0',
       boxShadow: isSeparated ? (isExpanded ? '0 25px 50px -12px rgba(0, 0, 0, 0.25)' : '0 10px 20px -5px rgba(0, 0, 0, 0.1)') : 'none',
       overflow: 'hidden', 
       backgroundColor: 'var(--surface-color)',
       transition: paneTransition,
+      zIndex: 1,
   };
 
   const allMediaItems = useMemo(() => {
@@ -219,14 +259,48 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, initialBounds, isC
       return items;
   }, [project]);
 
-  // Content visibility: Fade in only when expanded
-  const isContentReady = phase === 3;
-  const contentTransition = 'transition-all duration-500 ease-out';
-  const contentOpacity = isContentReady ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4';
-  const getDelay = (base: number) => isExpanded ? `${base + 150}ms` : '0ms';
-
-  // Backdrop should fade out starting at phase 6 (Dropping)
   const showBackdrop = phase >= 1 && phase < 6;
+  const descriptionItems = project.modalContent || [{ type: 'text', value: project.description }];
+
+  // Helper for staggered animation styles
+  const getStaggerStyle = (order: number) => {
+    const isHeader = order < 3;
+
+    // Phase 0 & 1: Lifting Phase (Match Card)
+    if (phase === 0 || phase === 1) {
+        return {
+            opacity: isHeader ? 1 : 0,
+            transform: isHeader ? 'translateY(0)' : 'translateY(1.5rem)',
+            transition: 'none'
+        };
+    }
+    
+    // Phase 2: Separation (Fade out Header)
+    if (!showContent) {
+        return {
+            opacity: 0,
+            transform: isHeader ? 'translateY(0)' : 'translateY(1.5rem)', 
+            transition: 'opacity 300ms ease-out'
+        };
+    }
+
+    // Phase 3 (Content Ready): Stagger in
+    return {
+        opacity: 1,
+        transform: 'translateY(0)',
+        transition: `opacity 600ms cubic-bezier(0.2, 0.8, 0.2, 1) ${order * 75}ms, transform 600ms cubic-bezier(0.2, 0.8, 0.2, 1) ${order * 75}ms`
+    };
+  };
+
+  // Status Indicator: Visible on Desktop Card (Text), Mobile Card (Icon).
+  const showStatusText = isExpanded || (!isMobile);
+
+  // Layout Spacing Logic to Match ProjectCard
+  // Compact: p-3 md:p-4
+  // Regular: p-4 md:p-6
+  const startPadding = isCompact ? 'p-3 md:p-4' : 'p-4 md:p-6';
+  const endPadding = 'p-6 md:p-8';
+  const contentPadding = isExpanded ? endPadding : startPadding;
 
   return (
     <>
@@ -242,20 +316,19 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, initialBounds, isC
         role="dialog"
         aria-modal="true"
       >
-        <div style={leftPaneStyle} className="flex flex-col">
+        <div style={leftPaneStyle} className="flex flex-col group">
             <div className={`relative w-full ${isSeparated ? 'flex-grow min-h-0' : 'h-full'}`}>
                 <MediaDisplay 
                     src={selectedMediaUrl} 
                     alt={project.title} 
-                    className="w-full h-full object-cover" 
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
                 />
                 
-                {/* Gradient overlay fades out gradually as we enter expanded state */}
                 <div className={`absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-black/0 transition-opacity duration-700 ${isExpanded ? 'opacity-0' : 'opacity-100'}`}></div>
 
                 <button
                     onClick={handleClose}
-                    className={`absolute top-4 left-4 z-20 w-10 h-10 rounded-full bg-black/50 flex items-center justify-center text-white hover:bg-black/75 transition-all duration-400 ${isExpanded ? 'opacity-100 scale-100 delay-500' : 'opacity-0 scale-75 pointer-events-none'}`}
+                    className={`absolute top-4 left-4 z-20 w-10 h-10 rounded-full bg-black/50 flex items-center justify-center text-white hover:bg-black/75 transition-all duration-400 ${isExpanded ? 'opacity-100 scale-100 delay-300' : 'opacity-0 scale-75 pointer-events-none'}`}
                     aria-label="Close"
                 >
                     <CloseIcon />
@@ -300,37 +373,66 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, initialBounds, isC
         </div>
 
         <div style={rightPaneStyle} className="flex flex-col">
-            <div className={`flex flex-col h-full ${isCompact && !isSeparated ? 'p-4' : 'p-6 md:p-8'} ${isExpanded ? 'overflow-y-auto' : 'overflow-hidden'}`}>
+            <div className={`flex flex-col h-full transition-all duration-500 ease-in-out ${contentPadding} ${isExpanded ? 'justify-start overflow-y-auto' : 'justify-center overflow-hidden'}`}>
                 
-                <div className="shrink-0 mb-6">
-                     <div className={`flex flex-col sm:flex-row justify-between items-start mb-4 ${contentTransition} ${contentOpacity}`} style={{ transitionDelay: getDelay(0) }}>
-                        <div className="flex flex-col flex-grow">
-                             <p className={`font-bold text-accent transition-all duration-500 ${isExpanded ? 'text-lg md:text-2xl mb-2' : 'text-sm mb-1 opacity-0'}`}>{project.category}</p>
-                             <h2 className={`font-extrabold text-primary transition-all duration-600 leading-tight ${isExpanded ? 'text-5xl md:text-7xl' : 'text-lg md:text-xl'}`}>{project.title}</h2>
-                        </div>
-                        {project.status && <StatusIndicator status={project.status} showText={isExpanded} className={`${isExpanded ? 'mt-4 sm:mt-2' : 'mt-1'} transition-opacity duration-500 ${isExpanded ? 'opacity-100' : 'opacity-0'}`} />}
+                {/* Header Section */}
+                <div className={`shrink-0 ${isCardState ? 'h-full flex flex-col' : ''}`}>
+                     {/* Category & Status Row */}
+                     <div className={`flex justify-between items-center transition-all duration-500 ease-in-out ${isExpanded ? 'items-start mb-4' : 'mb-1'}`}>
+                         <p 
+                            className={`font-bold text-accent origin-left transition-all duration-500 ease-in-out ${isExpanded ? 'text-lg md:text-2xl' : 'text-xs md:text-sm'}`}
+                            style={getStaggerStyle(0)}
+                         >
+                            {project.category}
+                         </p>
+                         
+                         {project.status && (
+                            <div style={getStaggerStyle(0)} className={isExpanded ? 'mt-1' : ''}>
+                                <StatusIndicator status={project.status} showText={showStatusText} />
+                            </div>
+                        )}
                     </div>
 
-                    <div className={`flex flex-wrap gap-3 ${contentTransition} ${contentOpacity}`} style={{ transitionDelay: getDelay(100) }}>
+                    {/* Title */}
+                    <h2 
+                        className={`font-extrabold text-primary leading-tight origin-left transition-all duration-500 ease-in-out ${isExpanded ? 'text-4xl md:text-6xl mb-6' : 'text-lg md:text-xl mb-2 line-clamp-2 md:line-clamp-none'}`}
+                        style={getStaggerStyle(1)}
+                    >
+                        {project.title}
+                    </h2>
+
+                    {/* Tags */}
+                    {/* isCardState applies mt-auto to match the Card's flex-grow behavior */}
+                    <div 
+                        className={`flex flex-wrap transition-all duration-500 ease-in-out ${isExpanded ? 'gap-2 md:gap-3 mb-10' : `gap-1.5 md:gap-2 ${isCardState ? 'mt-auto' : (isMobile ? 'mt-1' : 'mt-2')}`}`} 
+                        style={getStaggerStyle(2)}
+                    >
                          {project.technologies.map((tech) => (
-                            <span key={tech} className={`bg-accent text-white dark:text-black font-bold rounded-full shadow-sm transition-all duration-500 ${isExpanded ? 'text-sm md:text-base px-4 py-1.5' : 'text-xs px-2 py-1'}`}>{tech}</span>
+                            <span key={tech} className={`bg-accent text-white dark:text-black font-bold rounded-full shadow-sm transition-all duration-500 ${isExpanded ? 'text-sm md:text-base px-3 py-1 md:px-4 md:py-1.5' : 'text-[10px] md:text-xs px-2 md:px-3 py-0.5 md:py-1'}`}>{tech}</span>
                         ))}
                     </div>
                 </div>
 
-                <div className={`flex-grow ${contentTransition} ${contentOpacity}`} style={{ transitionDelay: getDelay(200) }}>
+                {/* Body Section */}
+                <div className={`flex-grow ${!isExpanded ? 'hidden' : ''}`}>
                     <div className="prose dark:prose-invert max-w-none text-secondary mb-10">
-                        {project.modalContent ? (
-                            project.modalContent.map((item, index) => {
-                                if (item.type === 'text') return <p key={index} className="mb-6 text-lg md:text-xl leading-relaxed">{item.value}</p>;
-                                return null;
-                            })
-                        ) : (
-                            <p className="text-lg md:text-xl leading-relaxed">{project.description}</p>
-                        )}
+                        {descriptionItems.map((item, index) => {
+                            if (item.type === 'text') {
+                                return (
+                                    <p 
+                                        key={index} 
+                                        className="mb-6 text-lg md:text-xl leading-relaxed"
+                                        style={getStaggerStyle(3 + index)}
+                                    >
+                                        {item.value}
+                                    </p>
+                                );
+                            }
+                            return null;
+                        })}
                     </div>
 
-                    <div className="flex flex-wrap gap-4 pt-6 border-t border-border">
+                    <div className="flex flex-wrap gap-4 pt-6 border-t border-border" style={getStaggerStyle(3 + descriptionItems.length)}>
                         {project.modalContent?.map((item, index) => {
                             if (item.type === 'button') {
                                 return (
