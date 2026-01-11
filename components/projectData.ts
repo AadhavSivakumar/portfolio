@@ -34,7 +34,8 @@ export const MAJOR_PROJECTS_DATA: Project[] = [
   // Swapped: Reinforcement Learning & Optimal Control (formerly Additional 'd')
   {
     "id": "d",
-    "title": "Reinforcement Learning & Optimal Control",
+    "title": "Reinforcement Learning & OC",
+    "modalTitle": "Reinforcement Learning & Optimal Control",
     "category": "Robotics & Control",
     "description": "Exploring advanced control strategies through model predictive control and deep reinforcement learning. This research-focused project implements algorithms like PPO in complex simulated environments.",
     "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/l_reinforcementlearning/1.mp4",
@@ -48,6 +49,33 @@ export const MAJOR_PROJECTS_DATA: Project[] = [
       {
         "type": "text",
         "value": "The goal is to bridge the gap between simulation and reality for complex robotic tasks, ensuring robust performance under uncertainty and dynamic environmental conditions."
+      },
+      {
+        "type": "button",
+        "text": "View on GitHub",
+        "link": "https://github.com/AadhavSivakumar/Reinforcement-Learning-and-Optimal-Control/"
+      }
+    ],
+    "media": [
+      {
+        "type": "video",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/l_reinforcementlearning/2.mp4"
+      },
+      {
+        "type": "video",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/l_reinforcementlearning/3.mp4"
+      },
+      {
+        "type": "video",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/l_reinforcementlearning/4.mp4"
+      },
+      {
+        "type": "video",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/l_reinforcementlearning/5.mp4"
+      },
+      {
+        "type": "image",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/l_reinforcementlearning/6.png"
       }
     ]
   },
@@ -140,6 +168,29 @@ export const MAJOR_PROJECTS_DATA: Project[] = [
       {
         "type": "text",
         "value": "By integrating these perception layers with control stacks, we enable more autonomous and reliable navigation and manipulation in cluttered, real-world environments."
+      },
+      {
+        "type": "button",
+        "text": "View on GitHub",
+        "link": "https://github.com/AadhavSivakumar/Robot-Perception"
+      }
+    ],
+    "media": [
+      {
+        "type": "image",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/m_robotperception/2.png"
+      },
+      {
+        "type": "video",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/m_robotperception/3.mp4"
+      },
+      {
+        "type": "image",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/m_robotperception/4.png"
+      },
+      {
+        "type": "image",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/m_robotperception/5.png"
       }
     ]
   },

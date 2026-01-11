@@ -12,8 +12,19 @@ interface ProjectModalProps {
 
 const MediaDisplay: React.FC<{ src: string; alt: string; className: string }> = ({ src, alt, className }) => {
   const isVideo = src.endsWith('.mp4') || src.endsWith('.webm');
+  // Use state to handle seamless loading if needed, currently direct render for speed
   if (isVideo) {
-    return <video src={src} className={className} autoPlay loop muted playsInline />;
+    return (
+        <video 
+            src={src} 
+            className={className} 
+            autoPlay 
+            loop 
+            muted 
+            playsInline 
+            preload="auto"
+        />
+    );
   }
   return <img src={src} alt={alt} className={className} />;
 };
@@ -31,10 +42,23 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, initialBounds, isC
   const [selectedMediaUrl, setSelectedMediaUrl] = useState(project.imageUrl);
   const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight });
   const [showContent, setShowContent] = useState(false);
+  const [displayTitle, setDisplayTitle] = useState(project.title);
 
   useEffect(() => {
     setSelectedMediaUrl(project.imageUrl);
+    setDisplayTitle(project.title);
   }, [project]);
+
+  // Title Switching Logic
+  // When Phase 3 starts (Expanded), switch to Modal Title (invisible at first, fades in)
+  // When Phase 5 starts (Joining/Closing), switch back to Short Title (invisible at first)
+  useEffect(() => {
+    if (phase === 3 && project.modalTitle) {
+      setDisplayTitle(project.modalTitle);
+    } else if (phase === 5) {
+      setDisplayTitle(project.title);
+    }
+  }, [phase, project.modalTitle, project.title]);
 
   useEffect(() => {
     const handleResize = () => setWindowSize({ width: window.innerWidth, height: window.innerHeight });
@@ -209,11 +233,15 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, initialBounds, isC
           // CARD STATE (Desktop): Vertical Column Layout
           // Compact Card: Image 50%, Text 50%
           // Regular Card: Image 55%, Text 45%
-          const imageHeight = isCompact ? '50%' : '55%';
-          const textHeight = isCompact ? '50%' : '45%';
+          // Updated to 70% as per recent ProjectCard changes
+          const imageHeight = isCompact ? '70%' : '70%';
+          const mediaHeightClass = project.id === 'about-me' ? '60%' : '70%'; 
           
-          leftPaneBase = { top: 0, left: 0, width: '100%', height: imageHeight };
-          rightPaneBase = { top: imageHeight, left: 0, width: '100%', height: textHeight };
+          const finalImageHeight = project.id === 'about-me' ? mediaHeightClass : imageHeight;
+          const textHeight = `calc(100% - ${finalImageHeight})`;
+          
+          leftPaneBase = { top: 0, left: 0, width: '100%', height: finalImageHeight };
+          rightPaneBase = { top: finalImageHeight, left: 0, width: '100%', height: textHeight };
       }
   } else {
       // MODAL STATE: Expanded or Transitioning
@@ -235,7 +263,8 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, initialBounds, isC
       boxShadow: isSeparated ? (isExpanded ? '0 25px 50px -12px rgba(0, 0, 0, 0.5)' : '0 10px 20px -5px rgba(0, 0, 0, 0.2)') : 'none',
       transition: paneTransition,
       overflow: 'hidden',
-      backgroundColor: 'black',
+      // Changed from 'black' to 'var(--surface-color)' to avoid black flash during media load
+      backgroundColor: 'var(--surface-color)', 
       zIndex: 2,
   };
 
@@ -259,7 +288,13 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, initialBounds, isC
       return items;
   }, [project]);
 
-  const showBackdrop = phase >= 1 && phase < 6;
+  // Backdrop Logic:
+  // Fade in during Separating (Phase 2)
+  // Visible during Expanding (Phase 3) & Collapsing (Phase 4)
+  // Fade out during Joining (Phase 5 starts, showBackdrop becomes false)
+  // Hidden during Lifting (Phase 1) and Dropping (Phase 6)
+  const showBackdrop = phase >= 2 && phase < 5;
+
   const descriptionItems = project.modalContent || [{ type: 'text', value: project.description }];
 
   // Helper for staggered animation styles
@@ -296,16 +331,19 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, initialBounds, isC
   const showStatusText = isExpanded || (!isMobile);
 
   // Layout Spacing Logic to Match ProjectCard
-  // Compact: p-3 md:p-4
-  // Regular: p-4 md:p-6
-  const startPadding = isCompact ? 'p-3 md:p-4' : 'p-4 md:p-6';
+  // Compact: px-3 pt-1 pb-1.5 md:px-4 md:pt-1.5 md:pb-4
+  // Regular: px-3.5 pt-1.5 pb-2 md:px-5 md:pt-2 md:pb-4
+  const startPadding = isCompact 
+    ? 'px-3 pt-1 pb-1.5 md:px-4 md:pt-1.5 md:pb-4' 
+    : 'px-3.5 pt-1.5 pb-2 md:px-5 md:pt-2 md:pb-4';
+  
   const endPadding = 'p-6 md:p-8';
   const contentPadding = isExpanded ? endPadding : startPadding;
 
   return (
     <>
       <div 
-        className={`fixed inset-0 z-40 bg-black/60 backdrop-blur-sm transition-opacity duration-700 ease-in-out ${showBackdrop ? 'opacity-100' : 'opacity-0'}`}
+        className={`fixed inset-0 z-40 bg-black/60 backdrop-blur-sm transition-opacity duration-500 ease-in-out ${showBackdrop ? 'opacity-100' : 'opacity-0'}`}
         onClick={handleBackdropClick}
         aria-hidden="true"
         style={{ pointerEvents: phase === 3 ? 'auto' : 'none' }} 
@@ -380,7 +418,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, initialBounds, isC
                      {/* Category & Status Row */}
                      <div className={`flex justify-between items-center transition-all duration-500 ease-in-out ${isExpanded ? 'items-start mb-4' : 'mb-1'}`}>
                          <p 
-                            className={`font-bold text-accent origin-left transition-all duration-500 ease-in-out ${isExpanded ? 'text-lg md:text-2xl' : 'text-xs md:text-sm'}`}
+                            className={`font-bold origin-left transition-all duration-500 ease-in-out ${isExpanded ? 'text-lg md:text-2xl text-accent' : 'text-xs md:text-sm text-secondary'}`}
                             style={getStaggerStyle(0)}
                          >
                             {project.category}
@@ -398,7 +436,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, initialBounds, isC
                         className={`font-extrabold text-primary leading-tight origin-left transition-all duration-500 ease-in-out ${isExpanded ? 'text-4xl md:text-6xl mb-6' : 'text-lg md:text-xl mb-2 line-clamp-2 md:line-clamp-none'}`}
                         style={getStaggerStyle(1)}
                     >
-                        {project.title}
+                        {displayTitle}
                     </h2>
 
                     {/* Tags */}

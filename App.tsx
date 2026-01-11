@@ -31,7 +31,7 @@ const App: React.FC = () => {
     // Only first two sentences visible on card
     description: "Hello! My name is Aadhav Sivakumar, and this website is meant to showcase projects I've worked on in the past and projects that I'm currently working on.",
     imageUrl: "https://aadhavsivakumar.github.io/Media/Gradpic.png",
-    technologies: ["Robotics Engineer", "NYU Tandon", "Starship Technologies", "UCSC Alumni"],
+    technologies: ["Robotics Engineer", "Starship Technologies", "NYU Tandon", "University of California Alumni"],
     status: 'in-progress',
     modalContent: [
       {
