@@ -105,14 +105,14 @@ export const MAJOR_PROJECTS_DATA: Project[] = [
     "id": 4,
     "title": "SMART compost sorting",
     "category": "Robotics & Computer Vision",
-    "description": "Designed and implemented a robotic compost sorting system using a Franka Emika arm and depth-sensing computer vision. Developed within a ROS framework to automate the identification and separation of contaminants.",
+    "description": "My undergraduate Capstone project: designed and implemented a robotic compost sorting system using a Franka Emika arm and depth-sensing computer vision.",
     "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/d_SMARTcompost/1.mp4",
     "technologies": ["Franka Emika Robot", "Computer Vision", "ROS"],
     "status": "finished",
     "modalContent": [
       {
         "type": "text",
-        "value": "Designed and implemented a robotic compost sorting system using a Franka Emika arm and depth-sensing computer vision. Developed within a ROS framework, this project successfully automated the identification and separation of contaminants from organic waste streams."
+        "value": "For my undergraduate Capstone project, I designed and implemented a robotic compost sorting system using a Franka Emika arm and depth-sensing computer vision. Developed within a ROS framework, this project successfully automated the identification and separation of contaminants from organic waste streams."
       },
       {
         "type": "button",
@@ -210,7 +210,7 @@ export const MAJOR_PROJECTS_DATA: Project[] = [
       },
       {
         "type": "text",
-        "value": "This project was a capstone for my undergraduate studies, showcasing the integration of advanced simulation with robotic control theory. The final system demonstrated a significant potential for reducing manual labor and improving inventory management in a simulated retail setting."
+        "value": "This project showcases the integration of advanced simulation with robotic control theory. The final system demonstrated a significant potential for reducing manual labor and improving inventory management in a simulated retail setting."
       },
       {
         "type": "button",

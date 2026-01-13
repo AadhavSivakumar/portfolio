@@ -5,8 +5,10 @@ import Section from './components/Section';
 import ProjectCard from './components/ProjectCard';
 import ProjectModal from './components/ProjectModal';
 import SkillsSection from './components/SkillsSection';
-import { FileIcon, FilesIcon, PaperGradeIcon } from './components/Icons';
+import StatsSection from './components/StatsSection';
+import { FileIcon, FilesIcon, PaperGradeIcon, MailIcon } from './components/Icons';
 import DocumentModal from './components/DocumentModal';
+import ContactModal from './components/PdfModal'; // Re-using existing component structure
 import SineWave from './components/SineWave';
 import AnimateOnScroll from './components/AnimateOnScroll';
 import { MAJOR_PROJECTS_DATA, ADDITIONAL_PROJECTS_DATA } from './components/projectData';
@@ -18,8 +20,10 @@ const App: React.FC = () => {
   
   const [selectedProject, setSelectedProject] = useState<{ project: Project; bounds: DOMRect; isCompact: boolean; } | null>(null);
   const [selectedDocument, setSelectedDocument] = useState<{ url: string; title: string; bounds: DOMRect } | null>(null);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+  const [contactModalBounds, setContactModalBounds] = useState<DOMRect | null>(null);
   const [isContentVisible, setIsContentVisible] = useState(false);
-
+  
   const resumeButtonRef = useRef<HTMLButtonElement>(null);
   const cvButtonRef = useRef<HTMLButtonElement>(null);
   const undergradTranscriptRef = useRef<HTMLButtonElement>(null);
@@ -85,6 +89,16 @@ const App: React.FC = () => {
   const handleCloseDocumentModal = () => {
       setSelectedDocument(null);
   };
+
+  const handleOpenContact = (event: React.MouseEvent<HTMLElement>) => {
+      const bounds = event.currentTarget.getBoundingClientRect();
+      setContactModalBounds(bounds);
+      setIsContactModalOpen(true);
+  };
+  
+  const handleCloseContact = () => {
+      setIsContactModalOpen(false);
+  };
   
   return (
     <div className="min-h-screen">
@@ -105,25 +119,54 @@ const App: React.FC = () => {
           onClose={handleCloseDocumentModal}
         />
       )}
+      {isContactModalOpen && (
+          <ContactModal 
+            initialBounds={contactModalBounds || { top: 0, left: 0, width: 0, height: 0 } as DOMRect}
+            onClose={handleCloseContact}
+          />
+      )}
       
-      <Header />
+      <Header onContactClick={handleOpenContact} />
       <main>
         <section id="home" className="relative flex flex-col items-center justify-center text-center min-h-screen overflow-hidden">
             <SineWave />
-            <div className={`relative z-10 flex flex-col items-center px-4 mt-20 sm:px-6 lg:px-8 pointer-events-none transition-all duration-1000 ease-out ${isContentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-              <div className="relative w-56 h-56 mb-8 rounded-full overflow-hidden shadow-2xl">
-                <img 
-                    src="https://aadhavsivakumar.github.io/Media/frontpagepfp.JPG" 
-                    alt="Aadhav Sivakumar" 
-                    className="w-full h-full object-cover transform scale-105"
-                />
+            <div className="relative z-10 flex flex-col items-center px-4 mt-20 sm:px-6 lg:px-8 pointer-events-none">
+              
+              <div className={`flex flex-col items-center transition-all duration-1000 ease-out ${isContentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+                <div className="relative w-56 h-56 mb-8 rounded-full overflow-hidden shadow-2xl">
+                    <img 
+                        src="https://aadhavsivakumar.github.io/Media/frontpagepfp.JPG" 
+                        alt="Aadhav Sivakumar" 
+                        className="w-full h-full object-cover transform scale-105"
+                    />
+                </div>
+                <h1 className="text-5xl font-extrabold tracking-tight text-primary sm:text-6xl md:text-7xl mb-8">
+                    Aadhav Sivakumar
+                </h1>
               </div>
-              <h1 className="text-5xl font-extrabold tracking-tight text-primary sm:text-6xl md:text-7xl">
-                  Aadhav Sivakumar
-              </h1>
-              <p className="mt-6 text-xl text-secondary max-w-2xl">
-                Robotics Engineer working in Machine Learning, Control Systems, Computer Vision, and Embedded AI
-              </p>
+              
+              <div className="flex flex-wrap justify-center gap-3">
+                 {['Python', 'C++', 'ROS', 'Machine Learning', 'Computer Vision', 'Control Systems', 'Embedded AI'].map((tech, i) => (
+                    <span 
+                        key={tech} 
+                        className={`
+                            px-4 py-2 text-sm md:text-base font-medium rounded-full pointer-events-auto
+                            bg-white/5 dark:bg-white/5 
+                            backdrop-blur-[8px] backdrop-brightness-125 backdrop-contrast-125
+                            border border-white/40 dark:border-white/30 
+                            shadow-[0_4px_12px_rgba(0,0,0,0.1),inset_0_0_10px_rgba(255,255,255,0.1)]
+                            text-primary 
+                            hover:scale-105 hover:bg-white/10 dark:hover:bg-white/10
+                            hover:shadow-[0_8px_24px_rgba(0,0,0,0.15),inset_0_0_15px_rgba(255,255,255,0.2)]
+                            transition-all duration-500 ease-out transform-gpu
+                            ${isContentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
+                        `}
+                        style={{ transitionDelay: `${i * 100 + 300}ms` }}
+                    >
+                        {tech}
+                    </span>
+                 ))}
+              </div>
             </div>
         </section>
         
@@ -222,18 +265,43 @@ const App: React.FC = () => {
                 ))}
               </div>
           </Section>
+
           <div id="skills">
             <AnimateOnScroll>
               <SkillsSection />
             </AnimateOnScroll>
           </div>
+
+          <div id="activity">
+             <StatsSection />
+          </div>
         </div>
+
+        {/* Call to Action Footer */}
+        <section className="py-20 bg-surface/50 border-t border-border mt-12">
+            <div className="container mx-auto px-4 text-center">
+                <AnimateOnScroll>
+                    <h2 className="text-3xl md:text-4xl font-bold text-primary mb-6">Ready to Build the Future?</h2>
+                    <p className="text-lg text-secondary max-w-2xl mx-auto mb-10">
+                        I'm always open to discussing new opportunities in Robotics, Machine Learning, and Mechatronics. Whether you have a question or just want to say hi, I'll try my best to get back to you!
+                    </p>
+                    <button 
+                        onClick={handleOpenContact}
+                        className="inline-flex items-center gap-3 bg-accent text-white dark:text-black font-bold py-4 px-8 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 text-lg group"
+                    >
+                        <MailIcon className="w-6 h-6 group-hover:animate-bounce" />
+                        Get In Touch
+                    </button>
+                </AnimateOnScroll>
+            </div>
+        </section>
       </main>
       
-      <footer className={`border-t border-border mt-12 transition-opacity duration-1000 delay-500 ${isContentVisible ? 'opacity-100' : 'opacity-0'}`}>
+      <footer className={`border-t border-border bg-background transition-opacity duration-1000 ${isContentVisible ? 'opacity-100' : 'opacity-0'}`}>
         <AnimateOnScroll>
-          <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center py-8 text-secondary">
+          <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center py-8 text-secondary flex flex-col md:flex-row justify-between items-center gap-4">
             <p>&copy; {new Date().getFullYear()} Aadhav Sivakumar. All rights reserved.</p>
+            <p className="text-sm">Built with React, TypeScript & Tailwind CSS</p>
           </div>
         </AnimateOnScroll>
       </footer>
