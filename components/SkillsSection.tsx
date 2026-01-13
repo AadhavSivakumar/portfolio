@@ -88,26 +88,26 @@ const SkillsSection: React.FC = () => {
             </div>
 
 
-            <div className="flex justify-center flex-wrap gap-2 md:gap-4 mb-12">
+            <div className="flex justify-center flex-wrap gap-1 md:gap-2 mb-12">
                 {SKILL_GROUPS.map(group => (
                     <button
                         key={group.id}
                         onClick={() => handleManualGroupClick(group.id)}
                         className={`
-                            flex items-center gap-2 px-4 py-2 text-sm md:text-base font-semibold rounded-lg transition-all duration-300 ease-in-out
+                            flex items-center gap-2 px-2 py-2 text-xs md:text-sm font-semibold rounded-lg transition-all duration-300 ease-in-out h-auto min-h-[3rem]
                             ${activeGroupId === group.id
                                 ? 'bg-accent text-white dark:text-black shadow-lg scale-105'
                                 : 'bg-surface text-secondary hover:bg-border hover:text-primary'
                             }
                         `}
                     >
-                        <img src={group.cardImageUrl} alt="" className="w-5 h-5" />
-                        <span>{group.title}</span>
+                        <img src={group.cardImageUrl} alt="" className="w-5 h-5 shrink-0" />
+                        <span className="whitespace-pre-line text-left leading-tight">{group.title}</span>
                     </button>
                 ))}
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 auto-rows-fr">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 auto-rows-fr">
                 {activeGroup.items.map((skill, index) => (
                     <SkillBadge
                         key={`${displayedGroupId}-${skill.name}`}

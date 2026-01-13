@@ -9,10 +9,10 @@ export const SKILL_GROUPS: SkillGroup[] = [
         title: 'Programming',
         cardImageUrl: 'https://api.iconify.design/mdi/code-braces.svg',
         items: [
+            { name: 'Python', imageUrl: deviconsBaseUrl + 'python/python-original.svg', description: 'High-level, versatile language for web dev, data science, AI, scripting, and automation.' },
+            { name: 'C / C++', imageUrl: deviconsBaseUrl + 'cplusplus/cplusplus-original.svg', description: 'Powerful languages for system programming, embedded systems, game engines, and performance-critical applications, with C++ adding object-oriented features.' },
             { name: 'Verilog', imageUrl: baseSkillImagePath + 'verilog.png', description: 'Hardware description language (HDL) for modeling electronic systems like FPGAs and ASICs.' },
             { name: 'ROS', imageUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/ros/ros-original.svg', description: 'Flexible framework for writing robot software, simplifying complex robot behavior development.' },
-            { name: 'C / C++', imageUrl: deviconsBaseUrl + 'cplusplus/cplusplus-original.svg', description: 'Powerful languages for system programming, embedded systems, game engines, and performance-critical applications, with C++ adding object-oriented features.' },
-            { name: 'Python', imageUrl: deviconsBaseUrl + 'python/python-original.svg', description: 'High-level, versatile language for web dev, data science, AI, scripting, and automation.' },
             { name: 'Java', imageUrl: deviconsBaseUrl + 'java/java-original.svg', description: 'Class-based, object-oriented language for enterprise apps, Android development, and large systems.' },
             { name: 'HTML5 & CSS3', imageUrl: deviconsBaseUrl + 'html5/html5-original.svg', description: 'The fundamental languages for creating and styling web pages and applications, enabling rich multimedia, responsive design, and animations.' },
             { name: 'JavaScript', imageUrl: deviconsBaseUrl + 'javascript/javascript-original.svg', description: 'Essential for interactive web content; also used in non-browser environments via Node.js.' },
@@ -21,7 +21,7 @@ export const SKILL_GROUPS: SkillGroup[] = [
     },
     {
         id: 'robotics-control',
-        title: 'Robotics & Control Systems',
+        title: 'Robotics & Control\nSystems',
         cardImageUrl: 'https://api.iconify.design/mdi/robot-industrial.svg',
         items: [
             { name: 'Franka Emika Robot', imageUrl: baseSkillImagePath + 'Franka-Emika-Panda-robot.png', description: 'Collaborative 7-DOF robot arm for research and industry, with sensitive torque sensors.' },
@@ -38,7 +38,7 @@ export const SKILL_GROUPS: SkillGroup[] = [
     },
     {
         id: 'microcontrollers-boards',
-        title: 'Microcontrollers & Boards',
+        title: 'Microcontrollers\n& Boards',
         cardImageUrl: 'https://api.iconify.design/mdi/chip.svg',
         items: [
             { name: 'Arduino', imageUrl: baseSkillImagePath + 'Arduino.jpg', description: 'Open-source platform for interactive objects, popular for prototyping and education.' },
@@ -53,7 +53,7 @@ export const SKILL_GROUPS: SkillGroup[] = [
     },
     {
         id: 'sensors-electronics',
-        title: 'Sensors & Electronics',
+        title: 'Sensors\n& Electronics',
         cardImageUrl: 'https://api.iconify.design/mdi/resistor-nodes.svg',
         items: [
             { name: 'ATI Multi-Axis Force/Torque', imageUrl: 'https://api.iconify.design/mdi/axis-arrow-info.svg?color=%23555555', description: 'Measures all six components of force/torque for robotics, haptics, product testing.' },
@@ -69,7 +69,7 @@ export const SKILL_GROUPS: SkillGroup[] = [
     },
     {
         id: 'ai-ml-data',
-        title: 'AI, Machine Learning & Data',
+        title: 'AI, Machine Learning\n& Data',
         cardImageUrl: 'https://api.iconify.design/mdi/brain.svg',
         items: [
             { name: 'Computer Vision', imageUrl: 'https://api.iconify.design/mdi/eye-check-outline.svg?color=%23555555', description: 'Enabling computers to "see" and interpret visual information like images and videos.' },
@@ -81,7 +81,7 @@ export const SKILL_GROUPS: SkillGroup[] = [
     },
     {
         id: 'design-fabrication',
-        title: 'Design & Fabrication',
+        title: 'Design\n& Fabrication',
         cardImageUrl: 'https://api.iconify.design/mdi/printer-3d-nozzle-outline.svg',
         items: [
             { name: 'Bambu Lab Printer', imageUrl: baseSkillImagePath + 'bambu.webp', description: 'High-speed 3D printers with multi-material support (AMS) and advanced features.' },
@@ -93,7 +93,7 @@ export const SKILL_GROUPS: SkillGroup[] = [
     },
     {
         id: 'specialized-tools',
-        title: 'Specialized Tools',
+        title: 'Specialized\nTools',
         cardImageUrl: 'https://api.iconify.design/mdi/toolbox-outline.svg',
         items: [
             { name: 'Oscilloscope', imageUrl: baseSkillImagePath + 'oscilloscope.jpg', description: 'Instrument for observing varying signal voltages, crucial for debugging electronic circuits.' },

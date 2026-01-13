@@ -147,11 +147,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onSelect, isCompact 
       <div 
         ref={cardRef}
         onClick={handleClick}
-        className={`group relative cursor-pointer rounded-lg transform-gpu card-hover-effect h-20 md:h-auto md:aspect-square ${transitionClass} ${wrapperVisibilityClass}`}
+        className={`group relative cursor-pointer rounded-lg transform-gpu card-hover-effect w-full h-20 md:h-auto md:aspect-square ${transitionClass} ${wrapperVisibilityClass}`}
       >
         {triggerSplash && <SplashEffect onComplete={() => setTriggerSplash(false)} />}
         
-        <div className={`relative overflow-hidden rounded-lg bg-surface shadow-lg ring-1 ring-border h-full flex flex-row md:flex-col ${containerOpacityClass}`}>
+        <div className={`absolute inset-0 overflow-hidden rounded-lg bg-surface shadow-lg ring-1 ring-border flex flex-row md:flex-col ${containerOpacityClass}`}>
             <div className="relative shrink-0 w-[35%] h-full md:w-full md:h-[70%] overflow-hidden">
                 <MediaDisplay 
                 src={project.imageUrl} 
@@ -188,11 +188,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onSelect, isCompact 
     <div
       ref={cardRef}
       onClick={handleClick}
-      className={`group relative cursor-pointer rounded-lg transform-gpu card-hover-effect min-h-[7rem] h-auto md:h-auto md:aspect-square flex flex-col ${transitionClass} ${wrapperVisibilityClass}`}
+      className={`group relative cursor-pointer rounded-lg transform-gpu card-hover-effect w-full h-28 md:h-auto md:aspect-square ${transitionClass} ${wrapperVisibilityClass}`}
     >
       {triggerSplash && <SplashEffect onComplete={() => setTriggerSplash(false)} />}
       
-      <div className={`relative overflow-hidden rounded-lg bg-surface shadow-lg ring-1 ring-border flex-grow w-full flex flex-row md:flex-col ${containerOpacityClass}`}>
+      <div className={`absolute inset-0 overflow-hidden rounded-lg bg-surface shadow-lg ring-1 ring-border flex flex-row md:flex-col ${containerOpacityClass}`}>
           <div className={`relative overflow-hidden shrink-0 w-[35%] md:w-full ${mediaHeightClass}`}>
             <MediaDisplay
               src={project.imageUrl}

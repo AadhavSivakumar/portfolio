@@ -58,64 +58,15 @@
         background: var(--accent-color);
       }
       
-      @property --angle {
-        syntax: "<angle>";
-        initial-value: 0deg;
-        inherits: false;
-      }
-
-      @keyframes spin {
-        0% { --angle: 0deg; }
-        100% { --angle: 360deg; }
-      }
-
       .card-hover-effect {
-        /* Ensure stacking context for pseudo-elements */
-        isolation: isolate; 
+        transition: all 0.3s ease-in-out;
       }
 
       .card-hover-effect:hover {
         position: relative; /* Ensure z-index is applied */
         z-index: 35; /* Sit above the backdrop (z-30) */
         transform: translateY(-8px);
-        /* Deep drop shadow without color glow (glow handled by pseudos) */
-        box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5); 
-      }
-
-      /* Moving glow border */
-      .card-hover-effect::before,
-      .card-hover-effect::after {
-        content: "";
-        position: absolute;
-        inset: -1.5px; /* Thinner border for sharper look */
-        z-index: -1;
-        background: conic-gradient(
-          from var(--angle),
-          transparent 0deg,
-          var(--accent-border-color) 45deg,
-          transparent 100deg
-        );
-        border-radius: inherit;
-        animation: spin 3s linear infinite;
-        opacity: 0;
-        transition: opacity 0.3s ease-in-out;
-      }
-      
-      .card-hover-effect::after {
-        /* Use lighter accent for the glow, but less blur to avoid 'box' effect */
-        background: conic-gradient(
-          from var(--angle),
-          transparent 0deg,
-          var(--accent-color) 45deg,
-          transparent 100deg
-        );
-        filter: blur(10px); 
-        inset: -2px; 
-      }
-
-      .card-hover-effect:hover::before,
-      .card-hover-effect:hover::after {
-        opacity: 1;
+        box-shadow: 0 20px 40px -10px rgba(0,0,0,0.3); 
       }
 
       /* Metallic & Shiny Tag/Button Effect */

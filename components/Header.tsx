@@ -284,7 +284,10 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
 
                         <div className="flex-1 flex justify-end">
                             <div className="hidden md:flex items-center space-x-4">
-                                <a href="mailto:sivakumaadhav@gmail.com" aria-label="Email" className="text-[#EA4335] hover:text-accent transition-all duration-300 ease-in-out transform hover:scale-110"><MailIcon /></a>
+                                <a href="mailto:sivakumaadhav@gmail.com" aria-label="Email" className="group flex items-center gap-2 transition-all duration-300 ease-in-out transform hover:scale-105">
+                                    <span className="text-primary font-semibold group-hover:text-accent transition-colors duration-300">Contact</span>
+                                    <MailIcon className="text-[#EA4335] group-hover:text-accent transition-colors duration-300" />
+                                </a>
                                 <a href="https://github.com/AadhavSivakumar" target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="text-primary hover:text-accent transition-all duration-300 ease-in-out transform hover:scale-110"><GithubIcon /></a>
                                 <a href="https://www.linkedin.com/in/aadhav-sivakumar/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-[#0A66C2] hover:text-accent transition-all duration-300 ease-in-out transform hover:scale-110"><LinkedinIcon /></a>
                                 <a href="https://www.instagram.com/aadhav_s/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-[#E4405F] hover:text-accent transition-all duration-300 ease-in-out transform hover:scale-110"><InstagramIcon /></a>

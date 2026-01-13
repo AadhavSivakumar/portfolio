@@ -5,7 +5,7 @@ import Section from './components/Section';
 import ProjectCard from './components/ProjectCard';
 import ProjectModal from './components/ProjectModal';
 import SkillsSection from './components/SkillsSection';
-import { FileIcon, FilesIcon } from './components/Icons';
+import { FileIcon, FilesIcon, PaperGradeIcon } from './components/Icons';
 import DocumentModal from './components/DocumentModal';
 import SineWave from './components/SineWave';
 import AnimateOnScroll from './components/AnimateOnScroll';
@@ -22,6 +22,8 @@ const App: React.FC = () => {
 
   const resumeButtonRef = useRef<HTMLButtonElement>(null);
   const cvButtonRef = useRef<HTMLButtonElement>(null);
+  const undergradTranscriptRef = useRef<HTMLButtonElement>(null);
+  const gradTranscriptRef = useRef<HTMLButtonElement>(null);
 
   // Define the About Me section as a Project object to reuse the Card/Modal architecture
   const aboutProject: Project = {
@@ -140,35 +142,53 @@ const App: React.FC = () => {
             </div>
           </Section>
 
-          <Section title="Resume/CV" id="resume">
+          <Section title="Resume, CV, and Transcripts" id="resume">
               <div className="text-center">
                   <AnimateOnScroll>
-                    <p className="text-lg text-secondary mb-8 max-w-2xl mx-auto">For a detailed overview of my work experience, education, and professional background, please view my resume. For a more comprehensive version, my extended CV is also available.</p>
+                    <p className="text-lg text-secondary mb-8 max-w-2xl mx-auto">For a detailed overview of my work experience, education, and professional background, please view my resume. For a more comprehensive version, my extended CV is also available. You can also view my academic transcripts below.</p>
                   </AnimateOnScroll>
                   <AnimateOnScroll delay={150}>
-                    <div className="flex justify-center items-center gap-4 flex-wrap">
-                        <button
-                            ref={resumeButtonRef}
-                            onClick={() => resumeButtonRef.current && handleSelectDocument('https://drive.google.com/file/d/1JgvGUhWX4Na0Vs0gropdxC01tM2kRiXc/preview', 'Resume', resumeButtonRef.current)}
-                            className={`relative group inline-flex items-center justify-center gap-2 overflow-hidden text-primary font-semibold px-8 py-3 rounded-lg transition-all duration-300 shadow-lg bg-surface/30 dark:bg-surface/20 backdrop-blur border border-black/15 dark:border-white/25 hover:shadow-xl hover:-translate-y-1 ${selectedDocument?.title === 'Resume' ? 'opacity-0 scale-95 invisible' : 'visible'}`}
-                        >
-                            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-accent/50 to-accent transform translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-in-out"></span>
-                            <span className="relative z-10 flex items-center gap-2">
-                                <FileIcon />
-                                <span>View Resume</span>
-                            </span>
-                        </button>
-                        <button
-                            ref={cvButtonRef}
-                            onClick={() => cvButtonRef.current && handleSelectDocument('https://drive.google.com/file/d/11WRObmZOizFs6jlhbsQlfv-9DkBqSq0N/preview', 'Extended CV', cvButtonRef.current)}
-                            className={`relative group inline-flex items-center justify-center gap-2 overflow-hidden text-primary font-semibold px-8 py-3 rounded-lg transition-all duration-300 shadow-lg bg-surface/30 dark:bg-surface/20 backdrop-blur border border-black/15 dark:border-white/25 hover:shadow-xl hover:-translate-y-1 ${selectedDocument?.title === 'Extended CV' ? 'opacity-0 scale-95 invisible' : 'visible'}`}
-                        >
-                            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-accent/50 to-accent transform translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-in-out"></span>
-                              <span className="relative z-10 flex items-center gap-2">
-                                <FilesIcon />
-                                <span>View Extended CV</span>
-                            </span>
-                        </button>
+                    <div className="flex flex-col gap-6 items-center">
+                        <div className="flex justify-center items-center gap-6 flex-wrap">
+                            <button
+                                ref={resumeButtonRef}
+                                onClick={() => resumeButtonRef.current && handleSelectDocument('https://drive.google.com/file/d/1JgvGUhWX4Na0Vs0gropdxC01tM2kRiXc/preview', 'Resume', resumeButtonRef.current)}
+                                className={`group relative flex flex-col items-center justify-center gap-4 w-36 h-36 sm:w-44 sm:h-44 bg-surface rounded-xl shadow-lg border border-border hover:border-accent hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden ${selectedDocument?.title === 'Resume' ? 'opacity-0 pointer-events-none' : ''}`}
+                            >
+                                <div className="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                <FileIcon className="w-12 h-12 text-secondary group-hover:text-accent transition-colors duration-300 z-10" />
+                                <span className="font-bold text-primary text-sm sm:text-base z-10">Resume</span>
+                            </button>
+                            <button
+                                ref={cvButtonRef}
+                                onClick={() => cvButtonRef.current && handleSelectDocument('https://drive.google.com/file/d/11WRObmZOizFs6jlhbsQlfv-9DkBqSq0N/preview', 'Extended CV', cvButtonRef.current)}
+                                className={`group relative flex flex-col items-center justify-center gap-4 w-36 h-36 sm:w-44 sm:h-44 bg-surface rounded-xl shadow-lg border border-border hover:border-accent hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden ${selectedDocument?.title === 'Extended CV' ? 'opacity-0 pointer-events-none' : ''}`}
+                            >
+                                <div className="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                <FilesIcon className="w-12 h-12 text-secondary group-hover:text-accent transition-colors duration-300 z-10" />
+                                <span className="font-bold text-primary text-sm sm:text-base z-10">Extended CV</span>
+                            </button>
+                        </div>
+                        <div className="flex justify-center items-center gap-6 flex-wrap">
+                            <button
+                                ref={undergradTranscriptRef}
+                                onClick={() => undergradTranscriptRef.current && handleSelectDocument('https://drive.google.com/file/d/1_QDb00FYIqoaMAUFQp8Ukwiw2WeaYVPg/preview', 'Undergraduate Transcript', undergradTranscriptRef.current)}
+                                className={`group relative flex flex-col items-center justify-center gap-2 w-36 h-36 sm:w-44 sm:h-44 bg-surface rounded-xl shadow-lg border border-border hover:border-accent hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden ${selectedDocument?.title === 'Undergraduate Transcript' ? 'opacity-0 pointer-events-none' : ''}`}
+                            >
+                                <div className="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                <PaperGradeIcon grade="A" className="w-10 h-10 sm:w-12 sm:h-12 text-secondary group-hover:text-accent transition-colors duration-300 z-10" />
+                                <span className="font-bold text-primary text-xs sm:text-base z-10 text-center leading-tight">Undergraduate<br/>Transcript</span>
+                            </button>
+                            <button
+                                ref={gradTranscriptRef}
+                                onClick={() => gradTranscriptRef.current && handleSelectDocument('https://drive.google.com/file/d/1wwtghhqCJjWordYjrPYAK1M2VDtH3Nc3/preview', 'Graduate Transcript', gradTranscriptRef.current)}
+                                className={`group relative flex flex-col items-center justify-center gap-2 w-36 h-36 sm:w-44 sm:h-44 bg-surface rounded-xl shadow-lg border border-border hover:border-accent hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden ${selectedDocument?.title === 'Graduate Transcript' ? 'opacity-0 pointer-events-none' : ''}`}
+                            >
+                                <div className="absolute inset-0 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                <PaperGradeIcon grade="A+" className="w-10 h-10 sm:w-12 sm:h-12 text-secondary group-hover:text-accent transition-colors duration-300 z-10" />
+                                <span className="font-bold text-primary text-xs sm:text-base z-10 text-center leading-tight">Graduate<br/>Transcript</span>
+                            </button>
+                        </div>
                     </div>
                   </AnimateOnScroll>
               </div>
