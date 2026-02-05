@@ -21,6 +21,7 @@ export interface Project {
   status: 'in-progress' | 'finished';
   modalContent: ModalContent[];
   media?: MediaItem[];
+  modalTitle?: string;
   // Optional legacy fields for backward compatibility
   longDescription?: string; 
   liveUrl?: string;

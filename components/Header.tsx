@@ -4,6 +4,7 @@ import { GithubIcon, InstagramIcon, LinkedinIcon, MailIcon } from './Icons';
 
 interface HeaderProps {
     className?: string;
+    onContactClick: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
 const navLinks = [
@@ -15,7 +16,7 @@ const navLinks = [
     { href: '#skills', label: 'Skills' },
 ];
 
-const Header: React.FC<HeaderProps> = ({ className }) => {
+const Header: React.FC<HeaderProps> = ({ className, onContactClick }) => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [activeSectionIndex, setActiveSectionIndex] = useState(0);
     const [linkMargins, setLinkMargins] = useState<number[]>([]);
@@ -284,13 +285,29 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
 
                         <div className="flex-1 flex justify-end">
                             <div className="hidden md:flex items-center space-x-4">
-                                <a href="mailto:sivakumaadhav@gmail.com" aria-label="Email" className="text-[#EA4335] hover:text-accent transition-all duration-300 ease-in-out transform hover:scale-110"><MailIcon /></a>
+                                <button 
+                                    onClick={onContactClick} 
+                                    aria-label="Contact" 
+                                    className="text-primary font-bold hover:text-accent transition-colors duration-300"
+                                >
+                                    Contact
+                                </button>
+                                
+                                <div className="h-4 w-px bg-border"></div>
+
+                                <button 
+                                    onClick={onContactClick} 
+                                    aria-label="Email" 
+                                    className="text-[#EA4335] hover:text-accent transition-all duration-300 ease-in-out transform hover:scale-110"
+                                >
+                                    <MailIcon />
+                                </button>
                                 <a href="https://github.com/AadhavSivakumar" target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="text-primary hover:text-accent transition-all duration-300 ease-in-out transform hover:scale-110"><GithubIcon /></a>
                                 <a href="https://www.linkedin.com/in/aadhav-sivakumar/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-[#0A66C2] hover:text-accent transition-all duration-300 ease-in-out transform hover:scale-110"><LinkedinIcon /></a>
                                 <a href="https://www.instagram.com/aadhav_s/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-[#E4405F] hover:text-accent transition-all duration-300 ease-in-out transform hover:scale-110"><InstagramIcon /></a>
                             </div>
                              <div className="md:hidden flex items-center space-x-4">
-                                <a href="mailto:sivakumaadhav@gmail.com" aria-label="Email" className="text-[#EA4335] hover:text-accent transition-colors"><MailIcon className="h-5 w-5"/></a>
+                                <button onClick={onContactClick} aria-label="Contact" className="text-[#EA4335] hover:text-accent transition-colors"><MailIcon className="h-5 w-5"/></button>
                                 <a href="https://github.com/AadhavSivakumar" target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="text-primary hover:text-accent transition-colors"><GithubIcon className="h-5 w-5"/></a>
                                 <a href="https://www.linkedin.com/in/aadhav-sivakumar/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-[#0A66C2] hover:text-accent transition-colors"><LinkedinIcon className="h-5 w-5"/></a>
                                 <a href="https://www.instagram.com/aadhav_s/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-[#E4405F] hover:text-accent transition-colors"><InstagramIcon className="h-5 w-5"/></a>
@@ -322,6 +339,12 @@ const Header: React.FC<HeaderProps> = ({ className }) => {
                             {link.label}
                         </a>
                     ))}
+                    <button 
+                        onClick={(e) => { onContactClick(e); setIsMobileMenuOpen(false); }}
+                        className="text-3xl font-bold text-accent hover:text-primary transition-all duration-300 ease-in-out transform hover:scale-110"
+                    >
+                        Get In Touch
+                    </button>
                 </nav>
             </div>
         </>

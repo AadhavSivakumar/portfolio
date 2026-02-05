@@ -18,42 +18,64 @@ export const MAJOR_PROJECTS_DATA: Project[] = [
     ],
     "media": [
       {
-        "type": "image",
-        "url": "https://aadhavsivakumar.github.io/Media/gallery/millet/1.webp"
-      },
-      {
-        "type": "image",
-        "url": "https://aadhavsivakumar.github.io/Media/gallery/millet/2.webp"
+        "type": "video",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/a_millet/2.mp4"
       },
       {
         "type": "video",
-        "url": "https://aadhavsivakumar.github.io/Media/gallery/millet/3.mp4",
-        "thumbnailUrl": "https://aadhavsivakumar.github.io/Media/projects/a_millet/1.mp4"
+        "url": "https://aadhavsivakumar.github.io/Media/projects/a_millet/3.mp4"
+      },
+      {
+        "type": "video",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/a_millet/4.mp4"
       }
     ]
   },
-  // 2.json
+  // Swapped: Reinforcement Learning & Optimal Control (formerly Additional 'd')
   {
-    "id": 2,
-    "title": "SoleGait Foot Sensor",
-    "category": "IoT & Biomedical",
-    "description": "Engineering an IoT-enabled foot sensor using an Arduino for real-time, high-fidelity gait analysis. This work-in-progress integrates custom communication protocols to provide actionable biometric data.",
-    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/b_solegait/1.mp4",
-    "technologies": ["C++", "RTOS", "Comm Protocols"],
+    "id": "d",
+    "title": "Reinforcement Learning & OC",
+    "modalTitle": "Reinforcement Learning & Optimal Control",
+    "category": "Robotics & Control",
+    "description": "Exploring advanced control strategies through model predictive control and deep reinforcement learning. This research-focused project implements algorithms like PPO in complex simulated environments.",
+    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/l_reinforcementlearning/1.mp4",
+    "technologies": ["MPC", "PPO", "DQN", "Isaac Sim"],
     "status": "finished",
     "modalContent": [
       {
         "type": "text",
-        "value": "Engineering an IoT-enabled foot sensor using an Arduino for real-time, high-fidelity gait analysis. This work-in-progress integrates custom communication protocols to provide actionable biometric data for healthcare and athletic performance."
+        "value": "Exploring advanced control strategies through model predictive control (MPC) and deep reinforcement learning. This research-focused project implements state-of-the-art algorithms like PPO and DQN within high-fidelity physics simulations like Isaac Sim."
       },
       {
         "type": "text",
-        "value": "This project showcases my skills in embedded systems design, sensor integration, and data transmission. The goal is to create a low-cost, effective tool for physical therapists and athletes to monitor and improve gait patterns, preventing injuries and enhancing performance."
+        "value": "The goal is to bridge the gap between simulation and reality for complex robotic tasks, ensuring robust performance under uncertainty and dynamic environmental conditions."
       },
       {
-        "type": "embed",
-        "value": "https://aadhavsivakumar.github.io/projectpdf/Biomedical_devices_research_paper.pdf",
-        "title": "Project Documentation (Coming Soon)"
+        "type": "button",
+        "text": "View on GitHub",
+        "link": "https://github.com/AadhavSivakumar/Reinforcement-Learning-and-Optimal-Control/"
+      }
+    ],
+    "media": [
+      {
+        "type": "video",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/l_reinforcementlearning/2.mp4"
+      },
+      {
+        "type": "video",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/l_reinforcementlearning/3.mp4"
+      },
+      {
+        "type": "video",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/l_reinforcementlearning/4.mp4"
+      },
+      {
+        "type": "video",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/l_reinforcementlearning/5.mp4"
+      },
+      {
+        "type": "image",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/l_reinforcementlearning/6.png"
       }
     ]
   },
@@ -83,45 +105,92 @@ export const MAJOR_PROJECTS_DATA: Project[] = [
     "id": 4,
     "title": "SMART compost sorting",
     "category": "Robotics & Computer Vision",
-    "description": "Designed and implemented a robotic compost sorting system using a Franka Emika arm and depth-sensing computer vision. Developed within a ROS framework to automate the identification and separation of contaminants.",
+    "description": "My undergraduate Capstone project: designed and implemented a robotic compost sorting system using a Franka Emika arm and depth-sensing computer vision.",
     "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/d_SMARTcompost/1.mp4",
     "technologies": ["Franka Emika Robot", "Computer Vision", "ROS"],
     "status": "finished",
     "modalContent": [
       {
         "type": "text",
-        "value": "Designed and implemented a robotic compost sorting system using a Franka Emika arm and depth-sensing computer vision. Developed within a ROS framework, this project successfully automated the identification and separation of contaminants from organic waste streams."
+        "value": "For my undergraduate Capstone project, I designed and implemented a robotic compost sorting system using a Franka Emika arm and depth-sensing computer vision. Developed within a ROS framework, this project successfully automated the identification and separation of contaminants from organic waste streams."
       },
       {
-        "type": "embed",
-        "value": "https://aadhavsivakumar.github.io/projectpdf/Capstone_final_report.pdf",
-        "title": "Project Documentation (Coming Soon)"
+        "type": "button",
+        "link": "https://aadhavsivakumar.github.io/projectpdf/Capstone_final_report.pdf",
+        "text": "Project Documentation"
+      }
+    ],
+    "media": [
+      {
+        "type": "video",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/d_SMARTcompost/2.mp4"
+      },
+      {
+        "type": "video",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/d_SMARTcompost/3.mp4"
+      },
+      {
+        "type": "video",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/d_SMARTcompost/4.mp4"
+      },
+      {
+        "type": "video",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/d_SMARTcompost/5.mp4"
+      },
+      {
+        "type": "video",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/d_SMARTcompost/6.mp4"
+      },
+      {
+        "type": "video",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/d_SMARTcompost/7.mp4"
+      },
+      {
+        "type": "video",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/d_SMARTcompost/8.mp4"
       }
     ]
   },
-  // 5.json
+  // Swapped: Robot Perception (formerly Additional 'e')
   {
-    "id": 5,
-    "title": "Tactile Manipulation sensor",
-    "category": "Robotics & Hardware",
-    "description": "Designed and fabricated a novel tactile sensor on a flexible PCB using Altium Designer for advanced robotic manipulation. This sensor provides nuanced data on grip force and shear direction.",
-    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/e_tactilemanipulation/1.mp4",
-    "technologies": ["C", "Altium Designer"],
+    "id": "e",
+    "title": "Robot Perception",
+    "category": "Computer Vision",
+    "description": "Implementing cutting-edge computer vision techniques for robotic scene understanding. Utilizing diffusion models and advanced segmentation for robust object tracking and environmental interaction.",
+    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/m_robotperception/1.mp4",
+    "technologies": ["Diffusion Models", "Object Segmentation"],
     "status": "finished",
     "modalContent": [
       {
         "type": "text",
-        "value": "Designed and fabricated a novel tactile sensor on a flexible PCB using Altium Designer for advanced robotic manipulation. This sensor provides nuanced data on grip force and shear direction, enhancing a robot's ability to handle delicate objects."
+        "value": "Implementing cutting-edge computer vision techniques for robotic scene understanding. This project focuses on utilizing diffusion models and advanced object segmentation algorithms to provide robots with a deep understanding of their physical surroundings."
+      },
+      {
+        "type": "text",
+        "value": "By integrating these perception layers with control stacks, we enable more autonomous and reliable navigation and manipulation in cluttered, real-world environments."
       },
       {
         "type": "button",
-        "text": "View Organization",
-        "link": "https://tml.engineering.ucsc.edu/"
+        "text": "View on GitHub",
+        "link": "https://github.com/AadhavSivakumar/Robot-Perception"
+      }
+    ],
+    "media": [
+      {
+        "type": "image",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/m_robotperception/2.png"
       },
       {
-        "type": "button",
-        "text": "View Previous Research",
-        "link": "https://tml.engineering.ucsc.edu/research/dexterous-manipulation/"
+        "type": "video",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/m_robotperception/3.mp4"
+      },
+      {
+        "type": "image",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/m_robotperception/4.png"
+      },
+      {
+        "type": "image",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/m_robotperception/5.png"
       }
     ]
   },
@@ -141,7 +210,7 @@ export const MAJOR_PROJECTS_DATA: Project[] = [
       },
       {
         "type": "text",
-        "value": "This project was a capstone for my undergraduate studies, showcasing the integration of advanced simulation with robotic control theory. The final system demonstrated a significant potential for reducing manual labor and improving inventory management in a simulated retail setting."
+        "value": "This project showcases the integration of advanced simulation with robotic control theory. The final system demonstrated a significant potential for reducing manual labor and improving inventory management in a simulated retail setting."
       },
       {
         "type": "button",
@@ -193,30 +262,85 @@ export const ADDITIONAL_PROJECTS_DATA: Project[] = [
         "text": "View on GitHub",
         "link": "https://github.com/AadhavSivakumar/MujocoSim"
       }
+    ],
+    "media": [
+      {
+        "type": "video",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/h_ur10emujocosim/2.mp4"
+      },
+      {
+        "type": "video",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/h_ur10emujocosim/3.mp4"
+      },
+      {
+        "type": "video",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/h_ur10emujocosim/4.mp4"
+      },
+      {
+        "type": "video",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/h_ur10emujocosim/5.mp4"
+      }
     ]
   },
-  // a.json
+  // Swapped: Machine Learning & AI Instructor (formerly index 7)
   {
-    "id": "a",
-    "title": "Sand Table",
-    "category": "Mechatronics",
-    "description": "Engineered a 2R planar manipulator controlled by a Parallax Propeller MCU to draw intricate patterns in sand.",
-    "imageUrl": "https://AadhavSivakumar.github.io/Media/projects/i_sandtable/1.mp4",
-    "technologies": ["Parallax Propeller", "C++", "Kinematics"],
+    "id": "f",
+    "title": "Machine Learning & AI Instructor",
+    "category": "AI Education",
+    "description": "",
+    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/n_machinelearninginstructor/1.mp4",
+    "technologies": ["LLMs", "Edge AI"],
+    "status": "finished",
+    "modalContent": []
+  },
+  // Swapped: SoleGait Foot Sensor (formerly index 5)
+  {
+    "id": 2,
+    "title": "SoleGait Foot Sensor",
+    "category": "IoT & Biomedical",
+    "description": "Engineering an IoT-enabled foot sensor using an Arduino for real-time, high-fidelity gait analysis.",
+    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/b_solegait/1.mp4",
+    "technologies": ["C++", "RTOS", "Comm Protocols"],
     "status": "finished",
     "modalContent": [
       {
         "type": "text",
-        "value": "Engineered a 2R planar manipulator controlled by a Parallax Propeller MCU to draw intricate patterns in sand. Applied C++ and kinematic principles to translate digital designs into precise, physical motion."
+        "value": "Engineering an IoT-enabled foot sensor using an Arduino for real-time, high-fidelity gait analysis. This work-in-progress integrates custom communication protocols to provide actionable biometric data for healthcare and athletic performance."
+      },
+      {
+        "type": "text",
+        "value": "This project showcases my skills in embedded systems design, sensor integration, and data transmission. The goal is to create a low-cost, effective tool for physical therapists and athletes to monitor and improve gait patterns, preventing injuries and enhancing performance."
       },
       {
         "type": "embed",
-        "value": "https://aadhavsivakumar.github.io/projectpdf/Advanced_mechatronics_Project_2_report.pdf",
-        "title": "Project Documentation (Coming Soon)"
+        "value": "https://aadhavsivakumar.github.io/projectpdf/Biomedical_devices_research_paper.pdf",
+        "title": "Project Documentation PDF"
+      }
+    ],
+    "media": [
+      {
+        "type": "image",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/b_solegait/2.png"
       }
     ]
   },
-  // b.json
+  // c.json
+  {
+    "id": "c",
+    "title": "MATE ROV",
+    "category": "Robotics",
+    "description": "Contributed to a competitive MATE ROV team by designing and building electronic subsystems for an underwater drone.",
+    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/k_MATE/1.jpeg",
+    "technologies": ["C++", "EAGLE", "Ultrasonic"],
+    "status": "finished",
+    "modalContent": [
+      {
+        "type": "text",
+        "value": "Contributed to a competitive MATE ROV team by designing and building electronic subsystems for an underwater drone. Utilized EAGLE for PCB design and integrated ultrasonic sensors for complex subsea navigation and task execution."
+      }
+    ]
+  },
+  // Swapped: PONG (formerly index 3)
   {
     "id": "b",
     "title": "PONG",
@@ -237,53 +361,87 @@ export const ADDITIONAL_PROJECTS_DATA: Project[] = [
       }
     ]
   },
-  // c.json
+  // 5.json
   {
-    "id": "c",
-    "title": "MATE ROV",
-    "category": "Robotics",
-    "description": "Contributed to a competitive MATE ROV team by designing and building electronic subsystems for an underwater drone.",
-    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/k_MATE/1.jpeg",
-    "technologies": ["C++", "EAGLE", "Ultrasonic"],
+    "id": 5,
+    "title": "Tactile Manipulation sensor",
+    "category": "Robotics & Hardware",
+    "description": "Designed and fabricated a novel tactile sensor on a flexible PCB using Altium Designer for advanced robotic manipulation.",
+    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/e_tactilemanipulation/1.mp4",
+    "technologies": ["C", "Altium Designer"],
     "status": "finished",
     "modalContent": [
       {
         "type": "text",
-        "value": "Contributed to a competitive MATE ROV team by designing and building electronic subsystems for an underwater drone. Utilized EAGLE for PCB design and integrated ultrasonic sensors for complex subsea navigation and task execution."
+        "value": "Designed and fabricated a novel tactile sensor on a flexible PCB using Altium Designer for advanced robotic manipulation. This sensor provides nuanced data on grip force and shear direction, enhancing a robot's ability to handle delicate objects."
+      },
+      {
+        "type": "button",
+        "text": "View Organization",
+        "link": "https://tml.engineering.ucsc.edu/"
+      },
+      {
+        "type": "button",
+        "text": "View Previous Research",
+        "link": "https://tml.engineering.ucsc.edu/research/dexterous-manipulation/"
+      }
+    ],
+    "media": [
+      {
+        "type": "image",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/e_tactilemanipulation/2.png"
+      },
+      {
+        "type": "image",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/e_tactilemanipulation/3.JPG"
+      },
+      {
+        "type": "video",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/e_tactilemanipulation/4.mp4"
+      },
+      {
+        "type": "video",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/e_tactilemanipulation/5.mp4"
       }
     ]
   },
-  // d.json
+  // Swapped: Sand Table (formerly index 2)
   {
-    "id": "d",
-    "title": "Reinforcement Learning & Optimal Control",
-    "category": "Robotics & Control",
-    "description": "",
-    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/l_reinforcementlearning/1.mp4",
-    "technologies": ["MPC", "PPO", "SAC", "DQN", "NVIDIA Isaac Sim"],
+    "id": "a",
+    "title": "Sand Table",
+    "category": "Mechatronics",
+    "description": "Engineered a 2R planar manipulator controlled by a Parallax Propeller MCU to draw intricate patterns in sand.",
+    "imageUrl": "https://AadhavSivakumar.github.io/Media/projects/i_sandtable/1.mp4",
+    "technologies": ["Parallax Propeller", "C++", "Kinematics"],
     "status": "finished",
-    "modalContent": []
-  },
-  // e.json
-  {
-    "id": "e",
-    "title": "Robot Perception",
-    "category": "Computer Vision",
-    "description": "",
-    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/m_robotperception/1.mp4",
-    "technologies": ["Diffusion Models", "Object Segmentation"],
-    "status": "finished",
-    "modalContent": []
-  },
-  // f.json
-  {
-    "id": "f",
-    "title": "Machine Learning & AI Instructor",
-    "category": "AI Education",
-    "description": "",
-    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/n_machinelearninginstructor/1.mp4",
-    "technologies": ["LLMs", "Edge AI"],
-    "status": "finished",
-    "modalContent": []
+    "modalContent": [
+      {
+        "type": "text",
+        "value": "Engineered a 2R planar manipulator controlled by a Parallax Propeller MCU to draw intricate patterns in sand. Applied C++ and kinematic principles to translate digital designs into precise, physical motion."
+      },
+      {
+        "type": "embed",
+        "value": "https://aadhavsivakumar.github.io/projectpdf/Advanced_mechatronics_Project_2_report.pdf",
+        "title": "Project Documentation (Coming Soon)"
+      }
+    ],
+    "media": [
+      {
+        "type": "video",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/i_sandtable/2.mp4"
+      },
+      {
+        "type": "video",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/i_sandtable/3.mp4"
+      },
+      {
+        "type": "video",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/i_sandtable/4.mp4"
+      },
+      {
+        "type": "video",
+        "url": "https://aadhavsivakumar.github.io/Media/projects/i_sandtable/5.mp4"
+      }
+    ]
   }
 ];

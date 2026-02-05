@@ -11,7 +11,7 @@ type AnimationState = 'entering' | 'dropped' | 'expanded' | 'collapsing' | 'fall
 
 const ButtonContent: React.FC = () => (
     <div className="relative z-10 flex items-center justify-center w-full h-full">
-        <span>Contact Me</span>
+        {/* Text removed to ensure smooth visual transition from any button source */}
     </div>
 );
 
