@@ -35,15 +35,12 @@ export const StatusIndicator: React.FC<{
   );
 };
 
-<<<<<<< HEAD
 // Helper function to get style for specific technical keywords
 export const getTagStyle = (tech: string, isCompact: boolean) => {
     // Return the gold accent style for all tags for consistency
     return 'bg-accent text-white dark:text-black font-semibold';
 };
 
-=======
->>>>>>> 00010b115c80dce8bbb03218dab701592181f4b7
 const SplashEffect: React.FC<{ onComplete: () => void }> = ({ onComplete }) => {
   useEffect(() => {
     const timer = setTimeout(onComplete, 600);
@@ -179,11 +176,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onSelect, isCompact 
               
               <div className="mt-auto flex flex-wrap gap-1 md:gap-1.5">
                 {project.technologies.slice(0, 3).map((tech, i) => (
-<<<<<<< HEAD
                   <span key={tech} className={`${getTagStyle(tech, true)} text-[10px] px-2 py-0.5 rounded-full shadow-sm ${contentTransitionClass} ${!isContentVisible ? 'opacity-0 scale-90' : 'opacity-100 scale-100'}`} style={{ transitionDelay: contentDelay(100 + i * 30) }}>{tech}</span>
-=======
-                  <span key={tech} className={`bg-accent text-white dark:text-black text-[10px] font-semibold px-2 py-0.5 rounded-full shadow-sm ${contentTransitionClass} ${!isContentVisible ? 'opacity-0 scale-90' : 'opacity-100 scale-100'}`} style={{ transitionDelay: contentDelay(100 + i * 30) }}>{tech}</span>
->>>>>>> 00010b115c80dce8bbb03218dab701592181f4b7
                 ))}
                 {project.technologies.length > 3 && (
                     <span className={`text-[10px] text-secondary self-center px-1 ${contentTransitionClass} ${!isContentVisible ? 'opacity-0' : 'opacity-100'}`}>+</span>
@@ -228,11 +221,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onSelect, isCompact 
             
             <div className="mt-auto pt-1 flex flex-wrap gap-1.5 md:gap-2">
                 {project.technologies.slice(0, 4).map((tech, i) => (
-<<<<<<< HEAD
                   <span key={tech} className={`${getTagStyle(tech, false)} text-[10px] md:text-xs px-2 md:px-3 py-0.5 md:py-1 rounded-full shadow-sm ${contentTransitionClass} ${!isContentVisible ? 'opacity-0 scale-90' : 'opacity-100 scale-100'}`} style={{ transitionDelay: contentDelay(100 + i * 30) }}>{tech}</span>
-=======
-                  <span key={tech} className={`bg-accent text-white dark:text-black text-[10px] md:text-xs font-semibold px-2 md:px-3 py-0.5 md:py-1 rounded-full shadow-sm ${contentTransitionClass} ${!isContentVisible ? 'opacity-0 scale-90' : 'opacity-100 scale-100'}`} style={{ transitionDelay: contentDelay(100 + i * 30) }}>{tech}</span>
->>>>>>> 00010b115c80dce8bbb03218dab701592181f4b7
                 ))}
                  {project.technologies.length > 4 && (
                     <span className={`text-[10px] text-secondary self-center px-1 ${contentTransitionClass} ${!isContentVisible ? 'opacity-0' : 'opacity-100'}`}>...</span>

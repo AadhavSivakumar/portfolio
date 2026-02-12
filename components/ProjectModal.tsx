@@ -214,11 +214,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, initialBounds, isC
     ? (isSeparated ? 'column' : 'row') // Note: This check is superseded by logic below for calculating pane styles
     : (isSeparated ? 'row' : 'column');
 
-<<<<<<< HEAD
   const modalImageHeightMobile = '21.12rem'; 
-=======
-  const modalImageHeightMobile = '16rem'; 
->>>>>>> 00010b115c80dce8bbb03218dab701592181f4b7
   const gap = isMobile ? '1rem' : (phase === 3 ? '2rem' : '1.5rem');
 
   const smoothEase = 'cubic-bezier(0.4, 0, 0.2, 1)';
@@ -450,11 +446,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, initialBounds, isC
                         style={getStaggerStyle(2)}
                     >
                          {project.technologies.map((tech) => (
-<<<<<<< HEAD
                             <span key={tech} className={`${getTagStyle(tech, false)} rounded-full shadow-sm transition-all duration-500 ${isExpanded ? 'text-sm md:text-base px-3 py-1 md:px-4 md:py-1.5' : 'text-[10px] md:text-xs px-2 md:px-3 py-0.5 md:py-1'}`}>{tech}</span>
-=======
-                            <span key={tech} className={`bg-accent text-white dark:text-black font-bold rounded-full shadow-sm transition-all duration-500 ${isExpanded ? 'text-sm md:text-base px-3 py-1 md:px-4 md:py-1.5' : 'text-[10px] md:text-xs px-2 md:px-3 py-0.5 md:py-1'}`}>{tech}</span>
->>>>>>> 00010b115c80dce8bbb03218dab701592181f4b7
                         ))}
                     </div>
                 </div>

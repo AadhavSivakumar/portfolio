@@ -51,11 +51,7 @@ const App: React.FC = () => {
     // Only first two sentences visible on card
     description: "Hello! My name is Aadhav Sivakumar, and this website is meant to showcase projects I've worked on in the past and projects that I'm currently working on.",
     imageUrl: "https://aadhavsivakumar.github.io/Media/Gradpic.png",
-<<<<<<< HEAD
     technologies: ["Robotics Engineer"],
-=======
-    technologies: ["Robotics Engineer", "Starship Technologies", "NYU Tandon", "University of California Alumni"],
->>>>>>> 00010b115c80dce8bbb03218dab701592181f4b7
     status: 'in-progress',
     modalContent: [
       {
@@ -161,7 +157,6 @@ const App: React.FC = () => {
                 <h1 className="text-5xl font-extrabold tracking-tight text-primary sm:text-6xl md:text-7xl mb-8">
                     Aadhav Sivakumar
                 </h1>
-<<<<<<< HEAD
               </div>
               
               <div className="flex flex-wrap justify-center gap-3">
@@ -181,38 +176,11 @@ const App: React.FC = () => {
               </div>
 
                {/* Removed the down arrow button div */}
-=======
-              </div>
-              
-              <div className="flex flex-wrap justify-center gap-3">
-                 {['Python', 'C++', 'ROS', 'Machine Learning', 'Computer Vision', 'Control Systems', 'Embedded AI'].map((tech, i) => (
-                    <span 
-                        key={tech} 
-                        className={`
-                            px-4 py-2 text-sm md:text-base font-medium rounded-full pointer-events-auto
-                            bg-white/5 dark:bg-white/5 
-                            backdrop-blur-[8px] backdrop-brightness-125 backdrop-contrast-125
-                            border border-white/40 dark:border-white/30 
-                            shadow-[0_4px_12px_rgba(0,0,0,0.1),inset_0_0_10px_rgba(255,255,255,0.1)]
-                            text-primary 
-                            hover:scale-105 hover:bg-white/10 dark:hover:bg-white/10
-                            hover:shadow-[0_8px_24px_rgba(0,0,0,0.15),inset_0_0_15px_rgba(255,255,255,0.2)]
-                            transition-all duration-500 ease-out transform-gpu
-                            ${isContentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
-                        `}
-                        style={{ transitionDelay: `${i * 100 + 300}ms` }}
-                    >
-                        {tech}
-                    </span>
-                 ))}
-              </div>
->>>>>>> 00010b115c80dce8bbb03218dab701592181f4b7
             </div>
         </section>
         
         <div className={`container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 transition-opacity duration-1000 delay-300 ${isContentVisible ? 'opacity-100' : 'opacity-0'}`}>
           <Section title="About Me" id="about">
-<<<<<<< HEAD
             <div className="relative w-full max-w-7xl mx-auto flex justify-center items-center py-4">
                
                {/* Left Lanyards (Desktop Only) - Absolutely Positioned */}
@@ -230,11 +198,6 @@ const App: React.FC = () => {
                {/* Center Card - In Flow, Centered */}
                <div className="w-full max-w-md relative z-30 shrink-0">
                 <AnimateOnScroll className="w-full">
-=======
-            <div className="flex justify-center w-full">
-              <div className="w-full max-w-md">
-                <AnimateOnScroll>
->>>>>>> 00010b115c80dce8bbb03218dab701592181f4b7
                   <ProjectCard
                     project={aboutProject}
                     onSelect={(p, e) => handleSelectProject(p, e, false)}
