@@ -303,13 +303,13 @@ const Header: React.FC<HeaderProps> = ({ className, onContactClick }) => {
                                     <MailIcon />
                                 </button>
                                 <a href="https://github.com/AadhavSivakumar" target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="text-primary hover:text-accent transition-all duration-300 ease-in-out transform hover:scale-110"><GithubIcon /></a>
-                                <a href="https://www.linkedin.com/in/aadhav-sivakumar/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-[#0A66C2] hover:text-accent transition-all duration-300 ease-in-out transform hover:scale-110"><LinkedinIcon /></a>
+                                <a href="https://www.linkedin.com/in/aadhav-s/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-[#0A66C2] hover:text-accent transition-all duration-300 ease-in-out transform hover:scale-110"><LinkedinIcon /></a>
                                 <a href="https://www.instagram.com/aadhav_s/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-[#E4405F] hover:text-accent transition-all duration-300 ease-in-out transform hover:scale-110"><InstagramIcon /></a>
                             </div>
                              <div className="md:hidden flex items-center space-x-4">
                                 <button onClick={onContactClick} aria-label="Contact" className="text-[#EA4335] hover:text-accent transition-colors"><MailIcon className="h-5 w-5"/></button>
                                 <a href="https://github.com/AadhavSivakumar" target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="text-primary hover:text-accent transition-colors"><GithubIcon className="h-5 w-5"/></a>
-                                <a href="https://www.linkedin.com/in/aadhav-sivakumar/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-[#0A66C2] hover:text-accent transition-colors"><LinkedinIcon className="h-5 w-5"/></a>
+                                <a href="https://www.linkedin.com/in/aadhav-s/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-[#0A66C2] hover:text-accent transition-colors"><LinkedinIcon className="h-5 w-5"/></a>
                                 <a href="https://www.instagram.com/aadhav_s/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-[#E4405F] hover:text-accent transition-colors"><InstagramIcon className="h-5 w-5"/></a>
                                 <button
                                     onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
