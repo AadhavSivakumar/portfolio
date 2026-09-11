@@ -1,4 +1,5 @@
 import { Project } from '../types';
+import { ASSET_BASE } from '../assetBase';
 
 export const MAJOR_PROJECTS_DATA: Project[] = [
   // 1.json
@@ -7,7 +8,7 @@ export const MAJOR_PROJECTS_DATA: Project[] = [
     "title": "Project Millet",
     "category": "Autonomous Drone",
     "description": "Developing a ROS-based autonomous drone utilizing a Pixhawk 6x for precise agricultural applications. This ongoing project focuses on implementing robust PID control for stable flight and targeted payload delivery.",
-    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/a_millet/1.mp4",
+    "imageUrl": `${ASSET_BASE}Media/projects/a_millet/1.mp4`,
     "technologies": ["SLAM", "ROS", "Pixhawk 6x"],
     "status": "in-progress",
     "modalContent": [
@@ -19,15 +20,15 @@ export const MAJOR_PROJECTS_DATA: Project[] = [
     "media": [
       {
         "type": "video",
-        "url": "https://aadhavsivakumar.github.io/Media/projects/a_millet/2.mp4"
+        "url": `${ASSET_BASE}Media/projects/a_millet/2.mp4`
       },
       {
         "type": "video",
-        "url": "https://aadhavsivakumar.github.io/Media/projects/a_millet/3.mp4"
+        "url": `${ASSET_BASE}Media/projects/a_millet/3.mp4`
       },
       {
         "type": "video",
-        "url": "https://aadhavsivakumar.github.io/Media/projects/a_millet/4.mp4"
+        "url": `${ASSET_BASE}Media/projects/a_millet/4.mp4`
       }
     ]
   },
@@ -38,7 +39,7 @@ export const MAJOR_PROJECTS_DATA: Project[] = [
     "modalTitle": "Reinforcement Learning & Optimal Control",
     "category": "Robotics & Control",
     "description": "Exploring advanced control strategies through model predictive control and deep reinforcement learning. This research-focused project implements algorithms like PPO in complex simulated environments.",
-    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/l_reinforcementlearning/1.mp4",
+    "imageUrl": `${ASSET_BASE}Media/projects/l_reinforcementlearning/1.mp4`,
     "technologies": ["MPC", "PPO", "DQN", "Isaac Sim"],
     "status": "finished",
     "modalContent": [
@@ -59,23 +60,23 @@ export const MAJOR_PROJECTS_DATA: Project[] = [
     "media": [
       {
         "type": "video",
-        "url": "https://aadhavsivakumar.github.io/Media/projects/l_reinforcementlearning/2.mp4"
+        "url": `${ASSET_BASE}Media/projects/l_reinforcementlearning/2.mp4`
       },
       {
         "type": "video",
-        "url": "https://aadhavsivakumar.github.io/Media/projects/l_reinforcementlearning/3.mp4"
+        "url": `${ASSET_BASE}Media/projects/l_reinforcementlearning/3.mp4`
       },
       {
         "type": "video",
-        "url": "https://aadhavsivakumar.github.io/Media/projects/l_reinforcementlearning/4.mp4"
+        "url": `${ASSET_BASE}Media/projects/l_reinforcementlearning/4.mp4`
       },
       {
         "type": "video",
-        "url": "https://aadhavsivakumar.github.io/Media/projects/l_reinforcementlearning/5.mp4"
+        "url": `${ASSET_BASE}Media/projects/l_reinforcementlearning/5.mp4`
       },
       {
         "type": "image",
-        "url": "https://aadhavsivakumar.github.io/Media/projects/l_reinforcementlearning/6.png"
+        "url": `${ASSET_BASE}Media/projects/l_reinforcementlearning/6.png`
       }
     ]
   },
@@ -85,7 +86,7 @@ export const MAJOR_PROJECTS_DATA: Project[] = [
     "title": "Glass-2-Bot",
     "category": "Telerobotics",
     "description": "Architected a telerobotic system integrating Google Glass with a robot arm, enabling intuitive remote object manipulation. Leveraged Python and computer vision to translate user gaze and gestures into precise robotic actions.",
-    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/c_glass2bot/1.mp4",
+    "imageUrl": `${ASSET_BASE}Media/projects/c_glass2bot/1.mp4`,
     "technologies": ["Google Glass", "Telerobotics"],
     "status": "finished",
     "modalContent": [
@@ -95,7 +96,7 @@ export const MAJOR_PROJECTS_DATA: Project[] = [
       },
       {
         "type": "embed",
-        "value": "https://aadhavsivakumar.github.io/projectpdf/Adv__Mechatronics_Final_Report.pdf",
+        "value": `${ASSET_BASE}projectpdf/Adv__Mechatronics_Final_Report.pdf`,
         "title": "Project Documentation PDF"
       }
     ]
@@ -106,7 +107,7 @@ export const MAJOR_PROJECTS_DATA: Project[] = [
     "title": "SMART compost sorting",
     "category": "Robotics & Computer Vision",
     "description": "My undergraduate Capstone project: designed and implemented a robotic compost sorting system using a Franka Emika arm and depth-sensing computer vision.",
-    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/d_SMARTcompost/1.mp4",
+    "imageUrl": `${ASSET_BASE}Media/projects/d_SMARTcompost/1.mp4`,
     "technologies": ["Franka Emika Robot", "Computer Vision", "ROS"],
     "status": "finished",
     "modalContent": [
@@ -116,38 +117,38 @@ export const MAJOR_PROJECTS_DATA: Project[] = [
       },
       {
         "type": "button",
-        "link": "https://aadhavsivakumar.github.io/projectpdf/Capstone_final_report.pdf",
+        "link": `${ASSET_BASE}projectpdf/Capstone_final_report.pdf`,
         "text": "Project Documentation"
       }
     ],
     "media": [
       {
         "type": "video",
-        "url": "https://aadhavsivakumar.github.io/Media/projects/d_SMARTcompost/2.mp4"
+        "url": `${ASSET_BASE}Media/projects/d_SMARTcompost/2.mp4`
       },
       {
         "type": "video",
-        "url": "https://aadhavsivakumar.github.io/Media/projects/d_SMARTcompost/3.mp4"
+        "url": `${ASSET_BASE}Media/projects/d_SMARTcompost/3.mp4`
       },
       {
         "type": "video",
-        "url": "https://aadhavsivakumar.github.io/Media/projects/d_SMARTcompost/4.mp4"
+        "url": `${ASSET_BASE}Media/projects/d_SMARTcompost/4.mp4`
       },
       {
         "type": "video",
-        "url": "https://aadhavsivakumar.github.io/Media/projects/d_SMARTcompost/5.mp4"
+        "url": `${ASSET_BASE}Media/projects/d_SMARTcompost/5.mp4`
       },
       {
         "type": "video",
-        "url": "https://aadhavsivakumar.github.io/Media/projects/d_SMARTcompost/6.mp4"
+        "url": `${ASSET_BASE}Media/projects/d_SMARTcompost/6.mp4`
       },
       {
         "type": "video",
-        "url": "https://aadhavsivakumar.github.io/Media/projects/d_SMARTcompost/7.mp4"
+        "url": `${ASSET_BASE}Media/projects/d_SMARTcompost/7.mp4`
       },
       {
         "type": "video",
-        "url": "https://aadhavsivakumar.github.io/Media/projects/d_SMARTcompost/8.mp4"
+        "url": `${ASSET_BASE}Media/projects/d_SMARTcompost/8.mp4`
       }
     ]
   },
@@ -157,7 +158,7 @@ export const MAJOR_PROJECTS_DATA: Project[] = [
     "title": "Robot Perception",
     "category": "Computer Vision",
     "description": "Implementing cutting-edge computer vision techniques for robotic scene understanding. Utilizing diffusion models and advanced segmentation for robust object tracking and environmental interaction.",
-    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/m_robotperception/1.mp4",
+    "imageUrl": `${ASSET_BASE}Media/projects/m_robotperception/1.mp4`,
     "technologies": ["Diffusion Models", "Object Segmentation"],
     "status": "finished",
     "modalContent": [
@@ -178,19 +179,19 @@ export const MAJOR_PROJECTS_DATA: Project[] = [
     "media": [
       {
         "type": "image",
-        "url": "https://aadhavsivakumar.github.io/Media/projects/m_robotperception/2.png"
+        "url": `${ASSET_BASE}Media/projects/m_robotperception/2.webp`
       },
       {
         "type": "video",
-        "url": "https://aadhavsivakumar.github.io/Media/projects/m_robotperception/3.mp4"
+        "url": `${ASSET_BASE}Media/projects/m_robotperception/3.mp4`
       },
       {
         "type": "image",
-        "url": "https://aadhavsivakumar.github.io/Media/projects/m_robotperception/4.png"
+        "url": `${ASSET_BASE}Media/projects/m_robotperception/4.webp`
       },
       {
         "type": "image",
-        "url": "https://aadhavsivakumar.github.io/Media/projects/m_robotperception/5.png"
+        "url": `${ASSET_BASE}Media/projects/m_robotperception/5.png`
       }
     ]
   },
@@ -200,7 +201,7 @@ export const MAJOR_PROJECTS_DATA: Project[] = [
     "title": "Stockbot: Grocery Robotics",
     "category": "Robotics & Simulation",
     "description": "Developed a comprehensive simulation in Mujoco for an autonomous grocery restocking robot. Engineered kinematic models and path-planning algorithms in Python to optimize efficiency in a retail environment.",
-    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/f_stockbot/1.mp4",
+    "imageUrl": `${ASSET_BASE}Media/projects/f_stockbot/1.mp4`,
     "technologies": ["Python", "Mujoco", "Kinematics"],
     "status": "finished",
     "modalContent": [
@@ -228,7 +229,7 @@ export const ADDITIONAL_PROJECTS_DATA: Project[] = [
     "title": "CV controlled Desktop Robot arm",
     "category": "Robotics & Computer Vision",
     "description": "Building a desktop robotic arm controlled by computer vision running on a Raspberry Pi.",
-    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/g_CVarm/1.mp4",
+    "imageUrl": `${ASSET_BASE}Media/projects/g_CVarm/1.mp4`,
     "technologies": ["MediaPipe", "VLA model"],
     "status": "in-progress",
     "modalContent": [
@@ -249,7 +250,7 @@ export const ADDITIONAL_PROJECTS_DATA: Project[] = [
     "title": "Ur10e MuJoCo Simulation",
     "category": "Simulation",
     "description": "Created a 3D simulation of the game 'Fruit Ninja' using Python.",
-    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/h_ur10emujocosim/1.mp4",
+    "imageUrl": `${ASSET_BASE}Media/projects/h_ur10emujocosim/1.mp4`,
     "technologies": ["Python", "Mujoco"],
     "status": "finished",
     "modalContent": [
@@ -266,19 +267,19 @@ export const ADDITIONAL_PROJECTS_DATA: Project[] = [
     "media": [
       {
         "type": "video",
-        "url": "https://aadhavsivakumar.github.io/Media/projects/h_ur10emujocosim/2.mp4"
+        "url": `${ASSET_BASE}Media/projects/h_ur10emujocosim/2.mp4`
       },
       {
         "type": "video",
-        "url": "https://aadhavsivakumar.github.io/Media/projects/h_ur10emujocosim/3.mp4"
+        "url": `${ASSET_BASE}Media/projects/h_ur10emujocosim/3.mp4`
       },
       {
         "type": "video",
-        "url": "https://aadhavsivakumar.github.io/Media/projects/h_ur10emujocosim/4.mp4"
+        "url": `${ASSET_BASE}Media/projects/h_ur10emujocosim/4.mp4`
       },
       {
         "type": "video",
-        "url": "https://aadhavsivakumar.github.io/Media/projects/h_ur10emujocosim/5.mp4"
+        "url": `${ASSET_BASE}Media/projects/h_ur10emujocosim/5.mp4`
       }
     ]
   },
@@ -288,7 +289,7 @@ export const ADDITIONAL_PROJECTS_DATA: Project[] = [
     "title": "Machine Learning & AI Instructor",
     "category": "AI Education",
     "description": "",
-    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/n_machinelearninginstructor/1.mp4",
+    "imageUrl": `${ASSET_BASE}Media/projects/n_machinelearninginstructor/1.mp4`,
     "technologies": ["LLMs", "Edge AI"],
     "status": "finished",
     "modalContent": []
@@ -299,7 +300,7 @@ export const ADDITIONAL_PROJECTS_DATA: Project[] = [
     "title": "SoleGait Foot Sensor",
     "category": "IoT & Biomedical",
     "description": "Engineering an IoT-enabled foot sensor using an Arduino for real-time, high-fidelity gait analysis.",
-    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/b_solegait/1.mp4",
+    "imageUrl": `${ASSET_BASE}Media/projects/b_solegait/1.mp4`,
     "technologies": ["C++", "RTOS", "Comm Protocols"],
     "status": "finished",
     "modalContent": [
@@ -313,14 +314,14 @@ export const ADDITIONAL_PROJECTS_DATA: Project[] = [
       },
       {
         "type": "embed",
-        "value": "https://aadhavsivakumar.github.io/projectpdf/Biomedical_devices_research_paper.pdf",
+        "value": `${ASSET_BASE}projectpdf/Biomedical_devices_research_paper.pdf`,
         "title": "Project Documentation PDF"
       }
     ],
     "media": [
       {
         "type": "image",
-        "url": "https://aadhavsivakumar.github.io/Media/projects/b_solegait/2.png"
+        "url": `${ASSET_BASE}Media/projects/b_solegait/2.webp`
       }
     ]
   },
@@ -330,7 +331,7 @@ export const ADDITIONAL_PROJECTS_DATA: Project[] = [
     "title": "MATE ROV",
     "category": "Robotics",
     "description": "Contributed to a competitive MATE ROV team by designing and building electronic subsystems for an underwater drone.",
-    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/k_MATE/1.jpeg",
+    "imageUrl": `${ASSET_BASE}Media/projects/k_MATE/1.jpeg`,
     "technologies": ["C++", "EAGLE", "Ultrasonic"],
     "status": "finished",
     "modalContent": [
@@ -346,7 +347,7 @@ export const ADDITIONAL_PROJECTS_DATA: Project[] = [
     "title": "PONG",
     "category": "Embedded Systems",
     "description": "Constructed a standalone version of the classic game PONG using an Arduino and an LED matrix.",
-    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/j_pong/1.mp4",
+    "imageUrl": `${ASSET_BASE}Media/projects/j_pong/1.mp4`,
     "technologies": ["Arduino", "LED matrix"],
     "status": "finished",
     "modalContent": [
@@ -356,7 +357,7 @@ export const ADDITIONAL_PROJECTS_DATA: Project[] = [
       },
       {
         "type": "embed",
-        "value": "https://aadhavsivakumar.github.io/projectpdf/Advanced_Mechatronics_Project_1_report.pdf",
+        "value": `${ASSET_BASE}projectpdf/Advanced_Mechatronics_Project_1_report.pdf`,
         "title": "Project Documentation (Coming Soon)"
       }
     ]
@@ -367,7 +368,7 @@ export const ADDITIONAL_PROJECTS_DATA: Project[] = [
     "title": "Tactile Manipulation sensor",
     "category": "Robotics & Hardware",
     "description": "Designed and fabricated a novel tactile sensor on a flexible PCB using Altium Designer for advanced robotic manipulation.",
-    "imageUrl": "https://aadhavsivakumar.github.io/Media/projects/e_tactilemanipulation/1.mp4",
+    "imageUrl": `${ASSET_BASE}Media/projects/e_tactilemanipulation/1.mp4`,
     "technologies": ["C", "Altium Designer"],
     "status": "finished",
     "modalContent": [
@@ -389,19 +390,19 @@ export const ADDITIONAL_PROJECTS_DATA: Project[] = [
     "media": [
       {
         "type": "image",
-        "url": "https://aadhavsivakumar.github.io/Media/projects/e_tactilemanipulation/2.png"
+        "url": `${ASSET_BASE}Media/projects/e_tactilemanipulation/2.png`
       },
       {
         "type": "image",
-        "url": "https://aadhavsivakumar.github.io/Media/projects/e_tactilemanipulation/3.JPG"
+        "url": `${ASSET_BASE}Media/projects/e_tactilemanipulation/3.JPG`
       },
       {
         "type": "video",
-        "url": "https://aadhavsivakumar.github.io/Media/projects/e_tactilemanipulation/4.mp4"
+        "url": `${ASSET_BASE}Media/projects/e_tactilemanipulation/4.mp4`
       },
       {
         "type": "video",
-        "url": "https://aadhavsivakumar.github.io/Media/projects/e_tactilemanipulation/5.mp4"
+        "url": `${ASSET_BASE}Media/projects/e_tactilemanipulation/5.mp4`
       }
     ]
   },
@@ -411,7 +412,7 @@ export const ADDITIONAL_PROJECTS_DATA: Project[] = [
     "title": "Sand Table",
     "category": "Mechatronics",
     "description": "Engineered a 2R planar manipulator controlled by a Parallax Propeller MCU to draw intricate patterns in sand.",
-    "imageUrl": "https://AadhavSivakumar.github.io/Media/projects/i_sandtable/1.mp4",
+    "imageUrl": `${ASSET_BASE}Media/projects/i_sandtable/1.mp4`,
     "technologies": ["Parallax Propeller", "C++", "Kinematics"],
     "status": "finished",
     "modalContent": [
@@ -421,26 +422,26 @@ export const ADDITIONAL_PROJECTS_DATA: Project[] = [
       },
       {
         "type": "embed",
-        "value": "https://aadhavsivakumar.github.io/projectpdf/Advanced_mechatronics_Project_2_report.pdf",
+        "value": `${ASSET_BASE}projectpdf/Advanced_mechatronics_Project_2_report.pdf`,
         "title": "Project Documentation (Coming Soon)"
       }
     ],
     "media": [
       {
         "type": "video",
-        "url": "https://aadhavsivakumar.github.io/Media/projects/i_sandtable/2.mp4"
+        "url": `${ASSET_BASE}Media/projects/i_sandtable/2.mp4`
       },
       {
         "type": "video",
-        "url": "https://aadhavsivakumar.github.io/Media/projects/i_sandtable/3.mp4"
+        "url": `${ASSET_BASE}Media/projects/i_sandtable/3.mp4`
       },
       {
         "type": "video",
-        "url": "https://aadhavsivakumar.github.io/Media/projects/i_sandtable/4.mp4"
+        "url": `${ASSET_BASE}Media/projects/i_sandtable/4.mp4`
       },
       {
         "type": "video",
-        "url": "https://aadhavsivakumar.github.io/Media/projects/i_sandtable/5.mp4"
+        "url": `${ASSET_BASE}Media/projects/i_sandtable/5.mp4`
       }
     ]
   }

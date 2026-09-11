@@ -14,18 +14,19 @@ import AnimateOnScroll from './components/AnimateOnScroll';
 import GlassBadge from './components/GlassBadge';
 import Lanyard from './components/Lanyard';
 import { MAJOR_PROJECTS_DATA, ADDITIONAL_PROJECTS_DATA } from './components/projectData';
+import { ASSET_BASE } from './assetBase';
 
 // Lanyard Configurations - Moved outside component to maintain reference stability and prevent re-renders on state changes
 const leftLanyards = [
-    { name: 'Dublin High', role: 'High School', id: '2016-2020', exp: '2020', imageUrl: 'https://aadhavsivakumar.github.io/Media/lanyardimgs/DHS.jpg' },
-    { name: 'UCSC', role: 'Undergraduate', id: '2020-2024', exp: '2024', imageUrl: 'https://aadhavsivakumar.github.io/Media/lanyardimgs/UCSC.png' },
-    { name: 'NYU', role: 'Graduate', id: '2024-2026', exp: '2026', imageUrl: 'https://aadhavsivakumar.github.io/Media/lanyardimgs/NYU.jpg' }
+    { name: 'Dublin High', role: 'High School', id: '2016-2020', exp: '2020', imageUrl: `${ASSET_BASE}Media/lanyardimgs/DHS.jpg` },
+    { name: 'UCSC', role: 'Undergraduate', id: '2020-2024', exp: '2024', imageUrl: `${ASSET_BASE}Media/lanyardimgs/UCSC.png` },
+    { name: 'NYU', role: 'Graduate', id: '2024-2026', exp: '2026', imageUrl: `${ASSET_BASE}Media/lanyardimgs/NYU.jpg` }
 ];
 
 const rightLanyards = [
-    { name: 'Roboflow', role: 'Field Engineer', id: 'Universe', exp: '???', imageUrl: 'https://aadhavsivakumar.github.io/Media/lanyardimgs/Roboflow.png' },
-    { name: 'Starship', role: 'Robot Technician', id: 'Technician', exp: '2025', imageUrl: 'https://aadhavsivakumar.github.io/Media/lanyardimgs/Starship.jpg' },
-    { name: 'Researcher', role: 'TML @ UCSC, CREO @ NYU', id: 'Research', exp: '2024/6', imageUrl: 'https://aadhavsivakumar.github.io/Media/lanyardimgs/Researcher.jpg' }
+    { name: 'Roboflow', role: 'Field Engineer', id: 'Universe', exp: '???', imageUrl: `${ASSET_BASE}Media/lanyardimgs/Roboflow.png` },
+    { name: 'Starship', role: 'Robot Technician', id: 'Technician', exp: '2025', imageUrl: `${ASSET_BASE}Media/lanyardimgs/Starship.jpg` },
+    { name: 'Researcher', role: 'TML @ UCSC, CREO @ NYU', id: 'Research', exp: '2024/6', imageUrl: `${ASSET_BASE}Media/lanyardimgs/Researcher.jpg` }
 ];
 
 const App: React.FC = () => {
@@ -50,7 +51,7 @@ const App: React.FC = () => {
     category: 'Biography',
     // Only first two sentences visible on card
     description: "Hello! My name is Aadhav Sivakumar, and this website is meant to showcase projects I've worked on in the past and projects that I'm currently working on.",
-    imageUrl: "https://aadhavsivakumar.github.io/Media/Gradpic.png",
+    imageUrl: `${ASSET_BASE}Media/Gradpic.webp`,
     technologies: ["Robotics Engineer"],
     status: 'in-progress',
     modalContent: [
@@ -149,7 +150,7 @@ const App: React.FC = () => {
               <div className={`flex flex-col items-center transition-all duration-1000 ease-out ${isContentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
                 <div className="relative w-56 h-56 mb-8 rounded-full overflow-hidden shadow-2xl">
                     <img 
-                        src="https://aadhavsivakumar.github.io/Media/frontpagepfp.JPG" 
+                        src={`${ASSET_BASE}Media/frontpagepfp.JPG`} 
                         alt="Aadhav Sivakumar" 
                         className="w-full h-full object-cover transform scale-105"
                     />

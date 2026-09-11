@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { ASSET_BASE } from '../assetBase';
 
 // Matter.js type workarounds for global CDN usage
 declare global {
@@ -22,7 +23,7 @@ interface LanyardProps {
 }
 
 const Lanyard: React.FC<LanyardProps> = ({ 
-  info = { name: 'Aadhav', role: 'Engineer', id: '042025', exp: '2025', imageUrl: 'https://aadhavsivakumar.github.io/Media/frontpagepfp.JPG' },
+  info = { name: 'Aadhav', role: 'Engineer', id: '042025', exp: '2025', imageUrl: `${ASSET_BASE}Media/frontpagepfp.JPG` },
   gravity = [0, 1],
   tetherLength = 200
 }) => {
@@ -164,7 +165,7 @@ const Lanyard: React.FC<LanyardProps> = ({
     // Load Texture
     const img = new Image();
     img.crossOrigin = "Anonymous";
-    img.src = info.imageUrl || 'https://aadhavsivakumar.github.io/Media/frontpagepfp.JPG';
+    img.src = info.imageUrl || `${ASSET_BASE}Media/frontpagepfp.JPG`;
     let textureLoaded = false;
     img.onload = () => { textureLoaded = true; };
 
